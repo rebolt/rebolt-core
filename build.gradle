@@ -1,0 +1,30 @@
+apply plugin: "java"
+
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+[compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-options"]
+
+jar {
+  baseName = "rebolt-core"
+  version = "0.1.0"
+}
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+allprojects {
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+}
+
+dependencies {
+  runtime "com.fasterxml.jackson.core:jackson-core:$ver_jackson"
+  compile "com.fasterxml.jackson.core:jackson-annotations:$ver_jackson"
+  compile "com.fasterxml.jackson.core:jackson-databind:$ver_jackson"
+  compile "com.google.guava:guava:$ver_guava"
+  compile "net.bytebuddy:byte-buddy:$ver_byte_buddy"
+  compile "org.apache.logging.log4j:log4j-api:$ver_log4j"
+  compile "org.projectlombok:lombok:$ver_lombok"
+  testCompile "junit:junit:$ver_junit"
+}
