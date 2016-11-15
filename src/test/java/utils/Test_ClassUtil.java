@@ -1,5 +1,6 @@
-package io.rebolt.core.utils;
+package utils;
 
+import io.rebolt.core.utils.ClassUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,13 +41,13 @@ public final class Test_ClassUtil {
   }
 
   @EqualsAndHashCode
-  public static class InnerClass {
+  static class InnerClass {
     private @Getter @Setter String inner1;
     private @Getter @Setter int inner2;
 
-    public InnerClass() {}
+    InnerClass() {}
 
-    public InnerClass(String inner1, int inner2) {
+    InnerClass(String inner1, int inner2) {
       this.inner1 = inner1;
       this.inner2 = inner2;
     }

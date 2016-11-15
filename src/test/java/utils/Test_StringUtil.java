@@ -1,10 +1,14 @@
-package io.rebolt.core.utils;
+package utils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import io.rebolt.core.utils.StringUtil;
+import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
@@ -47,7 +51,8 @@ public final class Test_StringUtil {
         "__hex_string__",
         "1234567890",
         "abCdi@!kzxkcj34KZ~12u90z90cklDfjzkdJfdixl0dSCJKFdlJZKDFJ399849!(#*@!$*)~_@~~jkfldjkz",
-        "#@!$#(FRJZKFLDJ#I@r590fjzsd932ui90412#!@3029fUZ(83092-   )(0fdskljzj 9xk,.,x.kjzoifdjK!9309JdfklJDKLJ#@#I%%$&$^&%^J&%KL^JKL%$#JLKFJDSLKFZJDFKjlkdfsja;dpijfzodifjzoi"
+        "#@!$#(FRJZKFLDJ#I@r590fjzsd932ui90412#!@3029fUZ(83092-   )(0fdskljzj 9xk,.,x.kjzoifdjK!9309JdfklJDKLJ#@#I%%$&$^&%^J&%KL^JKL%$#JLKFJDSLKFZJDFKjlkdfsja;dpijfzodifjzoi",
+        StringUtil.randomAlpha(1024)
     };
     List<byte[]> bytes = Lists.newArrayListWithCapacity(values.length);
     String[] convertedValues = new String[values.length];
@@ -65,6 +70,27 @@ public final class Test_StringUtil {
       assertTrue(Arrays.equals(bytes.get(i), convertedBytes.get(i)));
     }
     assertTrue(Arrays.equals(convertedValues, lastValues));
+  }
+
+  @Test
+  public void test_randomAlpha1() {
+    int count = 2000;
+    Set<String> randomAlphas = Sets.newLinkedHashSetWithExpectedSize(count);
+    for (int i = 0; i < count; i++) {
+      randomAlphas.add(StringUtil.randomAlpha(128));
+    }
+    assertTrue(count == randomAlphas.size());
+  }
+
+  @Test
+  public void test_randomAlpha2() {
+    int count = 2000;
+    Set<String> randomAlphas = Sets.newLinkedHashSetWithExpectedSize(count);
+    for (int i = 0; i < count; i++) {
+      randomAlphas.add(StringUtil.randomAlpha(128, 256));
+    }
+    assertTrue(count == randomAlphas.size());
+    randomAlphas.parallelStream().forEach(entry -> assertTrue(entry.length() >= 128 && entry.length() <= 256));
   }
 
 }

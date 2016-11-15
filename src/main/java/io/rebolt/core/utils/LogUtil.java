@@ -7,8 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static io.rebolt.core.constants.Constants.LOGGER_REBOLT;
-
 /**
  * 프레임워크 내부에서 사용하는 로거에 대한 정의
  * <p>
@@ -17,6 +15,7 @@ import static io.rebolt.core.constants.Constants.LOGGER_REBOLT;
  */
 public final class LogUtil {
 
+  private final static String LOGGER_REBOLT = "io.rebolt";
   private final static Logger defaultLogger = LogManager.getLogger(LOGGER_REBOLT);
   private final static Map<String, Logger> loggerMap = Maps.newHashMap();
 
