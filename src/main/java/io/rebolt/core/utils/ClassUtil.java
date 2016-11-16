@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.util.Map;
 
 public final class ClassUtil {
+  private ClassUtil() {}
 
   /**
    * 싱글턴 맵
@@ -19,6 +20,8 @@ public final class ClassUtil {
   private static final Map<String, Object> singletonMap = Maps.newHashMap();
 
   private static final String KEY_DELIMETER = "#";
+
+  // region singleton
 
   /**
    * 싱글턴 생성기
@@ -51,8 +54,8 @@ public final class ClassUtil {
   /**
    * 싱글턴 생성기 (파라미터 포함)
    *
-   * @param clazz         싱글턴 클래스 타입
-   * @param arguments     파라미터 목록
+   * @param clazz 싱글턴 클래스 타입
+   * @param arguments 파라미터 목록
    * @param argumentTypes 파라미터 클래스 타입 목록 (파라미터 목록과 길이가 같아야 한다)
    * @return 싱글턴 인스턴스
    */
@@ -78,6 +81,8 @@ public final class ClassUtil {
     return instance;
   }
 
+  // endregion
+
   /**
    * 인스턴스 생성기
    *
@@ -94,33 +99,4 @@ public final class ClassUtil {
       return null;
     }
   }
-
-  /**
-   * {@link String} 타입 변환
-   *
-   * @param clazz 변환하고자 하는 클래스 타입
-   * @param value 데이터 값
-   * @return 변환된 클래스 인스턴스
-   */
-  public static <T> T cast(Class<T> clazz, String value) {
-    switch (clazz.getSimpleName()) {
-      case "Integer":
-        return clazz.cast(Integer.valueOf(value));
-      case "Long":
-        return clazz.cast(Long.valueOf(value));
-      case "Boolean":
-        return clazz.cast(Boolean.valueOf(value));
-      case "Double":
-        return clazz.cast(Double.valueOf(value));
-      case "Float":
-        return clazz.cast(Float.valueOf(value));
-      case "Short":
-        return clazz.cast(Short.valueOf(value));
-      case "String":
-        return clazz.cast(value);
-      default:
-        return clazz.cast(String.valueOf(value));
-    }
-  }
-
 }

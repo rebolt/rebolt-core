@@ -1,16 +1,17 @@
 package utils;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
-import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
+import static io.rebolt.core.constants.Constant.CHARSET_UTF8;
+import static io.rebolt.core.constants.Constant.COMMA;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmptyWithTrim;
 import static io.rebolt.core.utils.StringUtil.isNumeric;

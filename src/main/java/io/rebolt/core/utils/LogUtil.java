@@ -14,6 +14,7 @@ import java.util.Map;
  * 실제로 로그를 파일 또는 원격지에 저장하기 위해서는 rebolt-log 라이브러리를 포함해야 한다
  */
 public final class LogUtil {
+  private LogUtil() {}
 
   private final static String LOGGER_REBOLT = "io.rebolt";
   private final static Logger defaultLogger = LogManager.getLogger(LOGGER_REBOLT);

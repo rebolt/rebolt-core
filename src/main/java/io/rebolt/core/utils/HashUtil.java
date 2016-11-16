@@ -8,6 +8,7 @@ import java.util.Map;
  * 자바 오브젝트를 활용해 해시코드를 생성한다
  */
 public final class HashUtil {
+  private HashUtil() {}
 
   private static final long NO_PARAM_KEY = Long.MIN_VALUE;
   private static final long NULL_PARAM_KEY = 53L;

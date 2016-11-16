@@ -21,6 +21,7 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
  * Proxy 클래스 생성
  */
 public final class ProxyUtil {
+  private ProxyUtil() {}
 
   private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
   private static final Map<Class, Class> proxyMap = Maps.newHashMap();
@@ -64,9 +65,9 @@ public final class ProxyUtil {
 
   /**
    * AbstractIterceptor
-   *
+   * <p>
    * ProxyUtil에서 사용하는 Interceptor 클래스는 아래를 상속받아 사용한다.
-   * {@link RuntimeType} 어노테이션은 상속된 클래스에서 반드시 수동으로 추가해야 한다.
+   * RuntimeType 어노테이션은 상속된 클래스에서 반드시 수동으로 추가해야 한다.
    */
   public static abstract class AbstractIterceptor {
     @RuntimeType

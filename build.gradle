@@ -32,5 +32,6 @@ dependencies {
   compile "net.bytebuddy:byte-buddy:$ver_byte_buddy"
   compile "org.apache.logging.log4j:log4j-api:$ver_log4j"
   compile "org.projectlombok:lombok:$ver_lombok"
+
   testCompile "junit:junit:$ver_junit"
 }

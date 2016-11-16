@@ -41,7 +41,7 @@ public final class Test_ClassUtil {
   }
 
   @EqualsAndHashCode
-  static class InnerClass {
+  private static class InnerClass {
     private @Getter @Setter String inner1;
     private @Getter @Setter int inner2;
 

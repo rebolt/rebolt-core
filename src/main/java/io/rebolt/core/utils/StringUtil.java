@@ -1,8 +1,12 @@
 package io.rebolt.core.utils;
 
+import java.util.Iterator;
 import java.util.SplittableRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class StringUtil {
+  private StringUtil() {}
 
   private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
   private static final byte[] hexFilters = {0, 10, 11, 12, 13, 14, 15};
@@ -16,7 +20,7 @@ public final class StringUtil {
    * {@link String}에 대한 null 또는 empty 반복 검사
    *
    * @param value {@link String}
-   * @return true or false
+   * @since 0.1.0
    */
   public static boolean isNullOrEmpty(String value) {
     return value == null || value.isEmpty();
@@ -26,6 +30,7 @@ public final class StringUtil {
    * {@link String}에 대한 null 또는 empty 반복 검사
    *
    * @param values {@link String} 배열
+   * @since 0.1.0
    */
   public static boolean isNullOrEmpty(String... values) {
     for (String value : values) {
@@ -40,7 +45,7 @@ public final class StringUtil {
    * {@link StringBuilder}에 대한 null 또는 empty 검사
    *
    * @param value {@link StringBuilder}
-   * @return true or false
+   * @since 0.1.0
    */
   public static boolean isNullOrEmpty(StringBuilder value) {
     return value == null || value.length() == 0;
@@ -50,7 +55,7 @@ public final class StringUtil {
    * Trim된 {@link String}에 대한 null 또는 empty 검사
    *
    * @param value Trim {@link String}
-   * @return true or false
+   * @since 0.1.0
    */
   public static boolean isNullOrEmptyWithTrim(String value) {
     return value == null || isNullOrEmpty(value.trim());
@@ -59,8 +64,8 @@ public final class StringUtil {
   /**
    * {@link String}에 대한 숫자검사
    *
-   * @param value 숫자로된 {@link String}
-   * @return true or false
+   * @param value 숫자로된 문자열
+   * @since 0.1.0
    */
   public static boolean isNumeric(String value) {
     return !isNullOrEmpty(value) && !value.chars().anyMatch(entity -> entity < 48 || entity > 57);
@@ -72,8 +77,9 @@ public final class StringUtil {
   /**
    * HexString to ByteArray
    *
-   * @param hexString Hex {@link String}
+   * @param hexString Hex string
    * @return Byte array
+   * @since 0.1.0
    */
   public static byte[] hexToByteArray(String hexString) {
     if (hexString == null || hexString.length() % 2 != 0) {
@@ -95,7 +101,8 @@ public final class StringUtil {
    * ByteArray to HexString
    *
    * @param bytes Byte array
-   * @return Hex {@link String}
+   * @return Hex string
+   * @since 0.1.0
    */
   public static String byteArrayToHex(byte[] bytes) {
     if (bytes == null || bytes.length == 0) {
@@ -143,7 +150,7 @@ public final class StringUtil {
    * 고정된 길이의 랜덤문자열 생성
    *
    * @param length 길이
-   * @return {@link String}
+   * @since 0.1.0
    */
   public static String randomAlpha(int length) {
     if (length <= 0) {
@@ -161,7 +168,7 @@ public final class StringUtil {
    *
    * @param min 최소길이
    * @param max 최대길이
-   * @return {@link String}
+   * @since 0.1.0
    */
   public static String randomAlpha(int min, int max) {
     if (min <= 0 || max <= 0 || min > max) {
@@ -172,4 +179,72 @@ public final class StringUtil {
 
   // endregion
 
+  // region cast
+
+  /**
+   * {@link String} 타입 변환
+   *
+   * @param type 변환하고자 하는 클래스 타입
+   * @param value 데이터 값
+   * @return 변환된 클래스 인스턴스
+   * @since 0.1.0
+   */
+  public static <T> T cast(String value, Class<T> type) {
+    switch (type.getSimpleName()) {
+      case "Integer":
+        return type.cast(Integer.valueOf(value));
+      case "Long":
+        return type.cast(Long.valueOf(value));
+      case "Boolean":
+        return type.cast(Boolean.valueOf(value));
+      case "Double":
+        return type.cast(Double.valueOf(value));
+      case "Float":
+        return type.cast(Float.valueOf(value));
+      case "Short":
+        return type.cast(Short.valueOf(value));
+      case "String":
+        return type.cast(value);
+      default:
+        return type.cast(String.valueOf(value));
+    }
+  }
+  // endregion
+
+  // region join&split
+
+  /**
+   * 문자열 합치기
+   *
+   * @param joiner 구분자
+   * @param values 대상 인스턴스 목록
+   * @since 0.1.0
+   */
+  public static <T> String join(String joiner, T... values) {
+    return Stream.of(values).map(String::valueOf).collect(Collectors.joining(joiner));
+  }
+
+  /**
+   * 문자열 합치기
+   *
+   * @param joiner 구분자
+   * @param iterators 대상 인스턴스 목록 {@link Iterator}
+   * @since 0.1.0
+   */
+  public static <T> String join(String joiner, Iterator<T> iterators) {
+    return Stream.of(iterators).map(String::valueOf).collect(Collectors.joining(joiner));
+  }
+
+  /**
+   * 문자열 합치기
+   *
+   * @param joiner 구분자
+   * @param iterables 대상 인스턴스 목록 {@link Iterable}
+   * @since 0.1.0
+   */
+  public static <T> String join(String joiner, Iterable<T> iterables) {
+    return Stream.of(iterables).map(String::valueOf).collect(Collectors.joining(joiner));
+  }
+
+  // endregion
 }
