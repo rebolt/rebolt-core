@@ -2,10 +2,14 @@ package io.rebolt.core.options;
 
 import io.rebolt.core.exceptions.ReboltException;
 import io.rebolt.core.utils.ClassUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DefaultOption extends Option {
+
   private static final long serialVersionUID = -108190947243609652L;
   private static final String KEY_EXCEPTION_LOG = "rebolt.log.exception";
 

@@ -1,6 +1,8 @@
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,9 +15,8 @@ import java.util.Map;
  * 로거는 Log4j2를 사용하며 {@link LogUtil}에는 API만 정의되어 있다
  * 실제로 로그를 파일 또는 원격지에 저장하기 위해서는 rebolt-log 라이브러리를 포함해야 한다
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class LogUtil {
-  private LogUtil() {}
-
   private final static String LOGGER_REBOLT = "io.rebolt";
   private final static Logger defaultLogger = LogManager.getLogger(LOGGER_REBOLT);
   private final static Map<String, Logger> loggerMap = Maps.newHashMap();

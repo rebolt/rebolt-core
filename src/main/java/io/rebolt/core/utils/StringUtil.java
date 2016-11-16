@@ -1,13 +1,14 @@
 package io.rebolt.core.utils;
 
 import com.google.common.base.Joiner;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Iterator;
 import java.util.SplittableRandom;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtil {
-  private StringUtil() {}
-
   private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
   private static final byte[] hexFilters = {0, 10, 11, 12, 13, 14, 15};
   private static final char[] alphaDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

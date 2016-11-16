@@ -1,6 +1,8 @@
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.ClassFileVersion;
 import net.bytebuddy.dynamic.DynamicType;
@@ -20,9 +22,8 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
 /**
  * Proxy 클래스 생성
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProxyUtil {
-  private ProxyUtil() {}
-
   private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
   private static final Map<Class, Class> proxyMap = Maps.newHashMap();
 

@@ -1,13 +1,14 @@
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ClassUtil {
-  private ClassUtil() {}
-
   /**
    * 싱글턴 맵
    * <p>

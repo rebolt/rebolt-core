@@ -1,13 +1,15 @@
 package io.rebolt.core.constants;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.nio.charset.Charset;
 
 /**
  * 전역에서 사용되는 Constant 모음
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constant {
-  private Constant() {}
-
   public static final String EMPTY = "";
   public static final String BLANLK = " ";
   public static final String COMMA = ",";
