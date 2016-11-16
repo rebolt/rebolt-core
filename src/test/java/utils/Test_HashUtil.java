@@ -1,9 +1,12 @@
 package utils;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import io.rebolt.core.utils.HashUtil;
 import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static io.rebolt.core.utils.HashUtil.djb2Hash;
@@ -20,6 +23,57 @@ public final class Test_HashUtil {
     }
     // assert
     assertTrue(resultContainers.size() == loopCount);
+  }
+
+  @Test
+  public void test_deepHash() {
+    final int loopCount = 100000;
+
+    // test 1
+    int index = 0;
+    List<Object[]> argumentList = Lists.newLinkedList();
+    for (int i = 0; i < loopCount; i++) {
+      argumentList.add(new Object[] {index++, Lists.newArrayList('A', 'B', 'C'), true});
+    }
+    Set<Long> hashedList = Sets.newHashSet();
+    argumentList.forEach(entry -> hashedList.add(HashUtil.deepHash(entry)));
+    assertTrue(hashedList.size() == loopCount);
+
+    // test 2
+    index = 0;
+    argumentList.clear();
+    for (int i = 0; i < loopCount; i++) {
+      argumentList.add(new Object[] {Lists.newArrayList('A', 'B', 'C'), index++, true});
+    }
+    hashedList.clear();
+    argumentList.forEach(entry -> hashedList.add(HashUtil.deepHash(entry)));
+    assertTrue(hashedList.size() == loopCount);
+
+    // test 3
+    index = 0;
+    argumentList.clear();
+    for (int i = 0; i < loopCount; i++) {
+      argumentList.add(new Object[] {Lists.newArrayList('A', 'B', 'C'), true, index++});
+    }
+    hashedList.clear();
+    argumentList.forEach(entry -> hashedList.add(HashUtil.deepHash(entry)));
+    assertTrue(hashedList.size() == loopCount);
+
+  }
+
+  @Test
+  public void test_deepUniqueHash() {
+    final int loopCount = 100000;
+
+    // test 1
+    int index = 0;
+    List<Object[]> argumentList = Lists.newLinkedList();
+    for (int i = 0; i < loopCount; i++) {
+      argumentList.add(new Object[] {index++, new char[] {'a', 'b', 'c'}, true});
+    }
+    Set<Long> hashedList = Sets.newHashSet();
+    argumentList.forEach(entry -> hashedList.add(HashUtil.deepUniqueHash(entry)));
+    assertTrue(hashedList.size() == loopCount);
   }
 
 }
