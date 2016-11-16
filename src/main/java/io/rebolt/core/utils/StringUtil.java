@@ -1,9 +1,9 @@
 package io.rebolt.core.utils;
 
+import com.google.common.base.Joiner;
+
 import java.util.Iterator;
 import java.util.SplittableRandom;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class StringUtil {
   private StringUtil() {}
@@ -220,8 +220,19 @@ public final class StringUtil {
    * @param values 대상 인스턴스 목록
    * @since 0.1.0
    */
-  public static <T> String join(String joiner, T... values) {
-    return Stream.of(values).map(String::valueOf).collect(Collectors.joining(joiner));
+  public static String join(String joiner, CharSequence... values) {
+    return String.join(joiner, values);
+  }
+
+  /**
+   * 문자열 합치기
+   *
+   * @param joiner 구분자
+   * @param values 대상 인스턴스 목록
+   * @since 0.1.0
+   */
+  public static String join(String joiner, String... values) {
+    return String.join(joiner, (CharSequence[]) values);
   }
 
   /**
@@ -231,8 +242,8 @@ public final class StringUtil {
    * @param iterators 대상 인스턴스 목록 {@link Iterator}
    * @since 0.1.0
    */
-  public static <T> String join(String joiner, Iterator<T> iterators) {
-    return Stream.of(iterators).map(String::valueOf).collect(Collectors.joining(joiner));
+  public static String join(String joiner, Iterator<? extends CharSequence> iterators) {
+    return Joiner.on(joiner).join(iterators);
   }
 
   /**
@@ -242,8 +253,8 @@ public final class StringUtil {
    * @param iterables 대상 인스턴스 목록 {@link Iterable}
    * @since 0.1.0
    */
-  public static <T> String join(String joiner, Iterable<T> iterables) {
-    return Stream.of(iterables).map(String::valueOf).collect(Collectors.joining(joiner));
+  public static String join(String joiner, Iterable<? extends CharSequence> iterables) {
+    return String.join(joiner, iterables);
   }
 
   // endregion

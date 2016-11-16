@@ -1,6 +1,5 @@
 package utils;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
@@ -53,7 +52,7 @@ public final class Test_StringUtil {
         "1234567890",
         "abCdi@!kzxkcj34KZ~12u90z90cklDfjzkdJfdixl0dSCJKFdlJZKDFJ399849!(#*@!$*)~_@~~jkfldjkz",
         "#@!$#(FRJZKFLDJ#I@r590fjzsd932ui90412#!@3029fUZ(83092-   )(0fdskljzj 9xk,.,x.kjzoifdjK!9309JdfklJDKLJ#@#I%%$&$^&%^J&%KL^JKL%$#JLKFJDSLKFZJDFKjlkdfsja;dpijfzodifjzoi",
-        StringUtil.randomAlpha(1024)
+        io.rebolt.core.utils.StringUtil.randomAlpha(1024)
     };
     List<byte[]> bytes = Lists.newArrayListWithCapacity(values.length);
     String[] convertedValues = new String[values.length];
@@ -62,9 +61,9 @@ public final class Test_StringUtil {
 
     for (int i = 0; i < values.length; i++) {
       bytes.add(values[i].getBytes(CHARSET_UTF8));
-      convertedValues[i] = StringUtil.byteArrayToHex(bytes.get(i));
-      convertedBytes.add(StringUtil.hexToByteArray(convertedValues[i]));
-      lastValues[i] = StringUtil.byteArrayToHex(convertedBytes.get(i));
+      convertedValues[i] = io.rebolt.core.utils.StringUtil.byteArrayToHex(bytes.get(i));
+      convertedBytes.add(io.rebolt.core.utils.StringUtil.hexToByteArray(convertedValues[i]));
+      lastValues[i] = io.rebolt.core.utils.StringUtil.byteArrayToHex(convertedBytes.get(i));
     }
 
     for (int i = 0; i < values.length; i++) {
@@ -78,7 +77,7 @@ public final class Test_StringUtil {
     int count = 2000;
     Set<String> randomAlphas = Sets.newLinkedHashSetWithExpectedSize(count);
     for (int i = 0; i < count; i++) {
-      randomAlphas.add(StringUtil.randomAlpha(128));
+      randomAlphas.add(io.rebolt.core.utils.StringUtil.randomAlpha(128));
     }
     assertTrue(count == randomAlphas.size());
   }
@@ -88,10 +87,28 @@ public final class Test_StringUtil {
     int count = 2000;
     Set<String> randomAlphas = Sets.newLinkedHashSetWithExpectedSize(count);
     for (int i = 0; i < count; i++) {
-      randomAlphas.add(StringUtil.randomAlpha(128, 256));
+      randomAlphas.add(io.rebolt.core.utils.StringUtil.randomAlpha(128, 256));
     }
     assertTrue(count == randomAlphas.size());
     randomAlphas.parallelStream().forEach(entry -> assertTrue(entry.length() >= 128 && entry.length() <= 256));
+  }
+
+  @Test
+  public void test_join() {
+    int count = 100;
+    final String[] initValues = new String[count];
+    for (int i = 0; i < count; i++) {
+      initValues[i] = StringUtil.randomAlpha(10);
+    }
+
+    String value1 = StringUtil.join(COMMA, initValues);
+    String value2 = StringUtil.join(COMMA, (CharSequence[]) initValues);
+    String value3 = StringUtil.join(COMMA, Arrays.asList(initValues));
+    String value4 = StringUtil.join(COMMA, Arrays.asList(initValues).iterator());
+
+    assertTrue(value1.equals(value2));
+    assertTrue(value1.equals(value3));
+    assertTrue(value1.equals(value4));
   }
 
 }

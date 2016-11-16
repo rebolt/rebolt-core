@@ -1,4 +1,14 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
+  }
+}
+
 apply plugin: "java"
+apply plugin: "com.github.johnrengelman.shadow"
 
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-options"]
@@ -24,6 +34,10 @@ allprojects {
   }
 }
 
+sourceSets {
+  [main, perf, test]
+}
+
 dependencies {
   runtime "com.fasterxml.jackson.core:jackson-core:$ver_jackson"
   compile "com.fasterxml.jackson.core:jackson-annotations:$ver_jackson"
@@ -32,6 +46,11 @@ dependencies {
   compile "net.bytebuddy:byte-buddy:$ver_byte_buddy"
   compile "org.apache.logging.log4j:log4j-api:$ver_log4j"
   compile "org.projectlombok:lombok:$ver_lombok"
+
+  perfCompile project
+  perfCompile "org.openjdk.jmh:jmh-core:$ver_jmh"
+  perfCompile "org.openjdk.jmh:jmh-core-benchmarks:$ver_jmh"
+  perfCompile "org.openjdk.jmh:jmh-generator-annprocess:$ver_jmh"
 
   testCompile "junit:junit:$ver_junit"
 }
