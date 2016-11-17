@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import static io.rebolt.core.constants.Constant.CHARSET_UTF8;
-import static io.rebolt.core.constants.Constant.COMMA;
+import static io.rebolt.core.constants.Constant.STRING_COMMA;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmptyWithTrim;
 import static io.rebolt.core.utils.StringUtil.isNumeric;
@@ -95,20 +95,38 @@ public final class Test_StringUtil {
 
   @Test
   public void test_join() {
-    int count = 100;
+    int count = 1000;
     final String[] initValues = new String[count];
     for (int i = 0; i < count; i++) {
-      initValues[i] = StringUtil.randomAlpha(10);
+      if (i % 10 == 0) {
+        initValues[i] = null;
+      } else {
+        initValues[i] = StringUtil.randomAlpha(10);
+      }
     }
 
-    String value1 = StringUtil.join(COMMA, initValues);
-    String value2 = StringUtil.join(COMMA, (CharSequence[]) initValues);
-    String value3 = StringUtil.join(COMMA, Arrays.asList(initValues));
-    String value4 = StringUtil.join(COMMA, Arrays.asList(initValues).iterator());
+    String value1 = StringUtil.join(STRING_COMMA, initValues);
+    String value2 = StringUtil.join(STRING_COMMA, (CharSequence[]) initValues);
+    String value3 = StringUtil.join(STRING_COMMA, Arrays.asList(initValues));
+    String value4 = StringUtil.join(STRING_COMMA, Arrays.asList(initValues).iterator());
 
     assertTrue(value1.equals(value2));
     assertTrue(value1.equals(value3));
     assertTrue(value1.equals(value4));
+  }
+
+  @Test
+  public void test_trim() {
+    String value = "1a 닭하야4";
+    String value1 = "1a 닭하야4";
+    String value2 = "  1a 닭하야4   ";
+    String value3 = "1a 닭하야4    ";
+    String value4 = "            1a 닭하야4";
+
+    assertTrue(value.equals(StringUtil.trim(value1)));
+    assertTrue(value.equals(StringUtil.trim(value2)));
+    assertTrue(value.equals(StringUtil.trim(value3)));
+    assertTrue(value.equals(StringUtil.trim(value4)));
   }
 
 }

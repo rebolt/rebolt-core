@@ -8,6 +8,9 @@ import org.apache.logging.log4j.Level;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Rebolt Framework 내부에서 사용되는 {@link RuntimeException}
+ */
 public abstract class ReboltException extends RuntimeException {
   private static final long serialVersionUID = -985635644581389914L;
   private static final String prefix = "--ReboltException: ";

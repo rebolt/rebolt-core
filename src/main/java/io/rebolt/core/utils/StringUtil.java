@@ -1,11 +1,12 @@
 package io.rebolt.core.utils;
 
-import com.google.common.base.Joiner;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.SplittableRandom;
+import java.util.StringJoiner;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtil {
@@ -91,8 +92,8 @@ public final class StringUtil {
     int head, tail;
     for (int i = 0; i < charBuffer.length; i++) {
       index = i * 2;
-      head = hexString.codePointAt(index);
-      tail = hexString.codePointAt(index + 1);
+      head = hexString.charAt(index);
+      tail = hexString.charAt(index + 1);
       charBuffer[i] = (byte) (((head & 0x40) == 0 ? head & 0x0f : hexFilters[head & 0x0f]) * 16 | ((tail & 0x40) == 0 ? tail & 0x0f : hexFilters[tail & 0x0f]));
     }
     return charBuffer;
@@ -212,51 +213,101 @@ public final class StringUtil {
   }
   // endregion
 
-  // region join&split
+  // region join
 
   /**
-   * 문자열 합치기
+   * 문자열 합치기 (skip nulls)
    *
-   * @param joiner 구분자
-   * @param values 대상 인스턴스 목록
+   * @param separator 구분자
+   * @param strings 대상 인스턴스 목록
    * @since 0.1.0
    */
-  public static String join(String joiner, CharSequence... values) {
-    return String.join(joiner, values);
+  public static String join(String separator, String... strings) {
+    return join(separator, (CharSequence[]) strings);
   }
 
   /**
-   * 문자열 합치기
+   * 문자열 합치기 (skip nulls)
    *
-   * @param joiner 구분자
-   * @param values 대상 인스턴스 목록
-   * @since 0.1.0
-   */
-  public static String join(String joiner, String... values) {
-    return String.join(joiner, (CharSequence[]) values);
-  }
-
-  /**
-   * 문자열 합치기
-   *
-   * @param joiner 구분자
-   * @param iterators 대상 인스턴스 목록 {@link Iterator}
-   * @since 0.1.0
-   */
-  public static String join(String joiner, Iterator<? extends CharSequence> iterators) {
-    return Joiner.on(joiner).join(iterators);
-  }
-
-  /**
-   * 문자열 합치기
-   *
-   * @param joiner 구분자
+   * @param separator 구분자
    * @param iterables 대상 인스턴스 목록 {@link Iterable}
    * @since 0.1.0
    */
-  public static String join(String joiner, Iterable<? extends CharSequence> iterables) {
-    return String.join(joiner, iterables);
+  public static String join(String separator, Iterable<? extends CharSequence> iterables) {
+    Objects.requireNonNull(separator);
+    Objects.requireNonNull(iterables);
+    StringJoiner joiner = new StringJoiner(separator);
+    iterables.forEach(entry -> {
+      if (!Objects.isNull(entry)) {
+        joiner.add(entry);
+      }
+    });
+    return joiner.toString();
+  }
+
+  /**
+   * 문자열 합치기 (skip nulls)
+   *
+   * @param separator 구분자
+   * @param iterators 대상 인스턴스 목록 {@link Iterator}
+   * @since 0.1.0
+   */
+  public static String join(String separator, Iterator<? extends CharSequence> iterators) {
+    Objects.requireNonNull(separator);
+    Objects.requireNonNull(iterators);
+    StringJoiner joiner = new StringJoiner(separator);
+    while (iterators.hasNext()) {
+      CharSequence value = iterators.next();
+      if (!Objects.isNull(value)) {
+        joiner.add(value);
+      }
+    }
+    return joiner.toString();
+  }
+
+  /**
+   * 문자열 합치기 (skip nulls)
+   *
+   * @param separator 구분자
+   * @param values 대상 인스턴스 목록
+   * @since 0.1.0
+   */
+  public static String join(String separator, CharSequence... values) {
+    Objects.requireNonNull(separator);
+    Objects.requireNonNull(values);
+    StringJoiner joiner = new StringJoiner(separator);
+    for (CharSequence value : values) {
+      if (!Objects.isNull(value)) {
+        joiner.add(value);
+      }
+    }
+    return joiner.toString();
   }
 
   // endregion
+
+  // region split
+
+
+  // endregion
+
+  /**
+   * 문자열 Trim
+   *
+   * @param value {@link CharSequence}
+   * @since 0.1.0
+   */
+  public static CharSequence trim(CharSequence value) {
+    Objects.requireNonNull(value);
+    final int length = value.length();
+    int far = length;
+    int cursor = 0;
+    while (cursor < far && value.charAt(cursor) <= 32) {
+      ++cursor;
+    }
+    while (cursor < far && value.charAt(far - 1) <= 32) {
+      --far;
+    }
+    return cursor <= 0 && length <= far ? value : value.subSequence(cursor, far);
+  }
 }

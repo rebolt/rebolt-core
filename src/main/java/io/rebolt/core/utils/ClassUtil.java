@@ -84,6 +84,8 @@ public final class ClassUtil {
 
   // endregion
 
+  // region newInstance
+
   /**
    * 인스턴스 생성기
    *
@@ -100,4 +102,6 @@ public final class ClassUtil {
       return null;
     }
   }
+
+  // endregion
 }

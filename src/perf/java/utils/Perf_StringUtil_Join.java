@@ -11,7 +11,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.rebolt.core.constants.Constant.COMMA;
+import static io.rebolt.core.constants.Constant.STRING_COMMA;
 
 public class Perf_StringUtil_Join {
 
@@ -27,7 +27,7 @@ public class Perf_StringUtil_Join {
   @Benchmark
   public void test_join1() {
     @SuppressWarnings("unused")
-    String value = Joiner.on(COMMA).join(initValues);
+    String value = Joiner.on(STRING_COMMA).join(initValues);
   }
 
   /**
@@ -36,13 +36,13 @@ public class Perf_StringUtil_Join {
   @Benchmark
   public void test_join2() {
     @SuppressWarnings("unused")
-    String value = Stream.of(initValues).map(String::valueOf).collect(Collectors.joining(COMMA));
+    String value = Stream.of(initValues).map(String::valueOf).collect(Collectors.joining(STRING_COMMA));
   }
 
   @Benchmark
   public void test_join3() {
     @SuppressWarnings("unused")
-    String value = String.join(COMMA, (CharSequence[]) initValues);
+    String value = String.join(STRING_COMMA, (CharSequence[]) initValues);
   }
 
   public static void main(String[] args) throws RunnerException {

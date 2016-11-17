@@ -3,9 +3,7 @@ package io.rebolt.core.exceptions;
 import org.apache.logging.log4j.Level;
 
 /**
- * 클래스, 모듈등이 초기화되지 않았을 때 발생하는 Runtime Exception
- * <p>
- * 로그 {@link Level}은 ERROR
+ * 클래스, 모듈등이 초기화되지 않았을 때 발생하는 {@link ReboltException}
  */
 public final class NotInitializedException extends ReboltException {
   private static final long serialVersionUID = -8128940175426608039L;
@@ -16,6 +14,6 @@ public final class NotInitializedException extends ReboltException {
 
   @Override
   protected Level setLogLevel() {
-    return Level.ERROR;
+    return Level.FATAL;
   }
 }

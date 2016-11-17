@@ -10,9 +10,10 @@ import java.nio.charset.Charset;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constant {
-  public static final String EMPTY = "";
-  public static final String BLANLK = " ";
-  public static final String COMMA = ",";
+  public static final String STRING_EMPTY = "";
+  public static final String STRING_BLANK = " ";
+  public static final String STRING_COMMA = ",";
+  public static final CharSequence CHARS_EMPTY = STRING_EMPTY;
 
   public static final String CHARSET_NAME_DEFAULT = "UTF-8";
   public static final Charset CHARSET_DEFAULT = Charset.forName(CHARSET_NAME_DEFAULT);
