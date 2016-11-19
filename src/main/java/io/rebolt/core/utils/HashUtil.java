@@ -1,14 +1,14 @@
 package io.rebolt.core.utils;
 
 import io.rebolt.core.exceptions.IllegalParameterException;
+import io.rebolt.core.models.AbstractModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 자바 오브젝트를 활용해 해시코드를 생성한다
@@ -47,6 +47,7 @@ public final class HashUtil {
    * @since 0.1.0
    */
   public static long deepHash(Object... objects) {
+    Objects.requireNonNull(objects);
     if (objects.length == 0) {
       return NO_PARAM_KEY;
     }
@@ -84,8 +85,10 @@ public final class HashUtil {
    *
    * @param objects 해시 대상 인스턴스 배열
    * @return 해시코드 (음수포함)
+   * @since 0.1.0
    */
-  public static long deepUniqueHash(Object... objects) {
+  public static long uniqueDeepHash(Object... objects) {
+    Objects.requireNonNull(objects);
     if (objects.length == 0) {
       return NO_PARAM_KEY;
     }
@@ -98,6 +101,31 @@ public final class HashUtil {
       } else {
         hashCode = 31L * hashCode + (object == null ? NULL_PARAM_KEY : object.hashCode());
       }
+    }
+    return hashCode;
+  }
+
+  /**
+   * Deep 해시코드
+   * <p>
+   * {@link AbstractModel}을 상속받은 클래스만을 이용해서 hashCode를 생성한다.
+   * 이러한 방식은 인스턴스에서 반드시 유일한 hashCode를 생성해야 하는 엄격한 규칙을
+   * 정해야 하는 경우에만 사용하도록 한다.
+   * (예) 캐시 데이터의 구분키, 데이터 샤딩키등
+   *
+   * @param models {@link AbstractModel}을 상속받은 인스턴스 배열
+   * @return 해시코드
+   * @since 0.1.0
+   */
+  @SuppressWarnings("unchecked")
+  public static <T extends AbstractModel> long modelDeepHash(T... models) {
+    Objects.requireNonNull(models);
+    if (models.length == 0) {
+      return NO_PARAM_KEY;
+    }
+    long hashCode = 17L;
+    for (AbstractModel model : models) {
+      hashCode = 31L * hashCode + model.hashCode();
     }
     return hashCode;
   }

@@ -353,6 +353,8 @@ public final class StringUtil {
 
   // endregion
 
+  // region trim
+
   /**
    * 문자열 Trim
    *
@@ -384,4 +386,6 @@ public final class StringUtil {
   public static String trim(String value) {
     return (String) trim((CharSequence) value);
   }
+
+  // endregion
 }
