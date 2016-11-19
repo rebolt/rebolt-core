@@ -1,9 +1,11 @@
 package io.rebolt.core.utils;
 
+import com.google.common.collect.Lists;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
@@ -288,6 +290,62 @@ public final class StringUtil {
 
   // region split
 
+  /**
+   * 문자열 나누기 (skip nulls)
+   *
+   * @param separator 구분자
+   * @param string 문자열
+   * @param limit 결과물 목록수 (0: unlimit)
+   * @since 0.1.0
+   */
+  public static List<String> split(char separator, String string, int limit) {
+    int length = string.length();
+    int off = 0;
+    int next;
+    boolean limited = limit > 0;
+    List<String> list = Lists.newLinkedList();
+    String buffer;
+    while ((next = string.indexOf(separator, off)) != -1) {
+      if (!limited || list.size() < limit - 1) {
+        buffer = string.substring(off, next);
+        if (!buffer.isEmpty()) {
+          list.add(buffer);
+        }
+        off = next + 1;
+      } else {
+        buffer = string.substring(off, next);
+        if (!buffer.isEmpty()) {
+          list.add(buffer);
+        }
+        off = length;
+        break;
+      }
+    }
+    if (off == 0) {
+      return Lists.newArrayList(string);
+    }
+    if (!limited || list.size() < limit) {
+      list.add(string.substring(off, length));
+    }
+    int resultSize = list.size();
+    if (limit == 0) {
+      while (resultSize > 0 && list.get(resultSize - 1).length() == 0) {
+        resultSize--;
+      }
+    }
+    return list.subList(0, resultSize);
+  }
+
+  /**
+   * 문자열 나누기
+   *
+   * @param separator 구분자
+   * @param string 문자열
+   * @since 0.1.0
+   */
+  public static List<String> split(char separator, String string) {
+    return split(separator, string, 0);
+  }
 
   // endregion
 

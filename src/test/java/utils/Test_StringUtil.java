@@ -1,5 +1,6 @@
 package utils;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
@@ -14,6 +15,7 @@ import static io.rebolt.core.constants.Constant.STRING_COMMA;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmptyWithTrim;
 import static io.rebolt.core.utils.StringUtil.isNumeric;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -128,5 +130,16 @@ public final class Test_StringUtil {
     assertTrue(value.equals(StringUtil.trim(value3)));
     assertTrue(value.equals(StringUtil.trim(value4)));
   }
+
+  @Test
+  public void test_split() {
+    String value = "123,4214,123,21,31,23,12,31,2311231,,3123123,";
+    List<String> originSplit = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(value);
+    List<String> split = StringUtil.split(',', value);
+
+    assertTrue(originSplit.size() == split.size());
+    assertArrayEquals(originSplit.toArray(), split.toArray());
+  }
+
 
 }
