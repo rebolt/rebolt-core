@@ -4,10 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 
-public abstract class AbstractModel implements Serializable {
+public abstract class AbstractModel<T extends AbstractModel> implements Serializable {
+  private static final long serialVersionUID = 4367513134262455323L;
+
   @JsonIgnore
   public abstract boolean isEmpty();
 
   @JsonIgnore
   public abstract int hashCode();
+
+  @JsonIgnore
+  public abstract boolean equals(T model);
 }

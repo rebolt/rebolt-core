@@ -93,8 +93,8 @@ public final class Test_HashUtil {
     assertTrue(hashedList.size() == loopCount);
   }
 
-  private static class DeepModel extends AbstractModel {
-
+  private static class DeepModel extends AbstractModel<DeepModel> {
+    private static final long serialVersionUID = -6652319695155089438L;
     private final int hashCode;
 
     public DeepModel() {
@@ -109,6 +109,11 @@ public final class Test_HashUtil {
     @Override
     public int hashCode() {
       return hashCode;
+    }
+
+    @Override
+    public boolean equals(DeepModel model) {
+      return true;
     }
   }
 
