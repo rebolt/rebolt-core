@@ -1,6 +1,7 @@
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Lists;
+import io.rebolt.core.exceptions.IllegalParameterException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -299,6 +300,9 @@ public final class StringUtil {
    * @since 0.1.0
    */
   public static List<String> split(char separator, String string, int limit) {
+    if (limit < 0) {
+      throw new IllegalParameterException("limit >= 0");
+    }
     int length = string.length();
     int off = 0;
     int next;
