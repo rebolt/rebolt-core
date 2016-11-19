@@ -291,7 +291,7 @@ public final class StringUtil {
   // region split
 
   /**
-   * 문자열 나누기 (skip nulls)
+   * 문자열 나누기 (skip nulls, trim)
    *
    * @param separator 구분자
    * @param string 문자열
@@ -307,13 +307,13 @@ public final class StringUtil {
     String buffer;
     while ((next = string.indexOf(separator, off)) != -1) {
       if (!limited || list.size() < limit - 1) {
-        buffer = string.substring(off, next);
+        buffer = trim(string.substring(off, next));
         if (!buffer.isEmpty()) {
           list.add(buffer);
         }
         off = next + 1;
       } else {
-        buffer = string.substring(off, next);
+        buffer = trim(string.substring(off, next));
         if (!buffer.isEmpty()) {
           list.add(buffer);
         }
@@ -353,6 +353,7 @@ public final class StringUtil {
    * 문자열 Trim
    *
    * @param value {@link CharSequence}
+   * @return {@link CharSequence}
    * @since 0.1.0
    */
   public static CharSequence trim(CharSequence value) {
@@ -367,5 +368,16 @@ public final class StringUtil {
       --far;
     }
     return cursor <= 0 && length <= far ? value : value.subSequence(cursor, far);
+  }
+
+  /**
+   * 문자열 Trim
+   *
+   * @param value {@link String}
+   * @return {@link String}
+   * @since 0.1.0
+   */
+  public static String trim(String value) {
+    return (String) trim((CharSequence) value);
   }
 }

@@ -133,7 +133,7 @@ public final class Test_StringUtil {
 
   @Test
   public void test_split() {
-    String value = "123,4214,123,21,31,23,12,31,2311231,,3123123,";
+    String value = "123,4214,      123,21,31,23,12     ,31,2311     231,      ,3123123,";
     List<String> originSplit = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(value);
     List<String> split = StringUtil.split(',', value);
 
