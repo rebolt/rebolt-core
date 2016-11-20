@@ -11,7 +11,7 @@ public abstract class AbstractModel<T extends AbstractModel> implements Serializ
   public abstract boolean isEmpty();
 
   @JsonIgnore
-  public abstract int hashCode();
+  public abstract long deepHash();
 
   @JsonIgnore
   public abstract boolean equals(T model);

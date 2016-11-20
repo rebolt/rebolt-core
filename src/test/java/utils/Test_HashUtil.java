@@ -63,18 +63,19 @@ public final class Test_HashUtil {
   }
 
   @Test
-  public void test_uniqueDeepHash() {
+  public void test_deepHash2() {
     final int loopCount = 100000;
 
     // test 1
     int index = 0;
     List<Object[]> argumentList = Lists.newLinkedList();
     for (int i = 0; i < loopCount; i++) {
-      argumentList.add(new Object[] {index++, new char[] {'a', 'b', 'c'}, true});
+      argumentList.add(new Object[] {index++, new char[] {'A', 'B', 'C'}, true});
     }
     Set<Long> hashedList = Sets.newHashSet();
-    argumentList.forEach(entry -> hashedList.add(HashUtil.uniqueDeepHash(entry)));
-    assertTrue(hashedList.size() == loopCount);
+    argumentList.forEach(entry -> hashedList.add(HashUtil.deepHash(entry)));
+    assertTrue("hashed_size: " + hashedList.size() + ", loop_count: " + loopCount, hashedList.size() == loopCount);
+
   }
 
   @Test
@@ -90,15 +91,15 @@ public final class Test_HashUtil {
     Set<Long> hashedList = Sets.newTreeSet();
     arguments.forEach(entry -> hashedList.add(HashUtil.modelDeepHash(entry)));
 
-    assertTrue(hashedList.size() == loopCount);
+    assertTrue("hashed_size: " + hashedList.size() + ", loop_count: " + loopCount, hashedList.size() == loopCount);
   }
 
   private static class DeepModel extends AbstractModel<DeepModel> {
     private static final long serialVersionUID = -6652319695155089438L;
-    private final int hashCode;
+    private final long hashCode;
 
     public DeepModel() {
-      this.hashCode = (int) HashUtil.deepHash(StringUtil.randomAlpha(1024));
+      this.hashCode = HashUtil.deepHash(StringUtil.randomAlpha(1024));
     }
 
     @Override
@@ -107,7 +108,7 @@ public final class Test_HashUtil {
     }
 
     @Override
-    public int hashCode() {
+    public long deepHash() {
       return hashCode;
     }
 
