@@ -5,11 +5,16 @@ import io.rebolt.core.exceptions.IllegalParameterException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
+
+import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtil {
@@ -385,6 +390,48 @@ public final class StringUtil {
    */
   public static String trim(String value) {
     return (String) trim((CharSequence) value);
+  }
+
+  // endregion
+
+  // region urlEncode/Decode
+
+  /**
+   * Url 인코딩 (UTF-8)
+   *
+   * @param url 인코딩할 Url 문자열
+   * @since 0.1.0
+   */
+  public static String encodeUrl(String url) {
+    if (StringUtil.isNullOrEmpty(url)) {
+      return url;
+    }
+    String encodedUrl;
+    try {
+      encodedUrl = URLEncoder.encode(url, DEFAULT_CHARSET_NAME);
+    } catch (UnsupportedEncodingException e) {
+      encodedUrl = url;
+    }
+    return encodedUrl;
+  }
+
+  /**
+   * Url 디코딩 (UTF-8)
+   *
+   * @param encodedUrl Url 인코딩된 문자열
+   * @since 0.1.0
+   */
+  public static String decodeUrl(String encodedUrl) {
+    if (StringUtil.isNullOrEmpty(encodedUrl)) {
+      return encodedUrl;
+    }
+    String url;
+    try {
+      url = URLDecoder.decode(encodedUrl, DEFAULT_CHARSET_NAME);
+    } catch (UnsupportedEncodingException e) {
+      url = encodedUrl;
+    }
+    return url;
   }
 
   // endregion

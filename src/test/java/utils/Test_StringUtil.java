@@ -141,5 +141,13 @@ public final class Test_StringUtil {
     assertArrayEquals(originSplit.toArray(), split.toArray());
   }
 
+  @Test
+  public void test_urlEncode() {
+    String value = "http://\\!@#$43%^^...21!!!#@$%$^$%----__=+_++_+_~!@~good.com/good-job/key=value&key1=value%&;";
 
+    String encodedUrl = StringUtil.encodeUrl(value);
+    String decodedUrl = StringUtil.decodeUrl(encodedUrl);
+
+    assertTrue(value.equals(decodedUrl));
+  }
 }
