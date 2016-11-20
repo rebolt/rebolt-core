@@ -2,7 +2,7 @@ package utils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import io.rebolt.core.models.AbstractModel;
+import io.rebolt.core.models.IModel;
 import io.rebolt.core.utils.HashUtil;
 import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
@@ -94,7 +94,7 @@ public final class Test_HashUtil {
     assertTrue("hashed_size: " + hashedList.size() + ", loop_count: " + loopCount, hashedList.size() == loopCount);
   }
 
-  private static class DeepModel extends AbstractModel<DeepModel> {
+  private static class DeepModel implements IModel<DeepModel> {
     private static final long serialVersionUID = -6652319695155089438L;
     private final long hashCode;
 

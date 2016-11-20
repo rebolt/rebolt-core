@@ -1,6 +1,6 @@
 package io.rebolt.core.utils;
 
-import io.rebolt.core.models.AbstractModel;
+import io.rebolt.core.models.IModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,10 +15,10 @@ public final class ObjectUtil {
   /**
    * isEmtpy
    *
-   * @param model {@link AbstractModel}
+   * @param model {@link IModel}
    * @since 0.1.0
    */
-  public static boolean isEmpty(AbstractModel model) {
+  public static boolean isEmpty(IModel model) {
     return model == null || model.isEmpty();
   }
 

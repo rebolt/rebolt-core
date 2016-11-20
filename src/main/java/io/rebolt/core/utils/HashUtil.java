@@ -1,6 +1,6 @@
 package io.rebolt.core.utils;
 
-import io.rebolt.core.models.AbstractModel;
+import io.rebolt.core.models.IModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -138,8 +138,8 @@ public final class HashUtil {
               sum ^= entry.hashCode();
             }
             hashCode = 31L * hashCode + sum;
-          } else if (object instanceof AbstractModel) {
-            hashCode = 31L * hashCode + ((AbstractModel) object).deepHash();
+          } else if (object instanceof IModel) {
+            hashCode = 31L * hashCode + ((IModel) object).deepHash();
           } else {
             hashCode = 31L * hashCode + object.hashCode();
           }
@@ -152,23 +152,23 @@ public final class HashUtil {
   /**
    * Deep 해시코드
    * <p>
-   * {@link AbstractModel}을 상속받은 클래스만을 이용해서 hashCode를 생성한다.
+   * {@link IModel}을 상속받은 클래스만을 이용해서 hashCode를 생성한다.
    * 이러한 방식은 인스턴스에서 반드시 유일한 hashCode를 생성해야 하는 엄격한 규칙을
    * 정해야 하는 경우에만 사용하도록 한다.
    * (예) 캐시 데이터의 구분키, 데이터 샤딩키등
    *
-   * @param models {@link AbstractModel}을 상속받은 인스턴스 배열
+   * @param models {@link IModel}을 상속받은 인스턴스 배열
    * @return 해시코드
    * @since 0.1.0
    */
   @SuppressWarnings("unchecked")
-  public static <T extends AbstractModel> long modelDeepHash(T... models) {
+  public static <T extends IModel> long modelDeepHash(T... models) {
     Objects.requireNonNull(models);
     if (models.length == 0) {
       return NO_PARAM_KEY;
     }
     long hashCode = 17L;
-    for (AbstractModel model : models) {
+    for (IModel model : models) {
       hashCode = 31L * hashCode + model.deepHash();
     }
     return hashCode;
