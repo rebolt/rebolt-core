@@ -6,9 +6,59 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ObjectUtil {
+
+  // region isNull
+
+  /**
+   * isNull
+   *
+   * @since 0.1.0
+   */
+  public static boolean isNull(Object object) {
+    return object == null;
+  }
+
+  /**
+   * isOrNull
+   * 입력값 중 1개라도 null이라면 true
+   *
+   * @since 0.1.0
+   */
+  public static boolean isOrNull(Object... objects) {
+    if (objects == null) {
+      return true;
+    }
+    for (Object object : objects) {
+      if (isNull(object)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * isAndNull
+   * 입력값이 모두 null일때 true
+   *
+   * @since 0.1.0
+   */
+  public static boolean isAndNull(Object... objects) {
+    if (objects == null) {
+      return true;
+    }
+    for (Object object : objects) {
+      if (!isNull(object)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // endregion
 
   // region isEmpty
 
@@ -36,7 +86,7 @@ public final class ObjectUtil {
    * isEmpty
    *
    * @param string {@link String}
-   * @sice 0.1.0
+   * @since 0.1.0
    */
   public static boolean isEmpty(String string) {
     return StringUtil.isNullOrEmpty(string);
