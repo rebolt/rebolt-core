@@ -22,7 +22,7 @@ public final class StringUtil {
   // region isNullOrEmpty
 
   /**
-   * {@link String}에 대한 null 또는 empty 반복 검사
+   * {@link String}에 대한 null 또는 empty 검사
    *
    * @param value {@link String}
    * @since 0.1.0
