@@ -9,8 +9,10 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public final class Test_ObjectUtil {
@@ -58,5 +60,17 @@ public final class Test_ObjectUtil {
 
     assertTrue(ObjectUtil.isEmpty((CharSequence) value1));
     assertTrue(ObjectUtil.isEmpty((IModel) null));
+  }
+
+  @SuppressWarnings("ConstantConditions")
+  @Test
+  public void test_nullGuard() {
+    List<String> list = null;
+    Set<String> set = null;
+    Map<String, String> map = null;
+
+    assertNotNull(ObjectUtil.nullGuard(list));
+    assertNotNull(ObjectUtil.nullGuard(set));
+    assertNotNull(ObjectUtil.nullGuard(map));
   }
 }

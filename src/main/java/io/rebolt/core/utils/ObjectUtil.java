@@ -4,9 +4,10 @@ import io.rebolt.core.models.IModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ObjectUtil {
@@ -110,6 +111,40 @@ public final class ObjectUtil {
    */
   public static boolean isEmpty(Map map) {
     return map == null || map.isEmpty();
+  }
+
+  // endregion
+
+  // region nullGuard
+
+  /**
+   * nullGuard
+   *
+   * @param map 만약 null이라면, Empty {@link Map}이 반환된다.
+   * @since 0.1.0
+   */
+  public static <K, V> Map<K, V> nullGuard(Map<K, V> map) {
+    return map == null ? Collections.emptyMap() : map;
+  }
+
+  /**
+   * nullGuard
+   *
+   * @param list 만약 null이라면, Empty {@link List}가 반환된다.
+   * @since 0.1.0
+   */
+  public static <T> List<T> nullGuard(List<T> list) {
+    return list == null ? Collections.emptyList() : list;
+  }
+
+  /**
+   * nullGuard
+   *
+   * @param set 만약 null이라면, Emtpy {@link Set}이 반환된다.
+   * @since 0.1.0
+   */
+  public static <T> Set<T> nullGuard(Set<T> set) {
+    return set == null ? Collections.emptySet() : set;
   }
 
   // endregion
