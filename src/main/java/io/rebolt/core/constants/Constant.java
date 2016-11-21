@@ -13,6 +13,8 @@ public final class Constant {
   public static final String STRING_EMPTY = "";
   public static final String STRING_BLANK = " ";
   public static final String STRING_COMMA = ",";
+  public static final String STRING_AND = "&";
+  public static final String STRING_EQUAL = "=";
   public static final CharSequence CHARS_EMPTY = STRING_EMPTY;
 
   public static final String CHARSET_NAME_DEFAULT = "UTF-8";
