@@ -44,8 +44,7 @@ public final class HashUtil {
    * @since 0.1.0
    */
   public static long deepHash(Object... objects) {
-    Objects.requireNonNull(objects);
-    if (objects.length == 0) {
+    if (objects == null || objects.length == 0) {
       return NO_PARAM_KEY;
     }
     long hashCode = 17L;

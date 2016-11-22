@@ -33,7 +33,7 @@ public final class DefaultOption extends Option {
    * @return true : 자동로그 활성화, false : 자동로그 비활성화
    */
   public boolean isExceptionLog() {
-    return get(KEY_EXCEPTION_LOG, Boolean.TYPE);
+    return get(KEY_EXCEPTION_LOG, Boolean.class);
   }
 
 }

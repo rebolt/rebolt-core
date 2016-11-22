@@ -13,13 +13,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class ReboltException extends RuntimeException {
   private static final long serialVersionUID = -985635644581389914L;
-  private static final String prefix = "--ReboltException: ";
-  private static volatile AtomicBoolean exceptionLog = null;
+  private static final String prefix = "-Exception: ";
+  private static volatile AtomicBoolean exceptionLog;
   private @Setter String message;
   private Level level;
 
   protected ReboltException() {
     this.level = setLogLevel();
+  }
+
+  protected ReboltException(Throwable cause) {
+    super(cause);
   }
 
   /**
@@ -36,7 +40,7 @@ public abstract class ReboltException extends RuntimeException {
     if (exceptionLog == null) {
       synchronized (this) {
         if (exceptionLog == null) {
-          exceptionLog.set(DefaultOption.getInstance().isExceptionLog());
+          exceptionLog = new AtomicBoolean(DefaultOption.getInstance().isExceptionLog());
         }
       }
     }

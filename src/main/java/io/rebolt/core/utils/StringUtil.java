@@ -200,6 +200,9 @@ public final class StringUtil {
    * @since 0.1.0
    */
   public static <T> T cast(String value, Class<T> type) {
+    if (type.isPrimitive()) {
+      throw new IllegalParameterException("doesn't use primitive type: " + type);
+    }
     switch (type.getSimpleName()) {
       case "Integer":
         return type.cast(Integer.valueOf(value));

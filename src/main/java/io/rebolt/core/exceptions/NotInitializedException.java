@@ -12,6 +12,10 @@ public final class NotInitializedException extends ReboltException {
     super.setMessage(message);
   }
 
+  public NotInitializedException(Throwable cause) {
+    super(cause);
+  }
+
   @Override
   protected Level setLogLevel() {
     return Level.FATAL;

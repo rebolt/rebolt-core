@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static io.rebolt.core.constants.Constant.CHARSET_UTF8;
-import static io.rebolt.core.constants.Constant.STRING_COMMA;
+import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
+import static io.rebolt.core.constants.Constants.STRING_COMMA;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmptyWithTrim;
 import static io.rebolt.core.utils.StringUtil.isNumeric;

@@ -11,7 +11,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.rebolt.core.constants.Constant.STRING_COMMA;
+import static io.rebolt.core.constants.Constants.STRING_COMMA;
 
 public class Perf_StringUtil_Join {
 
