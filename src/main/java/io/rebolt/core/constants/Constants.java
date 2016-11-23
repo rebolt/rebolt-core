@@ -15,6 +15,7 @@ public final class Constants {
   public static final String STRING_COMMA = ",";
   public static final String STRING_AND = "&";
   public static final String STRING_EQUAL = "=";
+  public static final String STRING_SHARP = "#";
   public static final String STRING_DOUBLE_COLON = "::";
   public static final CharSequence CHARS_EMPTY = STRING_EMPTY;
 
