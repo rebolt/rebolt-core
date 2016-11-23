@@ -17,6 +17,8 @@ public final class HashUtil {
 
   /**
    * DJB2 해시코드
+   * <p>
+   * String.hashCode() 보다는 성능이 느리다.
    *
    * @param value 변환할 {@link String}
    * @return Djb2 해시코드 (음수포함)
@@ -24,8 +26,8 @@ public final class HashUtil {
   public static long djb2Hash(String value) {
     long hash = 5381L;
     if (!ObjectUtil.isNull(value)) {
-      for (char entity : value.toCharArray()) {
-        hash = ((hash << 5) + hash) + entity;
+      for (int i = 0; i < value.length(); i++) {
+        hash = ((hash << 5) + hash) + value.charAt(i);
       }
     }
     return hash;

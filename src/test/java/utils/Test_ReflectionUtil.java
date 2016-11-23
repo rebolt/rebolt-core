@@ -69,6 +69,10 @@ public final class Test_ReflectionUtil {
     int result = (int) method.invokeExact(param);
     assertTrue(result > 0);
 
+    method = ReflectionUtil.extractMethodHandle(AType.class, aType, "get", int.class);
+    result = (int) method.invokeExact(param);
+    assertTrue(result > 0);
+
     MethodHandle method2 = ReflectionUtil.extractMethodHandle(CType.class, new CType(), "get");
     method2.invokeExact();
 

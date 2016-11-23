@@ -25,22 +25,22 @@ public class Perf_ReflectionUtil {
   }
 
   @Benchmark
-  public void test_util() throws Throwable {
+  public void test_methodHandle() throws Throwable {
     String result = (String) ReflectionUtil.extractMethodHandle(NotInitializedException.class, exception, "getMessage").invokeExact();
   }
 
   @Benchmark
-  public void test_util2() throws Throwable {
+  public void test_methodHandleCached() throws Throwable {
     String result = (String) methodHandle.invokeExact();
   }
 
   @Benchmark
-  public void test_util3() {
+  public void test_method() {
     ReflectionUtil.invokeMethod(ReflectionUtil.extractMethod(NotInitializedException.class, "getMessage"), exception);
   }
 
   @Benchmark
-  public void test_util4() {
+  public void test_methodCached() {
     ReflectionUtil.invokeMethod(method, exception);
   }
 
@@ -61,11 +61,11 @@ public class Perf_ReflectionUtil {
 }
 
 /*
-Benchmark                             Mode  Cnt         Score         Error  Units
-Perf_ReflectionUtil.test_origin      thrpt    3  53645346.202 ± 9799404.321  ops/s
-Perf_ReflectionUtil.test_reflection  thrpt    3   3509467.943 ±  274535.183  ops/s
-Perf_ReflectionUtil.test_util        thrpt    3   6051889.191 ± 1031042.138  ops/s
-Perf_ReflectionUtil.test_util2       thrpt    3  51684185.208 ± 1466316.831  ops/s
-Perf_ReflectionUtil.test_util3       thrpt    3   2504073.641 ±  230119.066  ops/s
-Perf_ReflectionUtil.test_util4       thrpt    3  17481783.780 ±  977649.551  ops/s
+Benchmark                                     Mode  Cnt         Score         Error  Units
+Perf_ReflectionUtil.test_method              thrpt    3   3425057.546 ± 1224178.610  ops/s
+Perf_ReflectionUtil.test_methodCached        thrpt    3  17817400.447 ± 2503087.320  ops/s
+Perf_ReflectionUtil.test_methodHandle        thrpt    3  26497298.184 ± 3070004.136  ops/s
+Perf_ReflectionUtil.test_methodHandleCached  thrpt    3  51608140.275 ± 3387418.426  ops/s
+Perf_ReflectionUtil.test_origin              thrpt    3  53733156.365 ± 7151268.195  ops/s
+Perf_ReflectionUtil.test_reflection          thrpt    3   3365737.393 ±  235788.078  ops/s
  */

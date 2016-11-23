@@ -11,20 +11,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import static io.rebolt.core.constants.Constants.STRING_AND;
-import static io.rebolt.core.constants.Constants.STRING_DOUBLE_COLON;
-
 public final class ReflectionUtil {
 
   /**
    * 런타임시 조회된 {@link MethodHandle}들을 반영구적으로 보관한다.
    */
-  private static final Map<Long, MethodHandle> methodHandleMap = Maps.newHashMap();
-
-  /**
-   * 런타임시 조회된 {@link Method}들을 반영구적으로 보관한다.
-   */
-  private static final Map<Long, Method> methodMap = Maps.newHashMap();
+  private static final Map<Class, Map<String, MethodHandle>> methodFactory = Maps.newHashMap();
 
   /**
    * Generic Class의 Generic Type 조회
@@ -60,8 +52,8 @@ public final class ReflectionUtil {
   /**
    * {@link MethodHandle} 추출
    * <p>
-   * 가능한 런타임시에 사용하지 않는다.
-   * 런타임시 사용할 경우 x8의 오버헤드가 발생한다.
+   * 메소드명이 동일한 2개이상의 메소드가 클래스내에 있다면 파라미터 타입에 무관하게 최초 1개만 추출 가능
+   * 만약, 2개이상의 메소드를 파라미터 타입을 구분해 추출하고 싶다면 extractMethod 사용 (성능저하)
    *
    * @param clazz 클래스 타입
    * @param context 클래스 인스턴스
@@ -70,15 +62,16 @@ public final class ReflectionUtil {
    * @return {@link MethodHandle}
    * @since 0.1.0
    */
-  public static MethodHandle extractMethodHandle(Class<?> clazz, Object context, String methodName, Class<?>... parameterTypes) {
+  @SuppressWarnings("ConstantConditions")
+  public static MethodHandle extractMethodHandle(Class clazz, Object context, String methodName, Class... parameterTypes) {
     ObjectUtil.requireNonNull(clazz, context, methodName);
     try {
-      long key = makeMethodKey(clazz, methodName, parameterTypes);
-      MethodHandle methodHandle = methodHandleMap.get(key);
-      if (methodHandle == null) { // thread-unsafe, 하지만 영향은 없다.
+      Map<String, MethodHandle> methodMap = getMethodMap(clazz);
+      MethodHandle methodHandle = methodMap.get(methodName);
+      if (methodHandle == null) {
         Method method = extractMethod(clazz, methodName, parameterTypes);
         methodHandle = MethodHandles.lookup().unreflect(method).bindTo(context);
-        methodHandleMap.put(key, methodHandle);
+        methodMap.put(methodName, methodHandle);
       }
       return methodHandle;
     } catch (IllegalAccessException e) {
@@ -86,12 +79,22 @@ public final class ReflectionUtil {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
+  private static Map<String, MethodHandle> getMethodMap(Class clazz) {
+    Map<String, MethodHandle> methodMap = methodFactory.get(clazz);
+    if (methodMap == null) {
+      synchronized (methodFactory) {
+        if (methodMap == null) {
+          methodMap = Maps.newHashMap();
+          methodFactory.put(clazz, methodMap);
+        }
+      }
+    }
+    return methodMap;
+  }
+
   /**
    * {@link Method} 추출
-   * <p>
-   * 가능한 런타임시에 사용하지 않는다.
-   * 런타임시 사용할 경우 x8의 오버헤드가 발생한다.
-   * {@link MethodHandle} 방식에 비해 x3이상 느리다.
    *
    * @param clazz 클래스 타입
    * @param methodName 메소드명
@@ -102,29 +105,16 @@ public final class ReflectionUtil {
   public static Method extractMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
     ObjectUtil.requireNonNull(clazz, methodName);
     try {
-      long key = makeMethodKey(clazz, methodName, parameterTypes);
-      Method method = methodMap.get(key);
-      if (method == null) {
-        method = clazz.getMethod(methodName, parameterTypes);
-      }
-      return method;
+      return clazz.getMethod(methodName, parameterTypes);
     } catch (NoSuchMethodException e) {
       throw new NotInitializedException(e);
-    }
-  }
-
-  private static long makeMethodKey(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
-    if (parameterTypes == null || parameterTypes.length == 0) {
-      return HashUtil.djb2Hash(clazz.getName() + STRING_DOUBLE_COLON + methodName);
-    } else {
-      return HashUtil.djb2Hash(clazz.getName() + STRING_DOUBLE_COLON + methodName + STRING_AND + HashUtil.deepHash((Object[]) parameterTypes));
     }
   }
 
   /**
    * {@link Method} 호출
    * <p>
-   * {@link MethodHandle} 호출 방식에 비해 x3이상 느리다.
+   * {@link MethodHandle} 직접 호출에 비해 3배 이상 느리다.
    *
    * @param method {@link Method}
    * @param context 클래스 메소드는 this, 전역 메소드인 경우 null
