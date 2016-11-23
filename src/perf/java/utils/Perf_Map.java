@@ -20,23 +20,26 @@ public class Perf_Map {
 
   static {
     for (int i = 0; i < loopCount; ++i) {
-      map.put(String.valueOf(i), StringUtil.randomAlpha(256));
-      map2.put(HashUtil.djb2Hash(String.valueOf(i)), StringUtil.randomAlpha(256));
-      map3.put(i, StringUtil.randomAlpha(256));
+      int value = 1543809543 + i;
+      map.put(String.valueOf(value), StringUtil.randomAlpha(256));
+      map2.put(HashUtil.djb2Hash(String.valueOf(value)), StringUtil.randomAlpha(256));
+      map3.put(value, StringUtil.randomAlpha(256));
     }
   }
 
   @Benchmark
   public void test1() {
     for (int i = 0; i < loopCount; ++i) {
-      map.get(String.valueOf(i));
+      int value = 1543809543 + i;
+      map.get(String.valueOf(value));
     }
   }
 
   @Benchmark
   public void test2() {
     for (int i = 0; i < loopCount; ++i) {
-      map2.get(HashUtil.djb2Hash(String.valueOf(i)));
+      int value = 1543809543 + i;
+      map2.get(HashUtil.djb2Hash(String.valueOf(value)));
     }
   }
 
@@ -46,7 +49,7 @@ public class Perf_Map {
   @Benchmark
   public void test3() {
     for (int i = 0; i < loopCount; ++i) {
-      map3.get(i);
+      map3.get(1543809543 + i);
     }
   }
 
@@ -54,6 +57,8 @@ public class Perf_Map {
     Options opt = new OptionsBuilder()
         .include(Perf_Map.class.getSimpleName())
         .forks(1)
+        .measurementIterations(3)
+        .warmupIterations(3)
         .build();
     new Runner(opt).run();
   }

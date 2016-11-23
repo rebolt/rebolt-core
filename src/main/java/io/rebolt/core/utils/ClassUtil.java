@@ -18,7 +18,7 @@ public final class ClassUtil {
    * 키: 클래스명 (Class.getName())
    * 값: 클래스 인스턴스
    */
-  private static final Map<Long, Object> singletonMap = Maps.newHashMap();
+  private static final Map<String, Object> singletonMap = Maps.newHashMap();
 
   private static final String KEY_DELIMETER = "#";
 
@@ -32,8 +32,7 @@ public final class ClassUtil {
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T> T getSingleton(Class<T> clazz) {
-    long key = HashUtil.djb2Hash(clazz.getName());
-    T instance = (T) singletonMap.get(key);
+    T instance = (T) singletonMap.get(clazz.getName());
     if (instance == null) {
       synchronized (clazz.getClassLoader()) {
         if (instance == null) {
@@ -41,7 +40,7 @@ public final class ClassUtil {
             Constructor<T> declaredConstructor = clazz.getDeclaredConstructor();
             declaredConstructor.setAccessible(true);
             instance = declaredConstructor.newInstance();
-            singletonMap.put(key, instance);
+            singletonMap.put(clazz.getName(), instance);
           } catch (Exception ex) {
             LogUtil.error(ex);
             instance = null;
@@ -62,7 +61,7 @@ public final class ClassUtil {
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T> T getSingleton(Class<T> clazz, Object[] arguments, Class<?>[] argumentTypes) {
-    long key = HashUtil.djb2Hash(clazz.getName() + KEY_DELIMETER + HashUtil.deepHash(arguments));
+    String key = clazz.getName() + KEY_DELIMETER + HashUtil.deepHash(arguments);
     T instance = (T) singletonMap.get(key);
     if (instance == null) {
       synchronized (clazz.getClassLoader()) {

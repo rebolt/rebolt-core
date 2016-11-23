@@ -22,7 +22,7 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProxyUtil {
   private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
-  private static final Map<Long, Class> proxyMap = Maps.newHashMap();
+  private static final Map<Class, Class> proxyMap = Maps.newHashMap();
 
   /**
    * Proxy 대상클래스내 Method 호출시 interceptor 메소드의 제어를 받는다.
@@ -34,14 +34,13 @@ public final class ProxyUtil {
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T extends AbstractIterceptor, R> Class<? extends R> getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    long key = HashUtil.djb2Hash(targetClass.getName());
-    Class<?> proxyClass = proxyMap.get(key);
+    Class<?> proxyClass = proxyMap.get(targetClass);
     if (proxyClass == null) {
       synchronized (proxyMap) {
         if (proxyClass == null) {
           DynamicType.Unloaded<R> dynamicType = buddy.subclass(targetClass).method(any()).intercept(MethodDelegation.to(ClassUtil.getSingleton(interceptor))).make();
           proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
-          proxyMap.put(key, proxyClass);
+          proxyMap.put(targetClass, proxyClass);
         }
       }
     }

@@ -22,6 +22,7 @@ public final class HashUtil {
    *
    * @param value 변환할 {@link String}
    * @return Djb2 해시코드 (음수포함)
+   * @since 0.1.0
    */
   public static long djb2Hash(String value) {
     long hash = 5381L;
