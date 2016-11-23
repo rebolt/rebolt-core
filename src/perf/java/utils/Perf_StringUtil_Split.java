@@ -10,7 +10,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.List;
 
-public class Peft_StringUtil_Split {
+public class Perf_StringUtil_Split {
 
   private static final int length = 1000;
   private static final StringBuilder buffer = new StringBuilder();

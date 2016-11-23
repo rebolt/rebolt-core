@@ -19,31 +19,29 @@ import java.util.concurrent.Callable;
 
 import static net.bytebuddy.matcher.ElementMatchers.any;
 
-/**
- * Proxy 클래스 생성
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProxyUtil {
   private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
-  private static final Map<Class, Class> proxyMap = Maps.newHashMap();
+  private static final Map<Long, Class> proxyMap = Maps.newHashMap();
 
   /**
    * Proxy 대상클래스내 Method 호출시 interceptor 메소드의 제어를 받는다.
    * Proxy 대상클래스를 내부적으로 캐싱하여 사용한다. (싱글턴)
    *
    * @param interceptor {@link Class} extends {@link AbstractIterceptor} Interceptor 클래스
-   * @param targetClass {@link Class<R>} Proxy 대상 클래스 (유저 클래스)
+   * @param targetClass {@link Class} Proxy 대상 클래스 (유저 클래스)
    * @return Proxy 클래스
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T extends AbstractIterceptor, R> Class<? extends R> getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    Class<?> proxyClass = proxyMap.get(targetClass);
+    long key = HashUtil.djb2Hash(targetClass.getName());
+    Class<?> proxyClass = proxyMap.get(key);
     if (proxyClass == null) {
       synchronized (proxyMap) {
         if (proxyClass == null) {
           DynamicType.Unloaded<R> dynamicType = buddy.subclass(targetClass).method(any()).intercept(MethodDelegation.to(ClassUtil.getSingleton(interceptor))).make();
           proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
-          proxyMap.put(targetClass, proxyClass);
+          proxyMap.put(key, proxyClass);
         }
       }
     }

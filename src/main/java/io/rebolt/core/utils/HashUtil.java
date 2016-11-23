@@ -23,8 +23,8 @@ public final class HashUtil {
    */
   public static long djb2Hash(String value) {
     long hash = 5381L;
-    if (!StringUtil.isNullOrEmpty(value)) {
-      for (char entity : value.trim().toCharArray()) {
+    if (!ObjectUtil.isNull(value)) {
+      for (char entity : value.toCharArray()) {
         hash = ((hash << 5) + hash) + entity;
       }
     }
