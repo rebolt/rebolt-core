@@ -22,20 +22,24 @@ public final class Test_ReflectionUtil {
 
   public static class AType extends NewType<Integer, Long> {
     int d = 0;
-    public int get() {
-      return ++d;
+    public int get(int a) {
+      return d += a;
     }
   }
 
   public static class BType extends NewType<Double, String> {
     int d = 0;
-    public int get() {
-      return ++d;
+    public int get(int a) {
+      return d += a;
     }
   }
 
-  @SuppressWarnings("ThrowableInstanceNeverThrown")
-  public static final Throwable exception = new NotInitializedException("hey");
+  public static class CType {
+    int d = 14;
+    public void get() {
+      d++;
+    }
+  }
 
   @Test
   public void test_typeFinder() {
@@ -53,17 +57,24 @@ public final class Test_ReflectionUtil {
     assertTrue(String.class.equals(type2.getB()));
   }
 
+  @SuppressWarnings("ThrowableInstanceNeverThrown")
+  private static final Throwable exception = new NotInitializedException("hey");
+
   @Test
-  public void test_invoke() {
+  public void test_invokeHandle() throws Throwable {
     AType aType = new AType();
 
-    MethodHandle method = ReflectionUtil.extractMethodHandle(AType.class, "get", int.class);
-    assertTrue(((Integer) ReflectionUtil.invoke(method, aType)) > 0);
+    int param = 1;
+    MethodHandle method = ReflectionUtil.extractMethodHandle(AType.class, aType, "get", int.class);
+    int result = (int) method.invokeExact(param);
+    assertTrue(result > 0);
 
-    method = ReflectionUtil.extractMethodHandle(AType.class, "get", int.class);
-    assertTrue(((Integer) ReflectionUtil.invoke(method, aType)) > 1);
+    MethodHandle method2 = ReflectionUtil.extractMethodHandle(CType.class, new CType(), "get");
+    method2.invokeExact();
 
-    ReflectionUtil.invoke(ReflectionUtil.extractMethodHandle(NotInitializedException.class, "getMessage", String.class), exception);
+    MethodHandle method3 = ReflectionUtil.extractMethodHandle(NotInitializedException.class, exception, "getMessage");
+    String resultString = (String) method3.invokeExact();
+    assertTrue(resultString.length() > 0);
   }
 
 }

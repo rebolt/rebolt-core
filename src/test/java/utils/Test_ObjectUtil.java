@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 public final class Test_ObjectUtil {
 
-  @SuppressWarnings({"ConstantConditions", "ConfusingArgumentToVarargsMethod"})
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void test_isNull() {
     String value1 = null;
@@ -29,10 +29,10 @@ public final class Test_ObjectUtil {
 
     assertTrue(ObjectUtil.isNull(value1));
     assertFalse(ObjectUtil.isNull(value2));
-    assertTrue(ObjectUtil.isOrNull(valueArray));
-    assertFalse(ObjectUtil.isAndNull(valueArray));
-    assertTrue(ObjectUtil.isAndNull(valueArray2));
-    assertTrue(ObjectUtil.isOrNull(valueArray2));
+    assertTrue(ObjectUtil.isOrNull((Object[]) valueArray));
+    assertFalse(ObjectUtil.isAndNull((Object[]) valueArray));
+    assertTrue(ObjectUtil.isAndNull((Object[]) valueArray2));
+    assertTrue(ObjectUtil.isOrNull((Object[]) valueArray2));
   }
 
   @SuppressWarnings("ConstantConditions")

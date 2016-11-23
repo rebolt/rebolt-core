@@ -25,17 +25,6 @@ public final class ObjectUtil {
   }
 
   /**
-   * 입력값이 null이라면 {@link NullPointerException}
-   *
-   * @since 0.1.0
-   */
-  public static void requireNull(Object object) {
-    if (isNull(object)) {
-      throw new NullPointerException();
-    }
-  }
-
-  /**
    * 입력값 중 1개라도 null이라면 true
    *
    * @since 0.1.0
@@ -53,11 +42,22 @@ public final class ObjectUtil {
   }
 
   /**
+   * 입력값이 null이라면 {@link NullPointerException}
+   *
+   * @since 0.1.0
+   */
+  public static void requireNonNull(Object object) {
+    if (isNull(object)) {
+      throw new NullPointerException();
+    }
+  }
+
+  /**
    * 입력값 중 1개라도 null이라면 {@link NullPointerException}
    *
    * @since 0.1.0
    */
-  public static void requireOrNull(Object... objects) {
+  public static void requireNonNull(Object... objects) {
     if (isOrNull(objects)) {
       throw new NullPointerException();
     }
@@ -78,17 +78,6 @@ public final class ObjectUtil {
       }
     }
     return true;
-  }
-
-  /**
-   * 입력값이 모두 null이면 {@link NullPointerException} 발생
-   *
-   * @since 0.1.0
-   */
-  public static void requireAndNull(Object... objects) {
-    if (isAndNull(objects)) {
-      throw new NullPointerException();
-    }
   }
 
   // endregion

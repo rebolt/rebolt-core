@@ -5,14 +5,14 @@ import io.rebolt.core.exceptions.NotInitializedException;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import static io.rebolt.core.constants.Constants.STRING_AND;
 import static io.rebolt.core.constants.Constants.STRING_DOUBLE_COLON;
-import static io.rebolt.core.constants.Constants.STRING_EQUAL;
 
 public final class ReflectionUtil {
 
@@ -59,50 +59,87 @@ public final class ReflectionUtil {
 
   /**
    * {@link MethodHandle} 추출
+   * <p>
+   * 가능한 런타임시에 사용하지 않는다.
+   * 런타임시 사용할 경우 x8의 오버헤드가 발생한다.
    *
    * @param clazz 클래스 타입
+   * @param context 클래스 인스턴스
    * @param methodName 메소드명
-   * @param returnType 메소드 리턴 타입
    * @param parameterTypes 메소드 파라미터 타입
    * @return {@link MethodHandle}
    * @since 0.1.0
    */
-  public static MethodHandle extractMethodHandle(Class<?> clazz, String methodName, Class<?> returnType, Class<?>... parameterTypes) {
-    ObjectUtil.requireOrNull(clazz, methodName, returnType);
+  public static MethodHandle extractMethodHandle(Class<?> clazz, Object context, String methodName, Class<?>... parameterTypes) {
+    ObjectUtil.requireNonNull(clazz, context, methodName);
     try {
-      long key = HashUtil.djb2Hash(clazz.getName() + STRING_DOUBLE_COLON + methodName + STRING_EQUAL + HashUtil.deepHash((Object[]) parameterTypes));
+      long key = makeMethodKey(clazz, methodName, parameterTypes);
       MethodHandle methodHandle = methodHandleMap.get(key);
       if (methodHandle == null) { // thread-unsafe, 하지만 영향은 없다.
-        methodHandle = MethodHandles.lookup().findVirtual(clazz, methodName, MethodType.methodType(returnType, parameterTypes));
+        Method method = extractMethod(clazz, methodName, parameterTypes);
+        methodHandle = MethodHandles.lookup().unreflect(method).bindTo(context);
         methodHandleMap.put(key, methodHandle);
       }
       return methodHandle;
-    } catch (NoSuchMethodException | IllegalAccessException e) {
+    } catch (IllegalAccessException e) {
       throw new NotInitializedException(e);
     }
   }
 
   /**
-   * {@link MethodHandle} 호출
+   * {@link Method} 추출
+   * <p>
+   * 가능한 런타임시에 사용하지 않는다.
+   * 런타임시 사용할 경우 x8의 오버헤드가 발생한다.
+   * {@link MethodHandle} 방식에 비해 x3이상 느리다.
    *
-   * @param method {@link MethodHandle}
-   * @param context 클래스 인스턴스
+   * @param clazz 클래스 타입
+   * @param methodName 메소드명
+   * @param parameterTypes 메소드 파라미터 타입
+   * @return {@link Method}
+   * @since 0.1.0
+   */
+  public static Method extractMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+    ObjectUtil.requireNonNull(clazz, methodName);
+    try {
+      long key = makeMethodKey(clazz, methodName, parameterTypes);
+      Method method = methodMap.get(key);
+      if (method == null) {
+        method = clazz.getMethod(methodName, parameterTypes);
+      }
+      return method;
+    } catch (NoSuchMethodException e) {
+      throw new NotInitializedException(e);
+    }
+  }
+
+  private static long makeMethodKey(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+    if (parameterTypes == null || parameterTypes.length == 0) {
+      return HashUtil.djb2Hash(clazz.getName() + STRING_DOUBLE_COLON + methodName);
+    } else {
+      return HashUtil.djb2Hash(clazz.getName() + STRING_DOUBLE_COLON + methodName + STRING_AND + HashUtil.deepHash((Object[]) parameterTypes));
+    }
+  }
+
+  /**
+   * {@link Method} 호출
+   * <p>
+   * {@link MethodHandle} 호출 방식에 비해 x3이상 느리다.
+   *
+   * @param method {@link Method}
+   * @param context 클래스 메소드는 this, 전역 메소드인 경우 null
    * @param args 메소드 파라미터
    * @since 0.1.0
    */
   @SuppressWarnings("unchecked")
-  public static <R> R invoke(MethodHandle method, Object context, Object... args) {
-    ObjectUtil.requireOrNull(method);
+  public static <R> R invokeMethod(Method method, Object context, Object... args) {
+    ObjectUtil.requireNonNull(method);
     try {
-      MethodType invocationType = MethodType.genericMethodType(args.length);
-      return (R) method.bindTo(context).invokeExact(method.asType(invocationType), args);
-    } catch (Throwable t) {
-      throw new NotInitializedException(t);
+      return (R) method.invoke(context, args);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      throw new NotInitializedException(e);
     }
   }
+
 }
 
-/*
-MethodType invocationType = MethodType.genericMethodType(arguments == null ? 0 : arguments.length);
-        return invocationType.invokers().spreadInvoker(0).invokeExact(asType(invocationType), arguments);
- */
