@@ -15,6 +15,11 @@ public final class ReflectionUtil {
 
   /**
    * 런타임시 조회된 {@link MethodHandle}들을 반영구적으로 보관한다.
+   *
+   * Table 형태로 구성된 이중맵.
+   * Class : 클래스 타입
+   * String : 메소드명
+   * MethodHandle : {@link MethodHandle}
    */
   private static final Map<Class, Map<String, MethodHandle>> methodFactory = Maps.newHashMap();
 
@@ -62,7 +67,6 @@ public final class ReflectionUtil {
    * @return {@link MethodHandle}
    * @since 0.1.0
    */
-  @SuppressWarnings("ConstantConditions")
   public static MethodHandle extractMethodHandle(Class clazz, Object context, String methodName, Class... parameterTypes) {
     ObjectUtil.requireNonNull(clazz, context, methodName);
     try {
