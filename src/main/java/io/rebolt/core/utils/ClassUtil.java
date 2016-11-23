@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
+import static io.rebolt.core.constants.Constants.STRING_SHARP;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ClassUtil {
   /**
@@ -19,8 +21,6 @@ public final class ClassUtil {
    * 값: 클래스 인스턴스
    */
   private static final Map<String, Object> singletonMap = Maps.newHashMap();
-
-  private static final String KEY_DELIMETER = "#";
 
   // region singleton
 
@@ -61,7 +61,7 @@ public final class ClassUtil {
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T> T getSingleton(Class<T> clazz, Object[] arguments, Class<?>[] argumentTypes) {
-    String key = clazz.getName() + KEY_DELIMETER + HashUtil.deepHash(arguments);
+    String key = clazz.getName() + STRING_SHARP + HashUtil.deepHash(arguments);
     T instance = (T) singletonMap.get(key);
     if (instance == null) {
       synchronized (clazz.getClassLoader()) {
