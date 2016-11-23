@@ -7,12 +7,15 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationTargetException;
 
 public class Perf_ReflectionUtil {
 
   @SuppressWarnings("ThrowableInstanceNeverThrown")
   private static final Throwable exception = new NotInitializedException("hey");
+
+  private static final MethodHandle methodHandle = ReflectionUtil.extractMethodHandle(NotInitializedException.class, "getMessage", String.class);
 
   @Benchmark
   public void test_origin() {
@@ -21,8 +24,18 @@ public class Perf_ReflectionUtil {
 
   @Benchmark
   public void test_util() {
-    ReflectionUtil.invoke(ReflectionUtil.extractMethod(NotInitializedException.class, "getMessage"), exception);
+    ReflectionUtil.invoke(ReflectionUtil.extractMethodHandle(NotInitializedException.class, "getMessage", String.class), exception);
   }
+
+  @Benchmark
+  public void test_util2() {
+    ReflectionUtil.invoke(methodHandle, exception);
+  }
+
+//  @Benchmark
+//  public void test_util3() throws InvocationTargetException, IllegalAccessException {
+//    methodHandle.invoke(exception);
+//  }
 
   @Benchmark
   public void test_reflection() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -40,12 +53,9 @@ public class Perf_ReflectionUtil {
 
 /*
 Benchmark                             Mode  Cnt         Score        Error  Units
-Perf_ReflectionUtil.test_origin      thrpt   20  44915829.357 ± 514810.826  ops/s
-Perf_ReflectionUtil.test_reflection  thrpt   20   2885613.440 ±  11662.109  ops/s
-Perf_ReflectionUtil.test_util        thrpt   20   4509617.531 ±  26958.963  ops/s
-
-Benchmark                             Mode  Cnt         Score        Error  Units
-Perf_ReflectionUtil.test_origin      thrpt   20  44523270.676 ± 236809.702  ops/s
-Perf_ReflectionUtil.test_reflection  thrpt   20   2708089.047 ±  68650.920  ops/s
-Perf_ReflectionUtil.test_util        thrpt   20   4634544.982 ±   6989.686  ops/s
+Perf_ReflectionUtil.test_origin      thrpt   20  44942275.404 ± 952396.638  ops/s
+Perf_ReflectionUtil.test_reflection  thrpt   20   2901848.196 ±   5292.969  ops/s
+Perf_ReflectionUtil.test_util        thrpt   20   4630720.403 ±  12562.949  ops/s
+Perf_ReflectionUtil.test_util2       thrpt   20  15167119.012 ±  49621.433  ops/s
+Perf_ReflectionUtil.test_util3       thrpt   20  15594955.590 ±  42841.588  ops/s
 */

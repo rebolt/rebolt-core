@@ -7,28 +7,27 @@ import lombok.Setter;
 import lombok.ToString;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandle;
 
-import static io.rebolt.core.utils.ReflectionUtil.extractMethod;
 import static org.junit.Assert.assertTrue;
 
 public final class Test_ReflectionUtil {
 
   @ToString
-  private static class NewType<A, B> {
+  public static class NewType<A, B> {
     @Getter @Setter Class<A> a;
     @Getter @Setter Class<B> b;
     final @Getter int c = 0;
   }
 
-  private static class AType extends NewType<Integer, Long> {
+  public static class AType extends NewType<Integer, Long> {
     int d = 0;
     public int get() {
       return ++d;
     }
   }
 
-  private static class BType extends NewType<Double, String> {
+  public static class BType extends NewType<Double, String> {
     int d = 0;
     public int get() {
       return ++d;
@@ -36,7 +35,7 @@ public final class Test_ReflectionUtil {
   }
 
   @SuppressWarnings("ThrowableInstanceNeverThrown")
-  private static final Throwable exception = new NotInitializedException("hey");
+  public static final Throwable exception = new NotInitializedException("hey");
 
   @Test
   public void test_typeFinder() {
@@ -58,13 +57,13 @@ public final class Test_ReflectionUtil {
   public void test_invoke() {
     AType aType = new AType();
 
-    Method method = ReflectionUtil.extractMethod(AType.class, "get");
+    MethodHandle method = ReflectionUtil.extractMethodHandle(AType.class, "get", int.class);
     assertTrue(((Integer) ReflectionUtil.invoke(method, aType)) > 0);
 
-    method = ReflectionUtil.extractMethod(AType.class, "get");
+    method = ReflectionUtil.extractMethodHandle(AType.class, "get", int.class);
     assertTrue(((Integer) ReflectionUtil.invoke(method, aType)) > 1);
 
-    ReflectionUtil.invoke(ReflectionUtil.extractMethod(NotInitializedException.class, "getMessage"), exception);
+    ReflectionUtil.invoke(ReflectionUtil.extractMethodHandle(NotInitializedException.class, "getMessage", String.class), exception);
   }
 
 }
