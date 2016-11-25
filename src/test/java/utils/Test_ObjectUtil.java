@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -73,4 +74,16 @@ public final class Test_ObjectUtil {
     assertNotNull(ObjectUtil.nullGuard(set));
     assertNotNull(ObjectUtil.nullGuard(map));
   }
+
+  @Test
+  public void test_thenNonEmpty() {
+    AtomicInteger count = new AtomicInteger(0);
+
+    ObjectUtil.thenNonEmpty("rebolt", entry -> count.incrementAndGet());
+    ObjectUtil.thenNonEmpty(Lists.newArrayList(), entry -> count.incrementAndGet());
+    ObjectUtil.thenNonEmpty(Maps.newHashMap(), entry -> count.incrementAndGet());
+
+    assertTrue(count.get() == 1);
+  }
+
 }
