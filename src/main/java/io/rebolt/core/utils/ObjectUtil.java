@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ObjectUtil {
@@ -132,6 +133,45 @@ public final class ObjectUtil {
    */
   public static boolean isEmpty(Map map) {
     return map == null || map.isEmpty();
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param string {@link String}
+   * @param consumer {@link Consumer}
+   * @since 0.1.0
+   */
+  public static void thenNonEmpty(String string, Consumer<? super String> consumer) {
+    if (!isEmpty(string)) {
+      consumer.accept(string);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param list {@link List}
+   * @param consumer {@link Consumer}
+   * @since 0.1.0
+   */
+  public static void thenNonEmpty(List list, Consumer<? super List> consumer) {
+    if (!isEmpty(list)) {
+      consumer.accept(list);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param map {@link Map}
+   * @param consumer {@link Consumer}
+   * @since 0.1.0
+   */
+  public static void thenNonEmpty(Map map, Consumer<? super Map> consumer) {
+    if (!isEmpty(map)) {
+      consumer.accept(map);
+    }
   }
 
   // endregion
