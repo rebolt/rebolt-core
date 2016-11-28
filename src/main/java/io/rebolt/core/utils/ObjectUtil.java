@@ -174,6 +174,19 @@ public final class ObjectUtil {
     }
   }
 
+  /**
+   * thenNonEmpty
+   *
+   * @param model {@link IModel}
+   * @param consumer {@link Consumer}
+   * @since 0.1.0
+   */
+  public static void thenNonEmpt(IModel model, Consumer<? super IModel> consumer) {
+    if (!isEmpty(model)) {
+      consumer.accept(model);
+    }
+  }
+
   // endregion
 
   // region nullGuard
