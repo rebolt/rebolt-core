@@ -136,6 +136,18 @@ public final class ObjectUtil {
   }
 
   /**
+   *
+   * @param model {@link IModel}을 상속받은 제네릭 인스턴스
+   * @param consumer {@link Consumer}
+   * @since 0.1.0
+   */
+  public static <T extends IModel> void thenNonEmpty(T model, Consumer<? super IModel> consumer) {
+    if (!isEmpty(model)) {
+      consumer.accept(model);
+    }
+  }
+
+  /**
    * thenNonEmpty
    *
    * @param string {@link String}
@@ -171,19 +183,6 @@ public final class ObjectUtil {
   public static void thenNonEmpty(Map map, Consumer<? super Map> consumer) {
     if (!isEmpty(map)) {
       consumer.accept(map);
-    }
-  }
-
-  /**
-   * thenNonEmpty
-   *
-   * @param model {@link IModel}
-   * @param consumer {@link Consumer}
-   * @since 0.1.0
-   */
-  public static void thenNonEmpt(IModel model, Consumer<? super IModel> consumer) {
-    if (!isEmpty(model)) {
-      consumer.accept(model);
     }
   }
 

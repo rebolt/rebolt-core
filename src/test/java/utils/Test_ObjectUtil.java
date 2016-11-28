@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.rebolt.core.models.IModel;
 import io.rebolt.core.utils.ObjectUtil;
+import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
 
 import java.util.List;
@@ -78,8 +79,9 @@ public final class Test_ObjectUtil {
   @Test
   public void test_thenNonEmpty() {
     AtomicInteger count = new AtomicInteger(0);
+    String value = StringUtil.randomAlpha(10);
 
-    ObjectUtil.thenNonEmpty("rebolt", entry -> count.incrementAndGet());
+    ObjectUtil.thenNonEmpty(value, entry -> count.incrementAndGet());
     ObjectUtil.thenNonEmpty(Lists.newArrayList(), entry -> count.incrementAndGet());
     ObjectUtil.thenNonEmpty(Maps.newHashMap(), entry -> count.incrementAndGet());
 
