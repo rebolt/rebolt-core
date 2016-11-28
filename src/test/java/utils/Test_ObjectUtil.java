@@ -6,6 +6,9 @@ import com.google.common.collect.Maps;
 import io.rebolt.core.models.IModel;
 import io.rebolt.core.utils.ObjectUtil;
 import io.rebolt.core.utils.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.junit.Test;
 
 import java.util.List;
@@ -111,6 +114,36 @@ public final class Test_ObjectUtil {
     ObjectUtil.thenNonEmpty(Maps.newHashMap(), entry -> count.incrementAndGet());
 
     assertTrue(count.get() == 1);
+  }
+
+  @Test
+  public void test_thenNonEmpty2() {
+    Model model = new Model();
+    model.setModel(10);
+    Model model1 = null;
+
+    ObjectUtil.thenNonEmpty(model, entity -> entity.setModel(11));
+    ObjectUtil.thenNonEmpty(model1, entity -> entity.setModel(11));
+
+    assertTrue(model.getModel() == 11);
+    assertTrue(model1 == null);
+  }
+
+  @ToString
+  public class Model implements IModel<Model> {
+    private @Getter @Setter int model;
+    @Override
+    public boolean isEmpty() {
+      return model == 0;
+    }
+    @Override
+    public long deepHash() {
+      return model;
+    }
+    @Override
+    public boolean equals(Model model) {
+      return model != null && this.model == model.model;
+    }
   }
 
 }
