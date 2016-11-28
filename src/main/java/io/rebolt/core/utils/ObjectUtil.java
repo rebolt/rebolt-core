@@ -235,7 +235,7 @@ public final class ObjectUtil {
    * @param consumer {@link Consumer}
    * @since 0.1.0
    */
-  public static void thenNonEmpty(String string, Consumer<? super String> consumer) {
+  public static void thenNonEmpty(String string, Consumer<String> consumer) {
     if (!isEmpty(string)) {
       consumer.accept(string);
     }
