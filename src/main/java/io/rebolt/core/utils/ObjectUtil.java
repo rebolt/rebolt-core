@@ -136,6 +136,86 @@ public final class ObjectUtil {
   }
 
   /**
+   * isEmpty
+   *
+   * @param objects 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(Object[] objects) {
+    return objects == null || objects.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param bytes 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(byte[] bytes) {
+    return bytes == null || bytes.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param ints 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(int[] ints) {
+    return ints == null || ints.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param longs 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(long[] longs) {
+    return longs == null || longs.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param doubles 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(double[] doubles) {
+    return doubles == null || doubles.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param shorts 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(short[] shorts) {
+    return shorts == null || shorts.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param floats 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(float[] floats) {
+    return floats == null || floats.length == 0;
+  }
+
+  /**
+   * isEmpty
+   *
+   * @param chars 배열
+   * @since 0.1.0
+   */
+  public static boolean isEmpty(char[] chars) {
+    return chars == null || chars.length == 0;
+  }
+
+  /**
    * thenNonEmpty
    *
    * @param model {@link IModel}을 상속받은 제네릭 인스턴스
