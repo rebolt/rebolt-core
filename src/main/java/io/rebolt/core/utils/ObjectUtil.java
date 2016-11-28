@@ -136,12 +136,13 @@ public final class ObjectUtil {
   }
 
   /**
+   * thenNonEmpty
    *
    * @param model {@link IModel}을 상속받은 제네릭 인스턴스
    * @param consumer {@link Consumer}
    * @since 0.1.0
    */
-  public static <T extends IModel> void thenNonEmpty(T model, Consumer<? super IModel> consumer) {
+  public static <T extends IModel> void thenNonEmpty(T model, Consumer<? super T> consumer) {
     if (!isEmpty(model)) {
       consumer.accept(model);
     }
