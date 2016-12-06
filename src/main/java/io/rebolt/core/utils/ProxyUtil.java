@@ -13,7 +13,6 @@ import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.SuperCall;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -36,48 +35,21 @@ public final class ProxyUtil {
    * @since 0.0.1
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
-  public static <T extends AbstractIterceptor, R> Class<? extends R> getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    Class<?> proxyClass = proxyMap.get(targetClass);
+  public static <T extends AbstractIterceptor, R> R getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
+    Class proxyClass = proxyMap.get(targetClass);
     if (proxyClass == null) {
       synchronized (_lock) {
         if (proxyClass == null) {
           DynamicType.Unloaded<R> dynamicType =
               buddy.subclass(targetClass)
-                  .method(any()).intercept(MethodDelegation.to(ClassUtil.getSingleton(interceptor)))
+                  .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
                   .make();
           proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
           proxyMap.put(targetClass, proxyClass);
         }
       }
     }
-    return (Class<? extends R>) proxyClass;
-  }
-
-  /**
-   * Proxy 대상클래스내 Method 호출시 interceptor 메소드의 제어를 받는다.
-   * Proxy 대상클래스를 내부적으로 캐시하여 사용한다. (싱글턴)
-   *
-   * @param interceptor {@link Class} extends {@link AbstractIterceptor} Interceptor 클래스
-   * @param targetClass {@link Class} Proxy 대상 클래스 (유저 클래스)
-   * @param annotation 어노테이션을 정의한 메소드만 intercept 된다.
-   * @return Proxy 클래스
-   * @since 0.0.1
-   */
-  @SuppressWarnings({"ConstantConditions", "unchecked"})
-  public static <T extends AbstractIterceptor, R> Class<? extends R> getInterceptorClass(Class<T> interceptor, Class<R> targetClass, Annotation annotation) {
-    Class<?> proxyClass = proxyMap.get(targetClass);
-    if (proxyClass == null) {
-      synchronized (_lock) {
-        if (proxyClass == null) {
-          DynamicType.Unloaded<R> dynamicType =
-              buddy.subclass(targetClass)
-                  .method(any()).intercept(MethodDelegation.to(ClassUtil.getSingleton(interceptor))).annotateType(annotation)
-                  .make();
-          proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
-        }
-      }
-    }
-    return (Class<? extends R>) proxyClass;
+    return (R) ClassUtil.getSingleton(proxyClass);
   }
 
   /**
@@ -88,12 +60,13 @@ public final class ProxyUtil {
    * @param targetClass {@link Class<R>} Proxy 대상 클래스 (유저 클래스)
    * @return Proxy 클래스
    */
-  @SuppressWarnings({"unchecked", "ConstantConditions"})
-  public static <T extends AbstractIterceptor, R> Class<? extends R> newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    return buddy.subclass(targetClass)
-        .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
-        .make()
-        .load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
+  @SuppressWarnings("ConstantConditions")
+  public static <T extends AbstractIterceptor, R> R newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
+    return ClassUtil.newInstance(
+        buddy.subclass(targetClass)
+            .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
+            .make()
+            .load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded());
   }
 
   /**
@@ -106,5 +79,4 @@ public final class ProxyUtil {
     @RuntimeType
     public abstract Object intercept(@SuperCall Callable<?> superMethod, @Origin Method method, @AllArguments Object[] args) throws Exception;
   }
-
 }
