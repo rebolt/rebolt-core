@@ -31,8 +31,10 @@ public final class ProxyUtil {
    *
    * @param interceptor {@link Class} extends {@link AbstractIterceptor} Interceptor 클래스
    * @param targetClass {@link Class} Proxy 대상 클래스 (유저 클래스)
+   * @param <T> 첫번째 제네릭 타입, {@link AbstractIterceptor}를 상속받아야 한다.
+   * @param <R> 두번째 제네릭 타입
    * @return Proxy 클래스
-   * @since 0.0.1
+   * @since 0.1.0
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T extends AbstractIterceptor, R> R getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
@@ -57,8 +59,11 @@ public final class ProxyUtil {
    * Proxy 대상클래스를 매번 생성한다.
    *
    * @param interceptor {@link Class} extends {@link AbstractIterceptor} Interceptor 클래스
-   * @param targetClass {@link Class<R>} Proxy 대상 클래스 (유저 클래스)
+   * @param targetClass {@link Class} Proxy 대상 클래스 (유저 클래스)
+   * @param <T> 첫번째 제네릭 타입, {@link AbstractIterceptor}를 상속받아야 한다.
+   * @param <R> 두번째 제네릭 타입
    * @return Proxy 클래스
+   * @since 0.1.0
    */
   @SuppressWarnings("ConstantConditions")
   public static <T extends AbstractIterceptor, R> R newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {

@@ -46,6 +46,7 @@ public abstract class Option implements Serializable {
    *
    * @param key  옵션키
    * @param type 옵션값 클래스타입
+   * @param <T> 제네릭
    * @return 옵션값
    */
   protected <T> T get(String key, Class<T> type) {

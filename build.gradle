@@ -10,7 +10,7 @@ buildscript {
 apply plugin: "java"
 apply plugin: "com.github.johnrengelman.shadow"
 
-[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+[compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
 [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-options"]
 
 group = "rebolt"

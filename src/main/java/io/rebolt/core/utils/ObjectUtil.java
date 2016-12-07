@@ -17,8 +17,10 @@ public final class ObjectUtil {
   // region isNull
 
   /**
-   * 입력값이 null이라면 true
+   * 오브젝트의 Null 검사
    *
+   * @param object {@link Object}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isNull(Object object) {
@@ -26,8 +28,10 @@ public final class ObjectUtil {
   }
 
   /**
-   * 입력값 중 1개라도 null이라면 true
+   * 오브젝트 배열의 Null 검사
    *
+   * @param objects {@link Object} 배열
+   * @return 입력값 중 1개라도 null이라면 true
    * @since 0.1.0
    */
   public static boolean isOrNull(Object... objects) {
@@ -45,6 +49,7 @@ public final class ObjectUtil {
   /**
    * 입력값이 null이라면 {@link NullPointerException}
    *
+   * @param object {@link Object}
    * @since 0.1.0
    */
   public static void requireNonNull(Object object) {
@@ -56,6 +61,7 @@ public final class ObjectUtil {
   /**
    * 입력값 중 1개라도 null이라면 {@link NullPointerException}
    *
+   * @param objects {@link Object} 배열
    * @since 0.1.0
    */
   public static void requireNonNull(Object... objects) {
@@ -65,8 +71,10 @@ public final class ObjectUtil {
   }
 
   /**
-   * 입력값이 모두 null일때 true
+   * 오브젝트 배열의 Null 검사
    *
+   * @param objects {@link Object} 배열
+   * @return 입력값이 모두 null일때 true
    * @since 0.1.0
    */
   public static boolean isAndNull(Object... objects) {
@@ -89,6 +97,7 @@ public final class ObjectUtil {
    * isEmtpy
    *
    * @param model {@link IModel}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(IModel model) {
@@ -99,6 +108,7 @@ public final class ObjectUtil {
    * isEmpty
    *
    * @param chars {@link CharSequence}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(CharSequence chars) {
@@ -109,6 +119,7 @@ public final class ObjectUtil {
    * isEmpty
    *
    * @param string {@link String}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(String string) {
@@ -119,6 +130,7 @@ public final class ObjectUtil {
    * isEmpty
    *
    * @param list {@link List}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(List list) {
@@ -129,6 +141,7 @@ public final class ObjectUtil {
    * isEmpty
    *
    * @param map {@link Map}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(Map map) {
@@ -138,7 +151,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param objects 배열
+   * @param objects {@link Object} 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(Object[] objects) {
@@ -148,7 +162,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param bytes 배열
+   * @param bytes byte 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(byte[] bytes) {
@@ -158,7 +173,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param ints 배열
+   * @param ints int 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(int[] ints) {
@@ -168,7 +184,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param longs 배열
+   * @param longs long 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(long[] longs) {
@@ -178,7 +195,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param doubles 배열
+   * @param doubles double 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(double[] doubles) {
@@ -188,7 +206,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param shorts 배열
+   * @param shorts short 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(short[] shorts) {
@@ -198,7 +217,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param floats 배열
+   * @param floats float 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(float[] floats) {
@@ -208,7 +228,8 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
-   * @param chars 배열
+   * @param chars char 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isEmpty(char[] chars) {
@@ -220,6 +241,7 @@ public final class ObjectUtil {
    *
    * @param model {@link IModel}을 상속받은 제네릭 인스턴스
    * @param consumer {@link Consumer}
+   * @param <T> {@link IModel}을 상속받은 제네릭 타입
    * @since 0.1.0
    */
   public static <T extends IModel> void thenNonEmpty(T model, Consumer<? super T> consumer) {
@@ -274,7 +296,10 @@ public final class ObjectUtil {
   /**
    * nullGuard
    *
-   * @param map 만약 null이라면, Empty {@link Map}이 반환된다.
+   * @param map {@link Map}
+   * @param <K> 키 제네릭 타입
+   * @param <V> 값 제네릭 타입
+   * @return 만약 null이라면, Empty {@link Map}이 반환된다.
    * @since 0.1.0
    */
   public static <K, V> Map<K, V> nullGuard(Map<K, V> map) {
@@ -284,7 +309,9 @@ public final class ObjectUtil {
   /**
    * nullGuard
    *
-   * @param list 만약 null이라면, Empty {@link List}가 반환된다.
+   * @param list {@link List}
+   * @param <T> {@link List} 제네릭 타입
+   * @return 만약 null이라면, Empty {@link List}가 반환된다.
    * @since 0.1.0
    */
   public static <T> List<T> nullGuard(List<T> list) {
@@ -294,7 +321,9 @@ public final class ObjectUtil {
   /**
    * nullGuard
    *
-   * @param set 만약 null이라면, Emtpy {@link Set}이 반환된다.
+   * @param set {@link Set}
+   * @param <T> {@link Set} 제네릭 타입
+   * @return 만약 null이라면, Emtpy {@link Set}이 반환된다.
    * @since 0.1.0
    */
   public static <T> Set<T> nullGuard(Set<T> set) {

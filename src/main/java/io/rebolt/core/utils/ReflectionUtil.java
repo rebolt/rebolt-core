@@ -35,8 +35,10 @@ public final class ReflectionUtil {
    * <p>
    * ** 런타임용으로는 사용하지 말 것
    *
-   * @param clazz Generic 클래스 타입
-   * @param index Generic 인덱스 (첫번째 파라미터라면 0, 두번째 파라미터는 1, ...)
+   * @param clazz 제네릭 클래스 타입
+   * @param index 제네릭 인덱스 (첫번째 파라미터라면 0, 두번째 파라미터는 1, ...)
+   * @param <R> 반환받을 클래스의 제네릭 타입
+   * @return 제일 처음 찾게된 {@link Class} 타입
    * @since 0.1.0
    */
   @SuppressWarnings("unchecked")
@@ -123,6 +125,8 @@ public final class ReflectionUtil {
    * @param method {@link Method}
    * @param context 클래스 메소드는 this, 전역 메소드인 경우 null
    * @param args 메소드 파라미터
+   * @param <R> 메소드 결과의 제네릭 타입
+   * @return 정의된 제네릭 인스턴스
    * @since 0.1.0
    */
   @SuppressWarnings("unchecked")
