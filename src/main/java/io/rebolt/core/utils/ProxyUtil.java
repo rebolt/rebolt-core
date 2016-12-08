@@ -23,6 +23,7 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
 public final class ProxyUtil {
   private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
   private static final Map<Class, Class> proxyMap = Maps.newHashMap();
+  private static final Object _lock = new Object();
 
   /**
    * Proxy 대상클래스내 Method 호출시 interceptor 메소드의 제어를 받는다.
@@ -30,21 +31,27 @@ public final class ProxyUtil {
    *
    * @param interceptor {@link Class} extends {@link AbstractIterceptor} Interceptor 클래스
    * @param targetClass {@link Class} Proxy 대상 클래스 (유저 클래스)
+   * @param <T> 첫번째 제네릭 타입, {@link AbstractIterceptor}를 상속받아야 한다.
+   * @param <R> 두번째 제네릭 타입
    * @return Proxy 클래스
+   * @since 0.1.0
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
-  public static <T extends AbstractIterceptor, R> Class<? extends R> getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    Class<?> proxyClass = proxyMap.get(targetClass);
+  public static <T extends AbstractIterceptor, R> R getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
+    Class proxyClass = proxyMap.get(targetClass);
     if (proxyClass == null) {
-      synchronized (proxyMap) {
+      synchronized (_lock) {
         if (proxyClass == null) {
-          DynamicType.Unloaded<R> dynamicType = buddy.subclass(targetClass).method(any()).intercept(MethodDelegation.to(ClassUtil.getSingleton(interceptor))).make();
+          DynamicType.Unloaded<R> dynamicType =
+              buddy.subclass(targetClass)
+                  .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
+                  .make();
           proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
           proxyMap.put(targetClass, proxyClass);
         }
       }
     }
-    return (Class<? extends R>) proxyClass;
+    return (R) ClassUtil.getSingleton(proxyClass);
   }
 
   /**
@@ -52,13 +59,19 @@ public final class ProxyUtil {
    * Proxy 대상클래스를 매번 생성한다.
    *
    * @param interceptor {@link Class} extends {@link AbstractIterceptor} Interceptor 클래스
-   * @param targetClass {@link Class<R>} Proxy 대상 클래스 (유저 클래스)
+   * @param targetClass {@link Class} Proxy 대상 클래스 (유저 클래스)
+   * @param <T> 첫번째 제네릭 타입, {@link AbstractIterceptor}를 상속받아야 한다.
+   * @param <R> 두번째 제네릭 타입
    * @return Proxy 클래스
+   * @since 0.1.0
    */
-  @SuppressWarnings({"unchecked", "ConstantConditions"})
-  public static <T extends AbstractIterceptor, R> Class<? extends R> newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    DynamicType.Unloaded<R> dynamicType = buddy.subclass(targetClass).method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor))).make();
-    return dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
+  @SuppressWarnings("ConstantConditions")
+  public static <T extends AbstractIterceptor, R> R newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
+    return ClassUtil.newInstance(
+        buddy.subclass(targetClass)
+            .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
+            .make()
+            .load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded());
   }
 
   /**
@@ -71,5 +84,4 @@ public final class ProxyUtil {
     @RuntimeType
     public abstract Object intercept(@SuperCall Callable<?> superMethod, @Origin Method method, @AllArguments Object[] args) throws Exception;
   }
-
 }

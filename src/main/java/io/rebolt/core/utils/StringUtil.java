@@ -30,6 +30,7 @@ public final class StringUtil {
    * {@link String}에 대한 null 또는 empty 검사
    *
    * @param value {@link String}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isNullOrEmpty(String value) {
@@ -40,6 +41,7 @@ public final class StringUtil {
    * {@link String}에 대한 null 또는 empty 반복 검사
    *
    * @param values {@link String} 배열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isNullOrEmpty(String... values) {
@@ -55,6 +57,7 @@ public final class StringUtil {
    * {@link StringBuilder}에 대한 null 또는 empty 검사
    *
    * @param value {@link StringBuilder}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isNullOrEmpty(StringBuilder value) {
@@ -65,6 +68,7 @@ public final class StringUtil {
    * Trim된 {@link String}에 대한 null 또는 empty 검사
    *
    * @param value Trim {@link String}
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isNullOrEmptyWithTrim(String value) {
@@ -75,6 +79,7 @@ public final class StringUtil {
    * {@link String}에 대한 숫자검사
    *
    * @param value 숫자로된 문자열
+   * @return true 또는 false
    * @since 0.1.0
    */
   public static boolean isNumeric(String value) {
@@ -157,9 +162,11 @@ public final class StringUtil {
   private final static SplittableRandom random = new SplittableRandom();
 
   /**
-   * 고정된 길이의 랜덤문자열 생성
+   * 고정된 길이의 랜덤문자열 생성.
+   * 알파벳과 숫자의 조합.
    *
    * @param length 길이
+   * @return 고정된 길이의 랜덤 문자열
    * @since 0.1.0
    */
   public static String randomAlpha(int length) {
@@ -174,10 +181,12 @@ public final class StringUtil {
   }
 
   /**
-   * 가변 길이의 랜덤문자열 생성
+   * 가변 길이의 랜덤문자열 생성.
+   * 알파벳과 숫자의 조합.
    *
    * @param min 최소길이
    * @param max 최대길이
+   * @return 가변 길이의 랜덤 문자열
    * @since 0.1.0
    */
   public static String randomAlpha(int min, int max) {
@@ -194,8 +203,9 @@ public final class StringUtil {
   /**
    * {@link String} 타입 변환
    *
-   * @param type 변환하고자 하는 클래스 타입
    * @param value 데이터 값
+   * @param type 변환하고자 하는 클래스 타입
+   * @param <T> 반환하고자 하는 클래스의 제네릭 타입
    * @return 변환된 클래스 인스턴스
    * @since 0.1.0
    */
@@ -231,6 +241,7 @@ public final class StringUtil {
    *
    * @param separator 구분자
    * @param strings 대상 인스턴스 목록
+   * @return 합쳐진 최종 문자열
    * @since 0.1.0
    */
   public static String join(String separator, String... strings) {
@@ -242,6 +253,7 @@ public final class StringUtil {
    *
    * @param separator 구분자
    * @param iterables 대상 인스턴스 목록 {@link Iterable}
+   * @return 합쳐진 최종 문자열
    * @since 0.1.0
    */
   public static String join(String separator, Iterable<? extends CharSequence> iterables) {
@@ -261,6 +273,7 @@ public final class StringUtil {
    *
    * @param separator 구분자
    * @param iterators 대상 인스턴스 목록 {@link Iterator}
+   * @return 합쳐진 최종 문자열
    * @since 0.1.0
    */
   public static String join(String separator, Iterator<? extends CharSequence> iterators) {
@@ -281,6 +294,7 @@ public final class StringUtil {
    *
    * @param separator 구분자
    * @param values 대상 인스턴스 목록
+   * @return 합쳐진 최종문자열
    * @since 0.1.0
    */
   public static String join(String separator, CharSequence... values) {
@@ -305,6 +319,7 @@ public final class StringUtil {
    * @param separator 구분자
    * @param string 문자열
    * @param limit 결과물 목록수 (0: unlimit)
+   * @return 나누어진 문자열 리스트
    * @since 0.1.0
    */
   public static List<String> split(char separator, String string, int limit) {
@@ -353,6 +368,7 @@ public final class StringUtil {
    *
    * @param separator 구분자
    * @param string 문자열
+   * @return 나누어진 문자열 리스트
    * @since 0.1.0
    */
   public static List<String> split(char separator, String string) {
@@ -403,6 +419,7 @@ public final class StringUtil {
    * Url 인코딩 (UTF-8)
    *
    * @param url 인코딩할 Url 문자열
+   * @return 인코딩된 문자열
    * @since 0.1.0
    */
   public static String encodeUrl(String url) {
@@ -422,6 +439,7 @@ public final class StringUtil {
    * Url 디코딩 (UTF-8)
    *
    * @param encodedUrl Url 인코딩된 문자열
+   * @return 디코딩된 문자열
    * @since 0.1.0
    */
   public static String decodeUrl(String encodedUrl) {

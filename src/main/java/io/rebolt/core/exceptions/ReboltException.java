@@ -28,6 +28,8 @@ public abstract class ReboltException extends RuntimeException {
 
   /**
    * 로그 레벨을 설정한다
+   *
+   * @return {@link Level}
    */
   protected abstract Level setLogLevel();
 
@@ -35,6 +37,8 @@ public abstract class ReboltException extends RuntimeException {
    * 로그 작성 가능 여부
    * <p>
    * JVM Option으로 부터 설정값을 조회한다 (기본값: false)
+   *
+   * @return Exception Log 사용여부
    */
   protected boolean isExceptionLog() {
     if (exceptionLog == null) {

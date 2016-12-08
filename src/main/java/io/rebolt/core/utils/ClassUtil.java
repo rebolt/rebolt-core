@@ -28,6 +28,7 @@ public final class ClassUtil {
    * 싱글턴 생성기
    *
    * @param clazz 싱글턴 클래스 타입
+   * @param <T> 싱글턴 제네릭
    * @return 싱글턴 인스턴스
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
@@ -57,6 +58,7 @@ public final class ClassUtil {
    * @param clazz 싱글턴 클래스 타입
    * @param arguments 파라미터 목록
    * @param argumentTypes 파라미터 클래스 타입 목록 (파라미터 목록과 길이가 같아야 한다)
+   * @param <T> 싱글턴 제네릭
    * @return 싱글턴 인스턴스
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
@@ -89,6 +91,7 @@ public final class ClassUtil {
    * 인스턴스 생성기
    *
    * @param clazz 클래스 타입
+   * @param <T> 클래스 제네릭
    * @return 클래스 인스턴스
    */
   public static <T> T newInstance(Class<T> clazz) {

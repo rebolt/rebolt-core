@@ -160,6 +160,7 @@ public final class HashUtil {
    * (예) 캐시 데이터의 구분키, 데이터 샤딩키등
    *
    * @param models {@link IModel}을 상속받은 인스턴스 배열
+   * @param <T> {@link IModel}을 상속받은 제네릭 타입
    * @return 해시코드
    * @since 0.1.0
    */
