@@ -12,6 +12,10 @@ public final class IllegalParameterException extends ReboltException {
     super.setMessage(message);
   }
 
+  public IllegalParameterException(Throwable cause) {
+    super(cause);
+  }
+
   @Override
   protected Level setLogLevel() {
     return Level.ERROR;
