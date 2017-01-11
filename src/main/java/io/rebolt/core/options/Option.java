@@ -15,10 +15,11 @@ import java.util.Map;
  */
 public abstract class Option implements Serializable {
 
-  private final OptionPool optionPool = OptionPool.getInstance();
+  private final OptionPool optionPool;
   private final String group;
 
   protected Option() {
+    this.optionPool = OptionPool.getInstance();
     this.group = setGroup();
     Map<String, String> options = Maps.newHashMap();
     setOptions(options);
@@ -44,7 +45,7 @@ public abstract class Option implements Serializable {
   /**
    * 옵션 조회
    *
-   * @param key  옵션키
+   * @param key 옵션키
    * @param type 옵션값 클래스타입
    * @param <T> 제네릭
    * @return 옵션값
@@ -55,5 +56,16 @@ public abstract class Option implements Serializable {
       return null;
     }
     return StringUtil.cast(value, type);
+  }
+
+  /**
+   * 옵션값 변경
+   * 주의: 라이브콜에 연동시키지 않도록 한다.
+   *
+   * @param key 옵션키
+   * @param value 옵션값
+   */
+  protected void set(String key, String value) {
+    optionPool.addOption(group, key, value);
   }
 }

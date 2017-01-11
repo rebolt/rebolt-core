@@ -51,6 +51,16 @@ public final class LogUtil {
   }
 
   /**
+   * 로그레벨 : Debug
+   * 프레임워크 내부에서만 사용한다
+   *
+   * @param t {@link Throwable}
+   */
+  public static void debug(Throwable t) {
+    defaultLogger.catching(t);
+  }
+
+  /**
    * 로그레벨 : Warning
    * 프레임워크 내부에서만 사용한다
    *
