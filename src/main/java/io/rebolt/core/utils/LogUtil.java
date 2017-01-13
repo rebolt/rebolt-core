@@ -26,7 +26,7 @@ public final class LogUtil {
    *
    * @return {@link Logger}
    */
-  public static Logger getLogger() {
+  public static Logger logger() {
     return defaultLogger;
   }
 
@@ -39,7 +39,7 @@ public final class LogUtil {
    * @param name 사용자 정의 로거명
    * @return {@link Logger} (싱글턴)
    */
-  public static Logger getLogger(String name) {
+  public static Logger logger(String name) {
     Logger logger = loggerMap.get(name);
     if (logger == null) {
       synchronized (loggerMap) {

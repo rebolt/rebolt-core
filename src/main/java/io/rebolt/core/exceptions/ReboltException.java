@@ -54,7 +54,7 @@ public abstract class ReboltException extends RuntimeException {
   @Override
   public String getMessage() {
     if (isExceptionLog()) {
-      LogUtil.getLogger().catching(level, this);
+      LogUtil.logger().catching(level, this);
     }
     if (StringUtil.isNullOrEmpty(message)) {
       return prefix + super.getMessage();
