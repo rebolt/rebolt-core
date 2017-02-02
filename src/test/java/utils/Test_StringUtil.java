@@ -150,4 +150,14 @@ public final class Test_StringUtil {
 
     assertTrue(value.equals(decodedUrl));
   }
+
+  @Test
+  public void test_base64() {
+    String value = "http://\\!@#$43%^^...21!!!#@$%$^$%----__=+_++_+_~!@~good.com/good-job/key=value&key1=value%&;동해물과백두사닉ⓐ";
+
+    String encodedBase64 = StringUtil.encodeBase64(value);
+    String decodedBase64 = StringUtil.decodeBase64(encodedBase64);
+
+    assertTrue(value.equals(decodedBase64));
+  }
 }

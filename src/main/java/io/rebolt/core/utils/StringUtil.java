@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
 
+import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
 import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -455,5 +457,17 @@ public final class StringUtil {
     return url;
   }
 
+  // endregion
+
+  // region base64Encode/Decode
+  public static String encodeBase64(final String message) {
+    byte[] encodedBytes = Base64.getEncoder().encode(message.getBytes());
+    return new String(encodedBytes, CHARSET_UTF8);
+  }
+
+  public static String decodeBase64(final String base64) {
+    byte[] decodedBytes = Base64.getDecoder().decode(base64);
+    return new String(decodedBytes);
+  }
   // endregion
 }
