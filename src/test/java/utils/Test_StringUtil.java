@@ -182,6 +182,16 @@ public final class Test_StringUtil {
   }
 
   @Test
+  public void test_decryptRsa() {
+    final String value = "QvHuo7YiIx0UU6aHtt9YJLtL0UNYZQVVPcy/FjAWCr8txelIj/ePMGxE++J+l49MjGUm7VcsdBCHTHSutjZJ1DIDY1LX+kpe2M5tBndDXitD/VCbXWO9pIgOxQjdtcc+e0jXngPweYZA7zaExdxI6hgyBbwyIecLFj8PshGsSDnpbVVUn+SKRi6kF9338HFCnV/u9Loikj3GXLSZpGcy9GBQ/C0o/hfABqCy9KuS5+++O8sEVA2UCAUpapujYARO9ox1Ra7qDsypwBpNMnaKu7QIaY45MsmOiqexI2ewl/MJFpV0sxIcUWzr+flZ4uN0wBzf1eRarXF0WEIIEsZmJg==";
+
+    KeyPair keyPair = StringUtil.getDefaultKeyPairRsa();
+    final String decryptedValue = StringUtil.decryptRsa(keyPair.getPrivate(), value);
+
+    assertTrue("nosungpark".equals(decryptedValue));
+  }
+
+  @Test
   public void test_rsaKeyPair() {
     KeyPair keyPair = StringUtil.createRandomKeyPairRsa();
     PublicKey publicKey = keyPair.getPublic();
