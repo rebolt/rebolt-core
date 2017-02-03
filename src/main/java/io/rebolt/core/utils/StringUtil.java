@@ -5,9 +5,17 @@ import io.rebolt.core.exceptions.IllegalParameterException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import javax.crypto.Cipher;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
@@ -415,7 +423,7 @@ public final class StringUtil {
 
   // endregion
 
-  // region urlEncode/Decode
+  // region url encode/decode
 
   /**
    * Url 인코딩 (UTF-8)
@@ -459,15 +467,111 @@ public final class StringUtil {
 
   // endregion
 
-  // region base64Encode/Decode
+  // region base64 encode/decode
   public static String encodeBase64(final String message) {
-    byte[] encodedBytes = Base64.getEncoder().encode(message.getBytes());
-    return new String(encodedBytes, CHARSET_UTF8);
+    return new String(encodeBase64Bytes(message), CHARSET_UTF8);
+  }
+
+  public static byte[] encodeBase64(final byte[] message) {
+    return Base64.getEncoder().encode(message);
+  }
+
+  public static byte[] encodeBase64Bytes(final String message) {
+    return encodeBase64(message.getBytes());
+  }
+
+  public static String encodeBase64String(final byte[] message) {
+    return new String(Base64.getEncoder().encode(message), CHARSET_UTF8);
   }
 
   public static String decodeBase64(final String base64) {
-    byte[] decodedBytes = Base64.getDecoder().decode(base64);
-    return new String(decodedBytes);
+    return new String(decodeBase64Bytes(base64));
+  }
+
+  public static byte[] decodeBase64Bytes(final String base64) {
+    return Base64.getDecoder().decode(base64);
+  }
+  // endregion
+
+  // region rsa encrypt/decrypt
+  private static final Object _rsaLock = new Object();
+  private static Cipher rsaCipher;
+  private static KeyFactory rsaKeyFactory;
+  private static KeyPair rsaDefaultKeyPair;
+
+  public static String encryptRsa(final PublicKey publicKey, final String plainText) {
+    try {
+      if (rsaCipher == null) {
+        synchronized (_rsaLock) {
+          if (rsaCipher == null) {
+            rsaCipher = Cipher.getInstance("RSA");
+          }
+        }
+      }
+      rsaCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+      byte[] cipherText = rsaCipher.doFinal(plainText.getBytes());
+      return encodeBase64String(cipherText);
+    } catch (Exception ex) {
+      return plainText;
+    }
+  }
+  public static String decryptRsa(final PrivateKey privateKey, final String cipherText) {
+    try {
+      if (rsaCipher == null) {
+        synchronized (_rsaLock) {
+          if (rsaCipher == null) {
+            rsaCipher = Cipher.getInstance("RSA");
+          }
+        }
+      }
+      rsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
+      byte[] plainText = rsaCipher.doFinal(decodeBase64Bytes(cipherText));
+      return new String(plainText);
+    } catch (Exception ex) {
+      return cipherText;
+    }
+  }
+
+  public static KeyPair createKeyPairRsa(final byte[] publicKeyBytes, final byte[] privateKeyBytes) {
+    try {
+      if (rsaKeyFactory == null) {
+        synchronized (_rsaLock) {
+          if (rsaKeyFactory == null) {
+            rsaKeyFactory = KeyFactory.getInstance("RSA");
+          }
+        }
+      }
+      X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+      PublicKey publicKey = rsaKeyFactory.generatePublic(publicKeySpec);
+      PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+      PrivateKey privateKey = rsaKeyFactory.generatePrivate(privateKeySpec);
+      return new KeyPair(publicKey, privateKey);
+    } catch (Exception ex) {
+      return getDefaultKeyPairRsa();
+    }
+  }
+
+  public static KeyPair createRandomKeyPairRsa() {
+    try {
+      KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+      generator.initialize(2048);
+      return generator.generateKeyPair();
+    } catch (Exception ex) {
+      return getDefaultKeyPairRsa();
+    }
+  }
+
+  public static KeyPair getDefaultKeyPairRsa() {
+    if (rsaDefaultKeyPair == null) {
+      synchronized (_rsaLock) {
+        if (rsaDefaultKeyPair == null) {
+          rsaDefaultKeyPair = createKeyPairRsa(
+              decodeBase64Bytes("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkXOIKgHFGJFjNenq3vlF8FkBTgq5BDL/G1AjeI9ViKvjgkalpncwLSHGuq3UNLd8cqQ8fM4peEMjMm0gg6VhEqxd3yXqK1LQNswJggtAV0hNaD4a9OymKMwEPhMQQU8ykDUGxBTOdVcqNtWU+puhcHaTNhoQOE8jokYHN/e8VQrn4yJoF0KayF+gsr3ov0p1aQMJP62hhMz1Tx5VXCJYU2c6so2Yyu/174v4IeZzuUXriyzyRBHI1Fc45ARL+jLEIgR5Vw2fvJ47VmCKmOd43yPZgt8753qkk1TSEm4pvobFYKqlol843KYnb0RYNAuPBzwlwbRAHDW3B6vylEyYuwIDAQAB"),
+              decodeBase64Bytes("MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRc4gqAcUYkWM16ere+UXwWQFOCrkEMv8bUCN4j1WIq+OCRqWmdzAtIca6rdQ0t3xypDx8zil4QyMybSCDpWESrF3fJeorUtA2zAmCC0BXSE1oPhr07KYozAQ+ExBBTzKQNQbEFM51Vyo21ZT6m6FwdpM2GhA4TyOiRgc397xVCufjImgXQprIX6Cyvei/SnVpAwk/raGEzPVPHlVcIlhTZzqyjZjK7/Xvi/gh5nO5ReuLLPJEEcjUVzjkBEv6MsQiBHlXDZ+8njtWYIqY53jfI9mC3zvneqSTVNISbim+hsVgqqWiXzjcpidvRFg0C48HPCXBtEAcNbcHq/KUTJi7AgMBAAECggEAOaX3xuZyrt0Y3Ep9G6jiznMIcF0RnZd0wueNV4A/3255Oq4zg3nj709ey6iP3eEHgwyTKMgxaYf6kEbuRx8qDVOh1Qra+BbXjZBrCE7bTnzKqVFML90Hsk3CNLQrkicInF1X9Clm9tz4T0lxxa4fW0qz6BKGcTr0naFxxP38eBvAdDiS+NP31G+6d09/hqA2hJESZJZH2x7NGXT+bangIAra8VrBd2fsIjhe/Z3NV+dSYmGTH7sRAF5n0fnIcMUZofeKMAquTwvFWWULA3mhkTlHmVZJN+mavTMvklo74B5+VoFAwLb/cMBA4yjvBNE3O23JGlEtOcN2cv5d2CmgkQKBgQDypUIlTurntVKHD0zK/ARM/NrXxQaAOtHbywmWPBCEYeoxqbLSb3Ple8CpepDBw2wuGzIB1OUZpAC9PvOqsuZEl59L6BdR2JURixLEjHBD7MsrpAsuXhqiPjP1nfYWVTvRG4wzeQT+ep9Qwj20yyj/QmlNM6Dx7dQSVDnnR0FskwKBgQCZdNw85RKEL+wz+OkFfzu9NIu0utsLjamwo78LC+v284ngmElbVV7MLlOjWmJPjgZX/xCOtnLW34cKMV+l+WUD2g58Xw5ydTVco0GquUmiS9tTwRrZqht5+1gkxTBGes13wQShqn5EwOZoQlmwoOl1xe/nqaOMC6nBQhFw26ZkOQKBgDCGH+46E/v2ZOShiKfnMiz7PAB+ZEhset9LgUVMCbmPozf/ScWPiEvSLbs2yZAWNqIZyixXmOFBzOwLlMsEL8xzzeVuKouxlk4F0+D+fMz4o8C8c4f4RbdAXT+3MSlSLj4pFiaNAxSpDQcncROgtTgm3cwUkREQkKKBuXqo40qFAoGAQV2x4o6BEKWJK6o/OAQ2YiXbzKQ7YfR577AQVJhDbvHWLUExHiKDOt4Q6mg5sEGDGkCfwOqeiEC2uPTHFV/iU32y5e9nrAGZNVilRB+g6ez+A/MhiM4Y3iDeLut/4MW2d+hUHLkPCCJTAt4gbkhcqboisr9j1uew641E+JnXiqECgYEA18lm9kwdcW8bRezznZ9z9GkTwzrUPSbaJn01Ej+zASnd+xJu3LDQMc3y7eGorHOZS5zkkOv3xcXACBvF94V0DbldurJvSSxNhDBrLTLCfL3GwFuS7LmMDUF6+vv7Pkg3IVica8iQ6Ng4PJgEm7faVzJH1eMEazkcVpvpS2ibWHg="));
+        }
+      }
+    }
+    return rsaDefaultKeyPair;
   }
   // endregion
 }

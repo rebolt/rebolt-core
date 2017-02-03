@@ -6,6 +6,15 @@ import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
 
+import javax.crypto.NoSuchPaddingException;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -159,5 +168,39 @@ public final class Test_StringUtil {
     String decodedBase64 = StringUtil.decodeBase64(encodedBase64);
 
     assertTrue(value.equals(decodedBase64));
+  }
+
+  @Test
+  public void test_encryptRsa() throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+    final String value = "http://\\!@#$43%^^...21!!!#@$%$^%--__=+_++_+_~!@~good.co          m/good-job/key=value&key1=value%&;닭꺼져ⓐ";
+
+    KeyPair keyPair = StringUtil.createRandomKeyPairRsa();
+    final String encryptedValue = StringUtil.encryptRsa(keyPair.getPublic(), value);
+    final String decryptedValue = StringUtil.decryptRsa(keyPair.getPrivate(), encryptedValue);
+
+    assertTrue(value.equals(decryptedValue));
+  }
+
+  @Test
+  public void test_rsaKeyPair() {
+    KeyPair keyPair = StringUtil.createRandomKeyPairRsa();
+    PublicKey publicKey = keyPair.getPublic();
+    PrivateKey privateKey = keyPair.getPrivate();
+    KeyPair keyPair1 = StringUtil.createKeyPairRsa(publicKey.getEncoded(), privateKey.getEncoded());
+
+    final String value = "http://\\!@#$43%^^...21!!!#@$%$^%--__=+_++_+_~!@~good.co          m/good-job/key=value&key1=value%&;닭꺼져ⓐ";
+    final String encryptedValue = StringUtil.encryptRsa(keyPair.getPublic(), value);
+    final String decryptedValue = StringUtil.decryptRsa(keyPair1.getPrivate(), encryptedValue);
+
+    assertTrue(value.equals(decryptedValue));
+  }
+
+  @Test
+  public void test_rsaDefaultKeyPair() {
+    KeyPair defaultKeyPair = StringUtil.getDefaultKeyPairRsa();
+    final String value = "http://\\!@#$43%^^...21!!!#@$%$^%--__=+_++_+_~!@~good.co          m/good-job/key=value&key1=value%&;닭꺼져ⓐ";
+    final String encryptedValue = StringUtil.encryptRsa(defaultKeyPair.getPublic(), value);
+    final String decryptedValue = StringUtil.decryptRsa(defaultKeyPair.getPrivate(), encryptedValue);
+    assertTrue(value.equals(decryptedValue));
   }
 }
