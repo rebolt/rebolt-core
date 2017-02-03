@@ -19,6 +19,9 @@ import java.util.concurrent.Callable;
 
 import static net.bytebuddy.matcher.ElementMatchers.any;
 
+/**
+ * @since 1.0.0
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProxyUtil {
   private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);

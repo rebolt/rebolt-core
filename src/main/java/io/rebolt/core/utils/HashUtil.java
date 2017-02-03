@@ -9,6 +9,8 @@ import java.util.Objects;
 
 /**
  * 자바 오브젝트를 활용해 해시코드를 생성한다
+ *
+ * @since 1.0.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HashUtil {

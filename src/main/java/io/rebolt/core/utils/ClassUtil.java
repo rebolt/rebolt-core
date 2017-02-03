@@ -9,6 +9,9 @@ import java.util.Map;
 
 import static io.rebolt.core.constants.Constants.STRING_SHARP;
 
+/**
+ * @since 1.0.0
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ClassUtil {
   /**
