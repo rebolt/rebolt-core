@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.rebolt.core.utils.JsonUtil;
 import io.rebolt.core.utils.ObjectUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 public final class Test_JsonUtil {
 
   @Data
+  @AllArgsConstructor
   public static class Json {
     @JsonProperty("id")
     private String id;
@@ -31,5 +33,14 @@ public final class Test_JsonUtil {
     assertTrue(json.equals(json2));
     assertTrue(json.getId().equals(jsonNode.get("id").asText()));
     assertTrue(json2.getValue().equals(jsonNode.get("value").asText()));
+  }
+
+  @Test
+  public void test_write() {
+    Json json = new Json("id", "value");
+    String jsonValue = JsonUtil.write(json);
+    Json json2 = JsonUtil.read(jsonValue, Json.class);
+
+    assertTrue(json.equals(json2));
   }
 }

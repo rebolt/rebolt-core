@@ -18,6 +18,7 @@ public final class Constants {
   public static final String STRING_SHARP = "#";
   public static final String STRING_QUESTION = "?";
   public static final String STRING_DOUBLE_COLON = "::";
+  public static final String STRING_JSON_INITIALIZE = "{}";
   public static final CharSequence CHARS_EMPTY = STRING_EMPTY;
 
   public static final String CHARSET_NAME_DEFAULT = "UTF-8";
