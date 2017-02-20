@@ -151,6 +151,26 @@ public final class Test_StringUtil {
   }
 
   @Test
+  public void test_splitLimit() {
+    String value = "a/b/c/d/e/f";
+
+    List<String> split = StringUtil.split('/', value, 2);
+
+    assertTrue(split.size() == 2);
+    assertTrue(split.get(1).equals("b"));
+  }
+
+  @Test
+  public void test_splitRemain() {
+    String value = "a/b/c/d/e/f";
+
+    List<String> split = StringUtil.split('/', value, 2, true);
+
+    assertTrue(split.size() == 2);
+    assertTrue(split.get(1).equals("b/c/d/e/f"));
+  }
+
+  @Test
   public void test_urlEncode() {
     String value = "http://\\!@#$43%^^...21!!!#@$%$^$%----__=+_++_+_~!@~good.com/good-job/key=value&key1=value%&;";
 

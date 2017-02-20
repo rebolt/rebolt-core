@@ -329,10 +329,36 @@ public final class StringUtil {
    * @param separator 구분자
    * @param string 문자열
    * @param limit 결과물 목록수 (0: unlimit)
-   * @return 나누어진 문자열 리스트
+   * @return 나누어진 문자열 목록
    * @since 0.1.0
    */
   public static List<String> split(char separator, String string, int limit) {
+    return split(separator, string, limit, false);
+  }
+
+  /**
+   * 문자열 나누기
+   *
+   * @param separator 구분자
+   * @param string 문자열
+   * @return 나누어진 문자열 목록
+   * @since 0.1.0
+   */
+  public static List<String> split(char separator, String string) {
+    return split(separator, string, 0);
+  }
+
+  /**
+   * 문자열 나누기
+   *
+   * @param separator 구분자
+   * @param string 문자열
+   * @param limit 결과물 목록수 (0: unlimit)
+   * @param remain 마지막 결과에 나머지 문자열 추가여부, 입력값 ('/', "a/b/c/d/e/f", 2) -> 출력값 ["a", "b/c/d/e/f"]
+   * @return 나누어진 문자열 목록
+   * @since 0.1.5
+   */
+  public static List<String> split(char separator, String string, int limit, boolean remain) {
     if (limit < 0) {
       throw new IllegalParameterException("limit >= 0");
     }
@@ -350,7 +376,7 @@ public final class StringUtil {
         }
         off = next + 1;
       } else {
-        buffer = trim(string.substring(off, next));
+        buffer = remain ? trim(string.substring(off)) : trim(string.substring(off, next));
         if (!buffer.isEmpty()) {
           list.add(buffer);
         }
@@ -371,18 +397,6 @@ public final class StringUtil {
       }
     }
     return list.subList(0, resultSize);
-  }
-
-  /**
-   * 문자열 나누기
-   *
-   * @param separator 구분자
-   * @param string 문자열
-   * @return 나누어진 문자열 리스트
-   * @since 0.1.0
-   */
-  public static List<String> split(char separator, String string) {
-    return split(separator, string, 0);
   }
 
   // endregion
@@ -515,6 +529,7 @@ public final class StringUtil {
       return plainText;
     }
   }
+
   public static String decryptRsa(final PrivateKey privateKey, final String cipherText) {
     try {
       if (rsaCipher == null) {
@@ -566,8 +581,10 @@ public final class StringUtil {
       synchronized (_rsaLock) {
         if (rsaDefaultKeyPair == null) {
           rsaDefaultKeyPair = createKeyPairRsa(
-              decodeBase64Bytes("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkXOIKgHFGJFjNenq3vlF8FkBTgq5BDL/G1AjeI9ViKvjgkalpncwLSHGuq3UNLd8cqQ8fM4peEMjMm0gg6VhEqxd3yXqK1LQNswJggtAV0hNaD4a9OymKMwEPhMQQU8ykDUGxBTOdVcqNtWU+puhcHaTNhoQOE8jokYHN/e8VQrn4yJoF0KayF+gsr3ov0p1aQMJP62hhMz1Tx5VXCJYU2c6so2Yyu/174v4IeZzuUXriyzyRBHI1Fc45ARL+jLEIgR5Vw2fvJ47VmCKmOd43yPZgt8753qkk1TSEm4pvobFYKqlol843KYnb0RYNAuPBzwlwbRAHDW3B6vylEyYuwIDAQAB"),
-              decodeBase64Bytes("MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRc4gqAcUYkWM16ere+UXwWQFOCrkEMv8bUCN4j1WIq+OCRqWmdzAtIca6rdQ0t3xypDx8zil4QyMybSCDpWESrF3fJeorUtA2zAmCC0BXSE1oPhr07KYozAQ+ExBBTzKQNQbEFM51Vyo21ZT6m6FwdpM2GhA4TyOiRgc397xVCufjImgXQprIX6Cyvei/SnVpAwk/raGEzPVPHlVcIlhTZzqyjZjK7/Xvi/gh5nO5ReuLLPJEEcjUVzjkBEv6MsQiBHlXDZ+8njtWYIqY53jfI9mC3zvneqSTVNISbim+hsVgqqWiXzjcpidvRFg0C48HPCXBtEAcNbcHq/KUTJi7AgMBAAECggEAOaX3xuZyrt0Y3Ep9G6jiznMIcF0RnZd0wueNV4A/3255Oq4zg3nj709ey6iP3eEHgwyTKMgxaYf6kEbuRx8qDVOh1Qra+BbXjZBrCE7bTnzKqVFML90Hsk3CNLQrkicInF1X9Clm9tz4T0lxxa4fW0qz6BKGcTr0naFxxP38eBvAdDiS+NP31G+6d09/hqA2hJESZJZH2x7NGXT+bangIAra8VrBd2fsIjhe/Z3NV+dSYmGTH7sRAF5n0fnIcMUZofeKMAquTwvFWWULA3mhkTlHmVZJN+mavTMvklo74B5+VoFAwLb/cMBA4yjvBNE3O23JGlEtOcN2cv5d2CmgkQKBgQDypUIlTurntVKHD0zK/ARM/NrXxQaAOtHbywmWPBCEYeoxqbLSb3Ple8CpepDBw2wuGzIB1OUZpAC9PvOqsuZEl59L6BdR2JURixLEjHBD7MsrpAsuXhqiPjP1nfYWVTvRG4wzeQT+ep9Qwj20yyj/QmlNM6Dx7dQSVDnnR0FskwKBgQCZdNw85RKEL+wz+OkFfzu9NIu0utsLjamwo78LC+v284ngmElbVV7MLlOjWmJPjgZX/xCOtnLW34cKMV+l+WUD2g58Xw5ydTVco0GquUmiS9tTwRrZqht5+1gkxTBGes13wQShqn5EwOZoQlmwoOl1xe/nqaOMC6nBQhFw26ZkOQKBgDCGH+46E/v2ZOShiKfnMiz7PAB+ZEhset9LgUVMCbmPozf/ScWPiEvSLbs2yZAWNqIZyixXmOFBzOwLlMsEL8xzzeVuKouxlk4F0+D+fMz4o8C8c4f4RbdAXT+3MSlSLj4pFiaNAxSpDQcncROgtTgm3cwUkREQkKKBuXqo40qFAoGAQV2x4o6BEKWJK6o/OAQ2YiXbzKQ7YfR577AQVJhDbvHWLUExHiKDOt4Q6mg5sEGDGkCfwOqeiEC2uPTHFV/iU32y5e9nrAGZNVilRB+g6ez+A/MhiM4Y3iDeLut/4MW2d+hUHLkPCCJTAt4gbkhcqboisr9j1uew641E+JnXiqECgYEA18lm9kwdcW8bRezznZ9z9GkTwzrUPSbaJn01Ej+zASnd+xJu3LDQMc3y7eGorHOZS5zkkOv3xcXACBvF94V0DbldurJvSSxNhDBrLTLCfL3GwFuS7LmMDUF6+vv7Pkg3IVica8iQ6Ng4PJgEm7faVzJH1eMEazkcVpvpS2ibWHg="));
+              decodeBase64Bytes(
+                  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkXOIKgHFGJFjNenq3vlF8FkBTgq5BDL/G1AjeI9ViKvjgkalpncwLSHGuq3UNLd8cqQ8fM4peEMjMm0gg6VhEqxd3yXqK1LQNswJggtAV0hNaD4a9OymKMwEPhMQQU8ykDUGxBTOdVcqNtWU+puhcHaTNhoQOE8jokYHN/e8VQrn4yJoF0KayF+gsr3ov0p1aQMJP62hhMz1Tx5VXCJYU2c6so2Yyu/174v4IeZzuUXriyzyRBHI1Fc45ARL+jLEIgR5Vw2fvJ47VmCKmOd43yPZgt8753qkk1TSEm4pvobFYKqlol843KYnb0RYNAuPBzwlwbRAHDW3B6vylEyYuwIDAQAB"),
+              decodeBase64Bytes(
+                  "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRc4gqAcUYkWM16ere+UXwWQFOCrkEMv8bUCN4j1WIq+OCRqWmdzAtIca6rdQ0t3xypDx8zil4QyMybSCDpWESrF3fJeorUtA2zAmCC0BXSE1oPhr07KYozAQ+ExBBTzKQNQbEFM51Vyo21ZT6m6FwdpM2GhA4TyOiRgc397xVCufjImgXQprIX6Cyvei/SnVpAwk/raGEzPVPHlVcIlhTZzqyjZjK7/Xvi/gh5nO5ReuLLPJEEcjUVzjkBEv6MsQiBHlXDZ+8njtWYIqY53jfI9mC3zvneqSTVNISbim+hsVgqqWiXzjcpidvRFg0C48HPCXBtEAcNbcHq/KUTJi7AgMBAAECggEAOaX3xuZyrt0Y3Ep9G6jiznMIcF0RnZd0wueNV4A/3255Oq4zg3nj709ey6iP3eEHgwyTKMgxaYf6kEbuRx8qDVOh1Qra+BbXjZBrCE7bTnzKqVFML90Hsk3CNLQrkicInF1X9Clm9tz4T0lxxa4fW0qz6BKGcTr0naFxxP38eBvAdDiS+NP31G+6d09/hqA2hJESZJZH2x7NGXT+bangIAra8VrBd2fsIjhe/Z3NV+dSYmGTH7sRAF5n0fnIcMUZofeKMAquTwvFWWULA3mhkTlHmVZJN+mavTMvklo74B5+VoFAwLb/cMBA4yjvBNE3O23JGlEtOcN2cv5d2CmgkQKBgQDypUIlTurntVKHD0zK/ARM/NrXxQaAOtHbywmWPBCEYeoxqbLSb3Ple8CpepDBw2wuGzIB1OUZpAC9PvOqsuZEl59L6BdR2JURixLEjHBD7MsrpAsuXhqiPjP1nfYWVTvRG4wzeQT+ep9Qwj20yyj/QmlNM6Dx7dQSVDnnR0FskwKBgQCZdNw85RKEL+wz+OkFfzu9NIu0utsLjamwo78LC+v284ngmElbVV7MLlOjWmJPjgZX/xCOtnLW34cKMV+l+WUD2g58Xw5ydTVco0GquUmiS9tTwRrZqht5+1gkxTBGes13wQShqn5EwOZoQlmwoOl1xe/nqaOMC6nBQhFw26ZkOQKBgDCGH+46E/v2ZOShiKfnMiz7PAB+ZEhset9LgUVMCbmPozf/ScWPiEvSLbs2yZAWNqIZyixXmOFBzOwLlMsEL8xzzeVuKouxlk4F0+D+fMz4o8C8c4f4RbdAXT+3MSlSLj4pFiaNAxSpDQcncROgtTgm3cwUkREQkKKBuXqo40qFAoGAQV2x4o6BEKWJK6o/OAQ2YiXbzKQ7YfR577AQVJhDbvHWLUExHiKDOt4Q6mg5sEGDGkCfwOqeiEC2uPTHFV/iU32y5e9nrAGZNVilRB+g6ez+A/MhiM4Y3iDeLut/4MW2d+hUHLkPCCJTAt4gbkhcqboisr9j1uew641E+JnXiqECgYEA18lm9kwdcW8bRezznZ9z9GkTwzrUPSbaJn01Ej+zASnd+xJu3LDQMc3y7eGorHOZS5zkkOv3xcXACBvF94V0DbldurJvSSxNhDBrLTLCfL3GwFuS7LmMDUF6+vv7Pkg3IVica8iQ6Ng4PJgEm7faVzJH1eMEazkcVpvpS2ibWHg="));
         }
       }
     }
