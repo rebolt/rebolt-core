@@ -34,6 +34,17 @@ public final class StringUtil {
       'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
+  /**
+   * 기본값 반환
+   *
+   * @param value empty 검사할 입력 문자열
+   * @param defaultValue value가 empty일 때 대신 반환된 문자열
+   * @return value 또는 defaultValue
+   */
+  public static String getDefault(final String value, final String defaultValue) {
+    return isNullOrEmpty(value) ? defaultValue : value;
+  }
+
   // region isNullOrEmpty
 
   /**

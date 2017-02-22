@@ -233,4 +233,12 @@ public final class Test_StringUtil {
     final String decryptedValue = StringUtil.decryptRsa(defaultKeyPair.getPrivate(), encryptedValue);
     assertTrue(value.equals(decryptedValue));
   }
+
+  @Test
+  public void test_getDefault() {
+    final String value = null;
+    final String value2 = "abc";
+
+    assertTrue(StringUtil.getDefault(value, value2).equals(value2));
+  }
 }
