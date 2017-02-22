@@ -14,7 +14,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-options"]
 
 group = "rebolt"
-version = "0.1.5"
+version = "0.1.6"
 
 project.ext {
   name = "rebolt-core"
@@ -29,8 +29,8 @@ allprojects {
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
   repositories {
-    jcenter()
     mavenCentral()
+    jcenter()
   }
 }
 
