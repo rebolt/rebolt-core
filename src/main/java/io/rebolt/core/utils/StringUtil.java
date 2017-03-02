@@ -365,7 +365,7 @@ public final class StringUtil {
    * @param separator 구분자
    * @param string 문자열
    * @param limit 결과물 목록수 (0: unlimit)
-   * @param remain 마지막 결과에 나머지 문자열 추가여부, 입력값 ('/', "a/b/c/d/e/f", 2) -> 출력값 ["a", "b/c/d/e/f"]
+   * @param remain 마지막 결과에 나머지 문자열 추가여부, 입력값 ('/', "a/b/c/d/e/f", 2) - 출력값 ["a", "b/c/d/e/f"]
    * @return 나누어진 문자열 목록
    * @since 0.1.5
    */
