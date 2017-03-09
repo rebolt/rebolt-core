@@ -2,6 +2,8 @@ package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
 import io.rebolt.core.exceptions.NotInitializedException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -14,6 +16,7 @@ import java.util.Map;
 /**
  * @since 1.0.0
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ReflectionUtil {
 
   /**
