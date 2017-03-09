@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.crypto.Cipher;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.KeyFactory;
@@ -16,6 +18,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.SplittableRandom;
 import java.util.StringJoiner;
 
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
+import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -600,6 +604,54 @@ public final class StringUtil {
       }
     }
     return rsaDefaultKeyPair;
+  }
+  // endregion
+
+  // region uri
+
+  /**
+   * uri를 합친다
+   *
+   * @param first first uri
+   * @param second second uri
+   * @return 합쳐진 uri
+   * @since 0.1.7
+   */
+  public static String combineUri(String first, String second) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(first);
+    if (first.charAt(first.length() - 1) == '/') {
+      if (second.charAt(0) == '/') {
+        builder.append(second.substring(1));
+      } else {
+        builder.append(second);
+      }
+    } else {
+      if (second.charAt(0) == '/') {
+        builder.append(second);
+      } else {
+        builder.append('/').append(second);
+      }
+    }
+    return builder.toString();
+  }
+
+  /**
+   * uri를 합친다
+   *
+   * @param first first uri
+   * @param uris remaining uris
+   * @return 합쳐진 uri
+   * @since 0.1.7
+   */
+  public static String combineUri(String first, String... uris) {
+    if (uris.length == 0) {
+      return first;
+    } else if (uris.length == 1) {
+      return combineUri(first, uris[0]);
+    } else {
+      return combineUri(first, combineUri(uris[0], Arrays.copyOfRange(uris, 1, uris.length)));
+    }
   }
   // endregion
 }

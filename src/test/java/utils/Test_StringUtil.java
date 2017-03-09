@@ -7,9 +7,7 @@ import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
 
 import javax.crypto.NoSuchPaddingException;
-import java.security.Key;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -203,7 +201,8 @@ public final class Test_StringUtil {
 
   @Test
   public void test_decryptRsa() {
-    final String value = "QvHuo7YiIx0UU6aHtt9YJLtL0UNYZQVVPcy/FjAWCr8txelIj/ePMGxE++J+l49MjGUm7VcsdBCHTHSutjZJ1DIDY1LX+kpe2M5tBndDXitD/VCbXWO9pIgOxQjdtcc+e0jXngPweYZA7zaExdxI6hgyBbwyIecLFj8PshGsSDnpbVVUn+SKRi6kF9338HFCnV/u9Loikj3GXLSZpGcy9GBQ/C0o/hfABqCy9KuS5+++O8sEVA2UCAUpapujYARO9ox1Ra7qDsypwBpNMnaKu7QIaY45MsmOiqexI2ewl/MJFpV0sxIcUWzr+flZ4uN0wBzf1eRarXF0WEIIEsZmJg==";
+    final String value =
+        "QvHuo7YiIx0UU6aHtt9YJLtL0UNYZQVVPcy/FjAWCr8txelIj/ePMGxE++J+l49MjGUm7VcsdBCHTHSutjZJ1DIDY1LX+kpe2M5tBndDXitD/VCbXWO9pIgOxQjdtcc+e0jXngPweYZA7zaExdxI6hgyBbwyIecLFj8PshGsSDnpbVVUn+SKRi6kF9338HFCnV/u9Loikj3GXLSZpGcy9GBQ/C0o/hfABqCy9KuS5+++O8sEVA2UCAUpapujYARO9ox1Ra7qDsypwBpNMnaKu7QIaY45MsmOiqexI2ewl/MJFpV0sxIcUWzr+flZ4uN0wBzf1eRarXF0WEIIEsZmJg==";
 
     KeyPair keyPair = StringUtil.getDefaultKeyPairRsa();
     final String decryptedValue = StringUtil.decryptRsa(keyPair.getPrivate(), value);
@@ -241,4 +240,37 @@ public final class Test_StringUtil {
 
     assertTrue(StringUtil.getDefault(value, value2).equals(value2));
   }
+
+  @Test
+  public void test_combineUri() {
+    final String a = "/say/hello/";
+    final String b = "/yo/";
+
+    final String combine = StringUtil.combineUri(a, b);
+
+    assertTrue("/say/hello/yo/".equals(combine));
+  }
+
+  @Test
+  public void test_combineUri2() {
+    final String a = "say/hello";
+    final String b = "yo";
+
+    final String combine = StringUtil.combineUri(a, b);
+
+    assertTrue("say/hello/yo".equals(combine));
+  }
+
+  @Test
+  public void test_combineUri3() {
+    final String a = "a/b";
+    final String b = "c";
+    final String c = "d/";
+    final String d = "/e/";
+    final String e = "/f";
+
+    final String combine = StringUtil.combineUri(a, b, c, d, e);
+    assertTrue("a/b/c/d/e/f".equals(combine));
+  }
 }
+
