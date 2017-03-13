@@ -105,6 +105,17 @@ public final class ObjectUtil {
   }
 
   /**
+   * isNotEmpty
+   *
+   * @param model {@link IModel}
+   * @return true/false
+   * @since 0.1.9
+   */
+  public static boolean isNotEmpty(IModel model) {
+    return !isEmpty(model);
+  }
+
+  /**
    * isEmpty
    *
    * @param chars {@link CharSequence}
