@@ -631,7 +631,11 @@ public final class StringUtil {
       if (second.charAt(0) == '/') {
         builder.append(second);
       } else {
-        builder.append('/').append(second);
+        if (firstLast == Character.MIN_VALUE) {
+          builder.append(second);
+        } else {
+          builder.append('/').append(second);
+        }
       }
     }
     return builder.toString();
