@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
 
+import static io.rebolt.core.constants.Constants.CHARACTER_EMPTY;
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
 import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
@@ -620,7 +621,7 @@ public final class StringUtil {
   public static String combineUri(String first, String second) {
     StringBuilder builder = new StringBuilder();
     builder.append(first);
-    char firstLast = StringUtil.isNullOrEmpty(first) ? Character.MIN_VALUE : first.charAt(first.length() - 1);
+    char firstLast = StringUtil.isNullOrEmpty(first) ? CHARACTER_EMPTY : first.charAt(first.length() - 1);
     if (firstLast == '/') {
       if (second.charAt(0) == '/') {
         builder.append(second.substring(1));
@@ -631,7 +632,7 @@ public final class StringUtil {
       if (second.charAt(0) == '/') {
         builder.append(second);
       } else {
-        if (firstLast == Character.MIN_VALUE) {
+        if (firstLast == CHARACTER_EMPTY) {
           builder.append(second);
         } else {
           builder.append('/').append(second);
