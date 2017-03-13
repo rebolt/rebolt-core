@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.crypto.Cipher;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.KeyFactory;
@@ -26,9 +24,8 @@ import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
 
-import static io.rebolt.core.constants.Constants.CHARACTER_EMPTY;
+import static io.rebolt.core.constants.Constants.CHARACTER_SLASH;
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
-import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -621,21 +618,21 @@ public final class StringUtil {
   public static String combineUri(String first, String second) {
     StringBuilder builder = new StringBuilder();
     builder.append(first);
-    char firstLast = StringUtil.isNullOrEmpty(first) ? CHARACTER_EMPTY : first.charAt(first.length() - 1);
-    if (firstLast == '/') {
-      if (second.charAt(0) == '/') {
+    char firstLast = StringUtil.isNullOrEmpty(first) ? 0 : first.charAt(first.length() - 1);
+    if (firstLast == CHARACTER_SLASH) {
+      if (second.charAt(0) == CHARACTER_SLASH) {
         builder.append(second.substring(1));
       } else {
         builder.append(second);
       }
     } else {
-      if (second.charAt(0) == '/') {
+      if (second.charAt(0) == CHARACTER_SLASH) {
         builder.append(second);
       } else {
-        if (firstLast == CHARACTER_EMPTY) {
+        if (firstLast == 0) {
           builder.append(second);
         } else {
-          builder.append('/').append(second);
+          builder.append(CHARACTER_SLASH).append(second);
         }
       }
     }
