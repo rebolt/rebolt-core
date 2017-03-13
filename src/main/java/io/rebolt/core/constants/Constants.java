@@ -21,6 +21,9 @@ public final class Constants {
   public static final String STRING_JSON_INITIALIZE = "{}";
   public static final CharSequence CHARS_EMPTY = STRING_EMPTY;
 
+  public static final char CHARACTER_EMPTY = Character.MIN_VALUE;
+  public static final char CHARACTER_BLANK = STRING_BLANK.charAt(0);
+
   public static final String CHARSET_NAME_DEFAULT = "UTF-8";
   public static final Charset CHARSET_DEFAULT = Charset.forName(CHARSET_NAME_DEFAULT);
   public static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
