@@ -620,7 +620,8 @@ public final class StringUtil {
   public static String combineUri(String first, String second) {
     StringBuilder builder = new StringBuilder();
     builder.append(first);
-    if (first.charAt(first.length() - 1) == '/') {
+    char firstLast = StringUtil.isNullOrEmpty(first) ? Character.MIN_VALUE : first.charAt(first.length() - 1);
+    if (firstLast == '/') {
       if (second.charAt(0) == '/') {
         builder.append(second.substring(1));
       } else {

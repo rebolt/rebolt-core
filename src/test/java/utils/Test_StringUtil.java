@@ -246,9 +246,14 @@ public final class Test_StringUtil {
     final String a = "/say/hello/";
     final String b = "/yo/";
 
+    final String c = "";
+    final String d = "/a";
+
     final String combine = StringUtil.combineUri(a, b);
+    final String combine2 = StringUtil.combineUri(c, d);
 
     assertTrue("/say/hello/yo/".equals(combine));
+    assertTrue("/a".equals(combine2));
   }
 
   @Test
