@@ -3,8 +3,12 @@ package io.rebolt.core.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 
 /**
  * @since 0.1.2
@@ -43,4 +47,29 @@ public final class DateTimeUtil {
   public static long compareMillis(ZonedDateTime from, ZonedDateTime to) {
     return from.toOffsetDateTime().toInstant().toEpochMilli() - to.toOffsetDateTime().toInstant().toEpochMilli();
   }
+
+  /**
+   * {@link ZonedDateTime} 파싱
+   *
+   * @param dateTime yyyy-MM-dd'T'HH:mm:ss
+   * @return {@link ZonedDateTime} (utc0)
+   */
+  public static ZonedDateTime parse(String dateTime) {
+    return parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+  }
+
+  /**
+   * {@link ZonedDateTime} 파싱
+   *
+   * @param dateTime 날짜 문자열
+   * @param pattern 날짜 패턴
+   * @return {@link ZonedDateTime} (utc0)
+   */
+  public static ZonedDateTime parse(String dateTime, DateTimeFormatter pattern) {
+    if (isNullOrEmpty(dateTime)) {
+      return null;
+    }
+    return LocalDateTime.parse(dateTime, pattern).atZone(TIME_ZONE_UTC);
+  }
+
 }
