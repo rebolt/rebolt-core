@@ -17,6 +17,7 @@ public final class Constants {
   public static final String STRING_EQUAL = "=";
   public static final String STRING_SHARP = "#";
   public static final String STRING_QUESTION = "?";
+  public static final String STRING_COLON = ":";
   public static final String STRING_DOUBLE_COLON = "::";
   public static final String STRING_JSON_INITIALIZE = "{}";
   public static final String STRING_SLASH = "/";
