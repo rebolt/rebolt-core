@@ -3,9 +3,11 @@ package utils;
 import io.rebolt.core.utils.DateTimeUtil;
 import org.junit.Test;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static org.junit.Assert.assertTrue;
 
@@ -31,5 +33,15 @@ public final class Test_DateTimeUtil {
     final ZonedDateTime nowUtc0_2 = DateTimeUtil.parse(nowUtc0String);
 
     assertTrue(DateTimeUtil.compare(nowUtc0, nowUtc0_2) == 0);
+  }
+
+  @Test
+  public void test_parseDate() {
+    final Date now = Date.from(Instant.now());
+    final String nowString = DateTimeUtil.format(now);
+
+    final Date now2 = DateTimeUtil.parseDate(nowString);
+
+    assertTrue(now.after(now2));
   }
 }
