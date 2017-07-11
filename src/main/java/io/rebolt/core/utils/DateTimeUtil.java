@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import static io.rebolt.core.utils.ObjectUtil.isNull;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 
 /**
@@ -55,7 +56,7 @@ public final class DateTimeUtil {
   /**
    * {@link ZonedDateTime} 파싱
    *
-   * @param dateTime yyyy-MM-dd'T'HH:mm:ss
+   * @param dateTime yyyy-MM-dd'T'HH:mm:ss.SSS
    * @return {@link ZonedDateTime} (utc0)
    */
   public static ZonedDateTime parse(String dateTime) {
@@ -91,13 +92,39 @@ public final class DateTimeUtil {
   }
 
   /**
+   * {@link ZonedDateTime} 문자열 변경
+   *
+   * @param dateTime {@link ZonedDateTime}
+   * @return yyyy-MM-dd'T'HH:mm:ss.SSS
+   * @since 0.1.14
+   */
+  public static String format(ZonedDateTime dateTime) {
+    return format(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+  }
+
+  /**
+   * {@link ZonedDateTime} 문자열 변경
+   *
+   * @param dateTime {@link ZonedDateTime}
+   * @param pattern 날짜 패턴
+   * @return yyyy-MM-dd'T'HH:mm:ss.SSS
+   * @since 0.1.14
+   */
+  public static String format(ZonedDateTime dateTime, DateTimeFormatter pattern) {
+    if (isNull(dateTime)) {
+      return null;
+    }
+    return dateTime.format(pattern);
+  }
+
+  /**
    * {@link Date} 포맷
    *
    * @param date {@link Date}
    * @return yyyy-MM-dd 형태의 문자열
+   * @since 0.1.14
    */
   public static String format(Date date) {
     return _simpleDateFormat.format(date);
   }
-
 }

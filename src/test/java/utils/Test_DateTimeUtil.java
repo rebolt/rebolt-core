@@ -44,4 +44,13 @@ public final class Test_DateTimeUtil {
 
     assertTrue(now.after(now2));
   }
+
+  @Test
+  public void test_format() {
+    final ZonedDateTime dateTime = DateTimeUtil.nowUtc0();
+    final String dateTimeString = DateTimeUtil.format(dateTime);
+    final ZonedDateTime dateTime2 = DateTimeUtil.parse(dateTimeString);
+
+    assertTrue(DateTimeUtil.compare(dateTime, dateTime2) == 0);
+  }
 }

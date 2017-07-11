@@ -5,6 +5,7 @@ import io.rebolt.core.models.IModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -301,6 +302,32 @@ public final class ObjectUtil {
   }
 
   /**
+   * thenNonEmpty
+   *
+   * @param dateTime {@link ZonedDateTime}
+   * @param consumer {@link Consumer}
+   * @since 0.1.14
+   */
+  public static void thenNonEmpty(ZonedDateTime dateTime, Consumer<? super ZonedDateTime> consumer) {
+    if (!isNull(dateTime)) {
+      consumer.accept(dateTime);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param bool {@link Boolean}
+   * @param consumer {@link Consumer}
+   * @since 0.1.14
+   */
+  public static void thenNonEmpty(Boolean bool, Consumer<? super Boolean> consumer) {
+    if (!isNull(bool)) {
+      consumer.accept(bool);
+    }
+  }
+
+  /**
    * thenConatiains
    *
    * 전달받은 Map내에 Key를 포함하고 있다면 조회된 Value를 이용해 Consumer를 실행한다
@@ -310,7 +337,7 @@ public final class ObjectUtil {
    * @param comsumer 조건 만족 후 실행될 구문
    * @param <T> first generic
    * @param <V> second generic
-   * @since 0.1.8
+   * @since 0.1.13
    */
   public static <T, V> void thenContains(Map<T, V> map, T key, Consumer<? super V> comsumer) {
     if (!isEmpty(map) && map.containsKey(key)) {
