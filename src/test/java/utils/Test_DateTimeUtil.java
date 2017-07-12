@@ -53,4 +53,15 @@ public final class Test_DateTimeUtil {
 
     assertTrue(DateTimeUtil.compare(dateTime, dateTime2) == 0);
   }
+
+  @Test
+  public void test_format2() {
+    final String dateString = "2017-07-11";
+    final Date date = DateTimeUtil.parseDate(dateString);
+    final String dateString2 = DateTimeUtil.format(date, "MM/dd/yyyy");
+    final Date date2 = DateTimeUtil.parseDate(dateString2, "MM/dd/yyyy");
+
+    assertTrue(date.compareTo(date2) == 0);
+
+  }
 }

@@ -92,6 +92,21 @@ public final class DateTimeUtil {
   }
 
   /**
+   * {@link Date} 파싱
+   *
+   * @param dateString 정의된 형태의 날짜 문자열
+   * @param pattern 날짜 패턴
+   * @return {@link Date}
+   */
+  public static Date parseDate(String dateString, String pattern) {
+    try {
+      return new SimpleDateFormat(pattern).parse(dateString);
+    } catch (ParseException e) {
+      return null;
+    }
+  }
+
+  /**
    * {@link ZonedDateTime} 문자열 변경
    *
    * @param dateTime {@link ZonedDateTime}
@@ -126,5 +141,17 @@ public final class DateTimeUtil {
    */
   public static String format(Date date) {
     return _simpleDateFormat.format(date);
+  }
+
+  /**
+   * {@link Date} 포맷
+   *
+   * @param date {@link Date}
+   * @param pattern yyyyMMdd 패턴 정의
+   * @return 패턴이 적용된 날짜 문자열
+   * @since 0.2.5
+   */
+  public static String format(Date date, String pattern) {
+    return new SimpleDateFormat(pattern).format(date);
   }
 }
