@@ -2,19 +2,15 @@ buildscript {
   repositories {
     jcenter()
   }
-  dependencies {
-    classpath "com.github.jengelman.gradle.plugins:shadow:$ver_gradle_shadow"
-  }
 }
 
 apply plugin: "java"
-apply plugin: "com.github.johnrengelman.shadow"
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
 [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-options"]
 
 group = "rebolt"
-version = "0.1.8"
+version = "0.2.2"
 
 project.ext {
   name = "rebolt-core"
