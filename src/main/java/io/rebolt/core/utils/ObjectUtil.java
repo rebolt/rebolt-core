@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -311,6 +312,19 @@ public final class ObjectUtil {
   public static void thenNonEmpty(ZonedDateTime dateTime, Consumer<? super ZonedDateTime> consumer) {
     if (!isNull(dateTime)) {
       consumer.accept(dateTime);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param date {@link Date}
+   * @param consumer {@link Consumer}
+   * @since 0.2.4
+   */
+  public static void thenNonEmpty(Date date, Consumer<? super Date> consumer) {
+    if (!isNull(date)) {
+      consumer.accept(date);
     }
   }
 
