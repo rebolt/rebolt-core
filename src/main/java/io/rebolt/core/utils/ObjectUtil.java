@@ -346,16 +346,35 @@ public final class ObjectUtil {
    *
    * 전달받은 Map내에 Key를 포함하고 있다면 조회된 Value를 이용해 Consumer를 실행한다
    *
-   * @param map 전달받은 Map 인스턴스
+   * @param map 전달 받은 Map 인스턴스
    * @param key Map 내 포함되어야 할 key
-   * @param comsumer 조건 만족 후 실행될 구문
+   * @param consumer 조건 만족 후 실행될 구문
    * @param <T> first generic
    * @param <V> second generic
    * @since 0.1.13
    */
-  public static <T, V> void thenContains(Map<T, V> map, T key, Consumer<? super V> comsumer) {
+  public static <T, V> void thenContains(Map<T, V> map, T key, Consumer<? super V> consumer) {
     if (!isEmpty(map) && map.containsKey(key)) {
-      comsumer.accept(map.get(key));
+      consumer.accept(map.get(key));
+    }
+  }
+
+  /**
+   * thenExists
+   *
+   * @param map 전달 받은 Map 인스턴스
+   * @param key Map 내 포함되어야 할 key
+   * @param consumer 조건 만족 후 실행될 구문
+   * @param <T> first generic
+   * @param <V> second generic
+   * @since 0.2.6
+   */
+  public static <T, V> void thenExists(Map<T, V> map, T key, Consumer<? super V> consumer) {
+    if (!isEmpty(map) && map.containsKey(key)) {
+      V value = map.get(key);
+      if (value != null) {
+        consumer.accept(value);
+      }
     }
   }
 
