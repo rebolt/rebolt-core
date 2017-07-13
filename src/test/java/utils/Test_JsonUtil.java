@@ -2,13 +2,16 @@ package utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.Lists;
 import io.rebolt.core.utils.JsonUtil;
 import io.rebolt.core.utils.ObjectUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public final class Test_JsonUtil {
 
@@ -36,6 +39,20 @@ public final class Test_JsonUtil {
   }
 
   @Test
+  public void test_readList() {
+    final String value = "{\"id\":\"id_value\", \"value\":\"value_value\"}";
+    final String array = "[" + value + ", " + value + "]";
+
+    List<String> stringList = JsonUtil.readStringList("[\"key1\", \"key2\"]");
+    List<Json> jsonList = JsonUtil.readList(array, Json.class);
+
+    assertNotNull(stringList);
+    assertNotNull(jsonList);
+    assertFalse(ObjectUtil.isOrNull(stringList));
+    assertFalse(ObjectUtil.isOrNull(jsonList));
+  }
+
+  @Test
   public void test_write() {
     Json json = new Json("id", "value");
     String jsonValue = JsonUtil.write(json);
@@ -43,4 +60,15 @@ public final class Test_JsonUtil {
 
     assertTrue(json.equals(json2));
   }
+
+  @Test
+  public void test_writeList() {
+    List<Json> jsonList = Lists.newArrayList(new Json("id1", "value1"), new Json("id2", "value2"));
+    String jsonArray = JsonUtil.writeList(jsonList);
+    List<Json> restoredJsonList = JsonUtil.readList(jsonArray, Json.class);
+
+    assertTrue(restoredJsonList != null && (jsonList.size() == restoredJsonList.size()));
+    assertTrue(restoredJsonList.get(0).getId().equals("id1"));
+  }
+
 }

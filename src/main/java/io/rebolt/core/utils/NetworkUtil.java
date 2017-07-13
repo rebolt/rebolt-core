@@ -19,7 +19,7 @@ public final class NetworkUtil {
           try {
             host = InetAddress.getLocalHost().toString();
           } catch (Exception ex) {
-            host = "(unknown host)";
+            host = "0.0.0.0";
           }
         }
       }
