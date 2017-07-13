@@ -282,5 +282,18 @@ public final class Test_StringUtil {
     final String combine = StringUtil.combineUri(a, b, c, d, e);
     assertTrue("a/b/c/d/e/f".equals(combine));
   }
+
+  @Test
+  public void test_random() {
+    int min = 999, max = 1000;
+    for (int i=0; i<10000; i++) {
+      long randLong = StringUtil.randomLong(min, max);
+      int randInt = StringUtil.randomInt(min, max);
+      assertTrue(randLong >= 100);
+      assertTrue(randLong <= 1000);
+      assertTrue(randInt >= 100);
+      assertTrue(randInt <= 1000);
+    }
+  }
 }
 

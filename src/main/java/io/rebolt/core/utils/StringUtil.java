@@ -219,6 +219,72 @@ public final class StringUtil {
     return randomAlpha(random.nextInt(max - min) + min);
   }
 
+  /**
+   * 랜덤 long
+   *
+   * @return 랜덤 long
+   * @since 0.2.7
+   */
+  public static long randomLong() {
+    return random.nextLong();
+  }
+
+  /**
+   * 랜덤 long
+   *
+   * @param max 최대수
+   * @return 최대수를 넘지 않는 랜덤 long
+   * @since 0.2.7
+   */
+  public static long randomLong(long max) {
+    return random.nextLong(++max);
+  }
+
+  /**
+   * 랜덤 long
+   *
+   * @param min 최소수
+   * @param max 최대수
+   * @return 최소 ~ 최대사이의 랜덤 long
+   * @since 0.2.7
+   */
+  public static long randomLong(long min, long max) {
+    return random.nextLong(min, ++max);
+  }
+
+  /**
+   * 랜덤 int
+   *
+   * @return 랜덤 int
+   * @since 0.2.7
+   */
+  public static int randomInt() {
+    return random.nextInt();
+  }
+
+  /**
+   * 랜덤 int
+   *
+   * @param max 최대수
+   * @return 최대수를 넘지 않는 랜덤 int
+   * @since 0.2.7
+   */
+  public static int randomInt(int max) {
+    return random.nextInt(++max);
+  }
+
+  /**
+   * 랜덤 int
+   *
+   * @param min 최소수
+   * @param max 최대수
+   * @return 최소 ~ 최대사이의 랜덤 int
+   * @since 0.2.7
+   */
+  public static int randomInt(int min, int max) {
+    return random.nextInt(min, ++max);
+  }
+
   // endregion
 
   // region cast
