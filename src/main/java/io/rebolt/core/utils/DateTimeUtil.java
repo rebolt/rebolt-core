@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import static io.rebolt.core.utils.ObjectUtil.isNull;
@@ -56,11 +56,11 @@ public final class DateTimeUtil {
   /**
    * {@link ZonedDateTime} 파싱
    *
-   * @param dateTime yyyy-MM-dd'T'HH:mm:ss.SSS
-   * @return {@link ZonedDateTime} (utc0)
+   * @param isoDateTime yyyy-MM-ddTHH:mm:ss+00:00[UTC]
+   * @return {@link ZonedDateTime}
    */
-  public static ZonedDateTime parse(String dateTime) {
-    return parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+  public static ZonedDateTime parse(String isoDateTime) {
+    return parse(isoDateTime, DateTimeFormatter.ISO_ZONED_DATE_TIME);
   }
 
   /**
@@ -74,7 +74,7 @@ public final class DateTimeUtil {
     if (isNullOrEmpty(dateTime)) {
       return null;
     }
-    return LocalDateTime.parse(dateTime, pattern).atZone(TIME_ZONE_UTC);
+    return ZonedDateTime.parse(dateTime, pattern);
   }
 
   /**
@@ -110,11 +110,33 @@ public final class DateTimeUtil {
    * {@link ZonedDateTime} 문자열 변경
    *
    * @param dateTime {@link ZonedDateTime}
-   * @return yyyy-MM-dd'T'HH:mm:ss.SSS
+   * @return yyyy-MM-ddTHH:mm:ss.SSS+00:00[UTC]
    * @since 0.1.14
    */
   public static String format(ZonedDateTime dateTime) {
-    return format(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    return format(dateTime, DateTimeFormatter.ISO_ZONED_DATE_TIME);
+  }
+
+  /**
+   * {@link ZonedDateTime} 문자열 변경
+   *
+   * @param dateTime {@link ZonedDateTime}
+   * @return yyyy-MM-ddTHH:mm:ss.SSSZ
+   * @since 0.2.5
+   */
+  public static String formatInstant(ZonedDateTime dateTime) {
+    return format(dateTime, DateTimeFormatter.ISO_INSTANT);
+  }
+
+  /**
+   * {@link ZonedDateTime} 문자열 변경
+   *
+   * @param dateTime {@link ZonedDateTime}
+   * @return yyyy-MM-ddTHH:mm:ssZ
+   * @since 0.2.5
+   */
+  public static String formatInstantWithoutMillis(ZonedDateTime dateTime) {
+    return format(dateTime.truncatedTo(ChronoUnit.SECONDS), DateTimeFormatter.ISO_INSTANT);
   }
 
   /**

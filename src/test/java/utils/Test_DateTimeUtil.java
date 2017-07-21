@@ -52,6 +52,14 @@ public final class Test_DateTimeUtil {
     final ZonedDateTime dateTime2 = DateTimeUtil.parse(dateTimeString);
 
     assertTrue(DateTimeUtil.compare(dateTime, dateTime2) == 0);
+
+    final String instantString1 = DateTimeUtil.formatInstant(dateTime);
+    final ZonedDateTime instantDateTime1 = DateTimeUtil.parse(instantString1);
+
+    assertTrue(DateTimeUtil.compare(dateTime, instantDateTime1) == 0);
+
+    final String instantString2 = DateTimeUtil.formatInstantWithoutMillis(dateTime);
+    assertTrue(instantString1.length() > instantString2.length());
   }
 
   @Test
