@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 public final class Constants {
   public static final String STRING_EMPTY = "";
   public static final String STRING_BLANK = " ";
+  public static final String STRING_DASH = "-";
   public static final String STRING_COMMA = ",";
   public static final String STRING_AND = "&";
   public static final String STRING_EQUAL = "=";
