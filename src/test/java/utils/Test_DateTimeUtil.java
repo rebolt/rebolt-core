@@ -28,7 +28,7 @@ public final class Test_DateTimeUtil {
   @Test
   public void test_parse() {
     final ZonedDateTime nowUtc0 = DateTimeUtil.nowUtc0();
-    final String nowUtc0String = nowUtc0.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    final String nowUtc0String = nowUtc0.format(DateTimeFormatter.ISO_INSTANT);
 
     final ZonedDateTime nowUtc0_2 = DateTimeUtil.parse(nowUtc0String);
 
