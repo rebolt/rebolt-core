@@ -119,13 +119,7 @@ public final class JsonUtil {
    * @since 0.2.8
    */
   public static List<String> readStringList(String jsonArray) {
-    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
-    try {
-      return objectMapper.readValue(jsonArray, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
-    } catch (IOException e) {
-      LogUtil.debug(e);
-      return null;
-    }
+    return readList(jsonArray, String.class);
   }
 
   /**
@@ -150,6 +144,19 @@ public final class JsonUtil {
   }
 
   /**
+   * 사용자객체로부터 맵으로 전환
+   *
+   * @param object 사용자객체
+   * @param <T> 사용자객체 타입
+   * @return 전환된 맵 (String, Object)
+   * @since 0.2.11
+   */
+  public static <T> Map<String, Object> readStringMap(T object) {
+    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+    return objectMapper.convertValue(object, objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
+  }
+
+  /**
    * Json 문자열로부터 맵으로 전환
    *
    * @param json json 문자열
@@ -157,13 +164,7 @@ public final class JsonUtil {
    * @since 0.2.10
    */
   public static Map<String, Object> readStringMap(String json) {
-    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
-    try {
-      return objectMapper.readValue(json, objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
-    } catch (IOException e) {
-      LogUtil.debug(e);
-      return null;
-    }
+    return readMap(json, String.class, Object.class);
   }
   // endregion
 

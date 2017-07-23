@@ -66,6 +66,19 @@ public final class Test_JsonUtil {
   }
 
   @Test
+  public void test_readMap2() {
+    final Json json = new Json("id", "value");
+    final String jsonString = JsonUtil.write(json);
+
+    Map<String, Object> map = JsonUtil.readStringMap(json);
+    Map<String, Object> map2 = JsonUtil.readStringMap(jsonString);
+
+    assertTrue(map != null && map2 != null && map.size() == map2.size());
+    assertTrue(map.get("id").equals(map2.get("id")));
+    assertTrue(map.get("value").equals(map2.get("value")));
+  }
+
+  @Test
   public void test_write() {
     Json json = new Json("id", "value");
     String jsonValue = JsonUtil.write(json);
