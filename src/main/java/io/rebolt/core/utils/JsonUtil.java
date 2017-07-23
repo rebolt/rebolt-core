@@ -27,6 +27,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static io.rebolt.core.constants.Constants.STRING_JSON_INITIALIZE;
@@ -41,6 +42,7 @@ public final class JsonUtil {
   private final static JsonFactory jsonFactory = new MappingJsonFactory();
 
   // region read
+
   /**
    * Json 문자열을 사용자 객체로 전환
    *
@@ -125,9 +127,48 @@ public final class JsonUtil {
       return null;
     }
   }
+
+  /**
+   * Json 문자열로부터 맵으로 전환
+   *
+   * @param json json 문자열
+   * @param keyType key 클래스타입
+   * @param valueType value 클래스타입
+   * @param <K> key
+   * @param <V> value
+   * @return 전환된 맵 (K, V)
+   * @since 0.2.10
+   */
+  public static <K, V> Map<K, V> readMap(String json, Class<K> keyType, Class<V> valueType) {
+    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+    try {
+      return objectMapper.readValue(json, objectMapper.getTypeFactory().constructMapType(Map.class, keyType, valueType));
+    } catch (IOException e) {
+      LogUtil.debug(e);
+      return null;
+    }
+  }
+
+  /**
+   * Json 문자열로부터 맵으로 전환
+   *
+   * @param json json 문자열
+   * @return 전환된 맵 (String, Object)
+   * @since 0.2.10
+   */
+  public static Map<String, Object> readStringMap(String json) {
+    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+    try {
+      return objectMapper.readValue(json, objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
+    } catch (IOException e) {
+      LogUtil.debug(e);
+      return null;
+    }
+  }
   // endregion
 
   // region write
+
   /**
    * 임의의 객체를 json 문자열로 전환
    *
