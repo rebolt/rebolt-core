@@ -1,3 +1,20 @@
+/*
+ * Copyright 2017 The Rebolt Framework
+ *
+ * The Rebolt Framework licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
 package io.rebolt.core.utils;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -10,6 +27,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static io.rebolt.core.constants.Constants.STRING_JSON_INITIALIZE;
@@ -24,6 +42,7 @@ public final class JsonUtil {
   private final static JsonFactory jsonFactory = new MappingJsonFactory();
 
   // region read
+
   /**
    * Json 문자열을 사용자 객체로 전환
    *
@@ -100,17 +119,57 @@ public final class JsonUtil {
    * @since 0.2.8
    */
   public static List<String> readStringList(String jsonArray) {
+    return readList(jsonArray, String.class);
+  }
+
+  /**
+   * Json 문자열로부터 맵으로 전환
+   *
+   * @param json json 문자열
+   * @param keyType key 클래스타입
+   * @param valueType value 클래스타입
+   * @param <K> key
+   * @param <V> value
+   * @return 전환된 맵 (K, V)
+   * @since 0.2.10
+   */
+  public static <K, V> Map<K, V> readMap(String json, Class<K> keyType, Class<V> valueType) {
     ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
     try {
-      return objectMapper.readValue(jsonArray, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+      return objectMapper.readValue(json, objectMapper.getTypeFactory().constructMapType(Map.class, keyType, valueType));
     } catch (IOException e) {
       LogUtil.debug(e);
       return null;
     }
   }
+
+  /**
+   * 사용자객체로부터 맵으로 전환
+   *
+   * @param object 사용자객체
+   * @param <T> 사용자객체 타입
+   * @return 전환된 맵 (String, Object)
+   * @since 0.2.11
+   */
+  public static <T> Map<String, Object> readStringMap(T object) {
+    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+    return objectMapper.convertValue(object, objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
+  }
+
+  /**
+   * Json 문자열로부터 맵으로 전환
+   *
+   * @param json json 문자열
+   * @return 전환된 맵 (String, Object)
+   * @since 0.2.10
+   */
+  public static Map<String, Object> readStringMap(String json) {
+    return readMap(json, String.class, Object.class);
+  }
   // endregion
 
   // region write
+
   /**
    * 임의의 객체를 json 문자열로 전환
    *

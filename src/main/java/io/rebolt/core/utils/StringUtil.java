@@ -1,3 +1,20 @@
+/*
+ * Copyright 2017 The Rebolt Framework
+ *
+ * The Rebolt Framework licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Lists;
@@ -106,7 +123,7 @@ public final class StringUtil {
    * @since 0.1.0
    */
   public static boolean isNumeric(String value) {
-    return !isNullOrEmpty(value) && !value.chars().anyMatch(entity -> entity < 48 || entity > 57);
+    return !isNullOrEmpty(value) && value.chars().noneMatch(entity -> entity < 48 || entity > 57);
   }
   // endregion
 
@@ -185,8 +202,7 @@ public final class StringUtil {
   private final static SplittableRandom random = new SplittableRandom();
 
   /**
-   * 고정된 길이의 랜덤문자열 생성.
-   * 알파벳과 숫자의 조합.
+   * 고정된 길이의 랜덤문자열 생성. 알파벳과 숫자의 조합.
    *
    * @param length 길이
    * @return 고정된 길이의 랜덤 문자열
@@ -204,8 +220,7 @@ public final class StringUtil {
   }
 
   /**
-   * 가변 길이의 랜덤문자열 생성.
-   * 알파벳과 숫자의 조합.
+   * 가변 길이의 랜덤문자열 생성. 알파벳과 숫자의 조합.
    *
    * @param min 최소길이
    * @param max 최대길이
