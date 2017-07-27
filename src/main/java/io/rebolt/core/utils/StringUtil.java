@@ -681,28 +681,9 @@ public final class StringUtil {
    * @return 합쳐진 uri
    * @since 0.1.7
    */
+  @Deprecated
   public static String combineUri(String first, String second) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(first);
-    char firstLast = StringUtil.isNullOrEmpty(first) ? 0 : first.charAt(first.length() - 1);
-    if (firstLast == CHARACTER_SLASH) {
-      if (second.charAt(0) == CHARACTER_SLASH) {
-        builder.append(second.substring(1));
-      } else {
-        builder.append(second);
-      }
-    } else {
-      if (second.charAt(0) == CHARACTER_SLASH) {
-        builder.append(second);
-      } else {
-        if (firstLast == 0) {
-          builder.append(second);
-        } else {
-          builder.append(CHARACTER_SLASH).append(second);
-        }
-      }
-    }
-    return builder.toString();
+    return UriUtil.combineUri(first, second);
   }
 
   /**
@@ -713,14 +694,9 @@ public final class StringUtil {
    * @return 합쳐진 uri
    * @since 0.1.7
    */
+  @Deprecated
   public static String combineUri(String first, String... uris) {
-    if (uris.length == 0) {
-      return first;
-    } else if (uris.length == 1) {
-      return combineUri(first, uris[0]);
-    } else {
-      return combineUri(first, combineUri(uris[0], Arrays.copyOfRange(uris, 1, uris.length)));
-    }
+    return UriUtil.combineUri(first, uris);
   }
   // endregion
 }
