@@ -2,6 +2,7 @@ package utils;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
@@ -294,6 +296,15 @@ public final class Test_StringUtil {
       assertTrue(randInt >= 100);
       assertTrue(randInt <= 1000);
     }
+  }
+
+  @Test
+  public void test_toString() {
+    Map<String, String> map = Maps.newHashMap();
+    map.put("a", "b");
+
+    final String mapString = StringUtil.toString(map);
+    assertTrue("a=b;".equals(mapString));
   }
 }
 
