@@ -17,6 +17,7 @@
 
 package io.rebolt.core.utils;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import io.rebolt.core.exceptions.IllegalParameterException;
 import lombok.AccessLevel;
@@ -37,6 +38,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
@@ -300,6 +302,15 @@ public final class StringUtil {
     return random.nextInt(min, ++max);
   }
 
+  // endregion
+
+  // region toString
+  public static String toString(Map<?, ?> map) {
+    StringBuilder builder = new StringBuilder();
+    ObjectUtil.nullGuard(map).forEach((key, value) ->
+        builder.append(key).append("=").append(value.getClass().isArray() ? Joiner.on(',').join((Object[]) value) : value).append(";"));
+    return builder.toString();
+  }
   // endregion
 
   // region cast
