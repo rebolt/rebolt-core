@@ -41,7 +41,6 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProxyUtil {
-  private static final String _className = "io.rebolt.core.ProxyInterceptor";
   private static final ByteBuddy _buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
   private static final Map<Class, Class> _proxyMap = Maps.newHashMap();
   private static final Object _lock = new Object();
@@ -65,7 +64,6 @@ public final class ProxyUtil {
         if (proxyClass == null) {
           DynamicType.Unloaded<R> dynamicType =
               _buddy.subclass(targetClass)
-                  .name(_className)
                   .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
                   .make();
           proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
@@ -91,7 +89,6 @@ public final class ProxyUtil {
   public static <T extends AbstractIterceptor, R> R newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
     return ClassUtil.newInstance(
         _buddy.subclass(targetClass)
-            .name(_className)
             .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
             .make()
             .load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded());
