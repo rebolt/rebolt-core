@@ -424,6 +424,25 @@ public final class StringUtil {
     return joiner.toString();
   }
 
+  /**
+   * 문자열 합치기 (skip nulls)
+   *
+   * @param separator 구분자
+   * @param values 대상 인스턴스 목록 (Object)
+   * @return 0.2.13
+   */
+  public static String join(String separator, Object[] values) {
+    Objects.requireNonNull(separator);
+    Objects.requireNonNull(values);
+    StringJoiner joiner = new StringJoiner(separator);
+    for (Object value : values) {
+      if (!Objects.isNull(value)) {
+        joiner.add(value.toString());
+      }
+    }
+    return joiner.toString();
+  }
+
   // endregion
 
   // region split

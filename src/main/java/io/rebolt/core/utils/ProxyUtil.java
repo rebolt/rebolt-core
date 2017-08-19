@@ -41,8 +41,8 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProxyUtil {
-  private static final ByteBuddy buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
-  private static final Map<Class, Class> proxyMap = Maps.newHashMap();
+  private static final ByteBuddy _buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
+  private static final Map<Class, Class> _proxyMap = Maps.newHashMap();
   private static final Object _lock = new Object();
 
   /**
@@ -58,16 +58,16 @@ public final class ProxyUtil {
    */
   @SuppressWarnings({"unchecked", "ConstantConditions"})
   public static <T extends AbstractIterceptor, R> R getInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
-    Class proxyClass = proxyMap.get(targetClass);
+    Class proxyClass = _proxyMap.get(targetClass);
     if (proxyClass == null) {
       synchronized (_lock) {
         if (proxyClass == null) {
           DynamicType.Unloaded<R> dynamicType =
-              buddy.subclass(targetClass)
+              _buddy.subclass(targetClass)
                   .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
                   .make();
           proxyClass = dynamicType.load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
-          proxyMap.put(targetClass, proxyClass);
+          _proxyMap.put(targetClass, proxyClass);
         }
       }
     }
@@ -88,7 +88,7 @@ public final class ProxyUtil {
   @SuppressWarnings("ConstantConditions")
   public static <T extends AbstractIterceptor, R> R newInterceptorClass(Class<T> interceptor, Class<R> targetClass) {
     return ClassUtil.newInstance(
-        buddy.subclass(targetClass)
+        _buddy.subclass(targetClass)
             .method(any()).intercept(MethodDelegation.to(ClassUtil.newInstance(interceptor)))
             .make()
             .load(targetClass.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded());

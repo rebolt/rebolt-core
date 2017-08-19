@@ -27,7 +27,7 @@ public final class UriUtil {
       String originHost = new URI(origin).getHost().toLowerCase();
       String diffHost = new URI(diff).getHost().toLowerCase();
       return originHost.replace("www.", "").equals(diffHost.replace("www.", ""));
-    } catch (URISyntaxException ignored) {
+    } catch (Exception ignored) {
       return false;
     }
   }
