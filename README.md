@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rebolt/rebolt-core.svg?branch=master)](https://travis-ci.org/rebolt/rebolt-core)
 [![](https://jitpack.io/v/rebolt/rebolt-core.svg)](https://jitpack.io/#rebolt/rebolt-core)
 
 # Rebolt-core
