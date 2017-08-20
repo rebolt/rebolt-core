@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static io.rebolt.core.constants.Constants.STRING_JSON_INITIALIZE;
 
 /**
@@ -39,7 +38,8 @@ import static io.rebolt.core.constants.Constants.STRING_JSON_INITIALIZE;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JsonUtil {
-  private final static JsonFactory jsonFactory = new MappingJsonFactory();
+  private final static JsonFactory _jsonFactory = new MappingJsonFactory();
+  private final static ObjectMapper _objectMapper = new ObjectMapper(_jsonFactory);
 
   // region read
 
@@ -53,7 +53,7 @@ public final class JsonUtil {
    */
   public static <T> T read(String jsonString, Class<T> type) {
     try {
-      return new ObjectMapper(jsonFactory).readValue(jsonString, type);
+      return _objectMapper.readValue(jsonString, type);
     } catch (IOException e) {
       LogUtil.debug(e);
       return null;
@@ -68,7 +68,7 @@ public final class JsonUtil {
    */
   public static JsonNode read(String jsonString) {
     try {
-      return new ObjectMapper(jsonFactory).readTree(jsonString);
+      return _objectMapper.readTree(jsonString);
     } catch (IOException e) {
       LogUtil.debug(e);
       return null;
@@ -85,7 +85,7 @@ public final class JsonUtil {
    */
   public static <T> T read(JsonNode jsonNode, Class<T> type) {
     try {
-      return new ObjectMapper(jsonFactory).treeToValue(jsonNode, type);
+      return _objectMapper.treeToValue(jsonNode, type);
     } catch (JsonProcessingException e) {
       LogUtil.debug(e);
       return null;
@@ -102,9 +102,8 @@ public final class JsonUtil {
    * @since 0.2.8
    */
   public static <T> List<T> readList(String jsonArray, Class<T> type) {
-    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
     try {
-      return objectMapper.readValue(jsonArray, objectMapper.getTypeFactory().constructCollectionType(List.class, type));
+      return _objectMapper.readValue(jsonArray, _objectMapper.getTypeFactory().constructCollectionType(List.class, type));
     } catch (IOException e) {
       LogUtil.debug(e);
       return null;
@@ -134,9 +133,8 @@ public final class JsonUtil {
    * @since 0.2.10
    */
   public static <K, V> Map<K, V> readMap(String json, Class<K> keyType, Class<V> valueType) {
-    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
     try {
-      return objectMapper.readValue(json, objectMapper.getTypeFactory().constructMapType(Map.class, keyType, valueType));
+      return _objectMapper.readValue(json, _objectMapper.getTypeFactory().constructMapType(Map.class, keyType, valueType));
     } catch (IOException e) {
       LogUtil.debug(e);
       return null;
@@ -152,8 +150,7 @@ public final class JsonUtil {
    * @since 0.2.11
    */
   public static <T> Map<String, Object> readStringMap(T object) {
-    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
-    return objectMapper.convertValue(object, objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
+    return _objectMapper.convertValue(object, _objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
   }
 
   /**
@@ -179,7 +176,7 @@ public final class JsonUtil {
   public static String write(Object object) {
     ObjectUtil.requireNonNull(object);
     try {
-      return new ObjectMapper(jsonFactory).writeValueAsString(object);
+      return _objectMapper.writeValueAsString(object);
     } catch (JsonProcessingException e) {
       LogUtil.debug(e);
       return STRING_JSON_INITIALIZE;
@@ -195,9 +192,10 @@ public final class JsonUtil {
    */
   public static String writeList(List<?> list) {
     try {
-      return new ObjectMapper(jsonFactory).writeValueAsString(list);
+      return _objectMapper.writeValueAsString(list);
     } catch (JsonProcessingException e) {
-      return STRING_EMPTY;
+      LogUtil.debug(e);
+      return "[]";
     }
   }
   // endregion

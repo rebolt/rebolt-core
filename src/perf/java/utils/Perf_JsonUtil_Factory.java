@@ -1,6 +1,7 @@
 package utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.rebolt.core.utils.JsonUtil;
 import lombok.Data;
@@ -14,7 +15,8 @@ import java.io.IOException;
 
 public class Perf_JsonUtil_Factory {
 
-  public final static String value = "{\"id\":\"id_value\", \"value\":\"value_value\"}";
+  public static final String value = "{\"id\":\"id_value\", \"value\":\"value_value\"}";
+  private static final JsonFactory factory = new JsonFactory();
 
   @Data
   public static class Json {
@@ -34,6 +36,11 @@ public class Perf_JsonUtil_Factory {
     Json json = new ObjectMapper().readValue(value, Json.class);
   }
 
+  @Benchmark
+  public void read_factory() throws IOException {
+    Json json = new ObjectMapper(factory).readValue(value, Json.class);
+  }
+
   public static void main(String[] args) throws RunnerException {
     Options opt = new OptionsBuilder()
         .include(Perf_JsonUtil_Factory.class.getSimpleName())
@@ -46,7 +53,8 @@ public class Perf_JsonUtil_Factory {
 }
 
 /*
-Benchmark                           Mode  Cnt       Score       Error  Units
-Perf_JsonUtil_Factory.read_native  thrpt    3  157866.140 ± 22468.541  ops/s
-Perf_JsonUtil_Factory.read_util    thrpt    3  175337.157 ± 52734.487  ops/s
- */
+Benchmark                            Mode  Cnt        Score        Error  Units
+Perf_JsonUtil_Factory.read_factory  thrpt    3   178408.005 ±  19906.830  ops/s
+Perf_JsonUtil_Factory.read_native   thrpt    3   155488.480 ±   5797.911  ops/s
+Perf_JsonUtil_Factory.read_util     thrpt    3  4238609.123 ± 575547.569  ops/s
+*/
