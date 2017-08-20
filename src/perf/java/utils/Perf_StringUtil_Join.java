@@ -25,7 +25,7 @@ public class Perf_StringUtil_Join {
   }
 
   @Benchmark
-  public void test_join1() {
+  public void test_guava() {
     @SuppressWarnings("unused")
     String value = Joiner.on(STRING_COMMA).join(initValues);
   }
@@ -34,23 +34,39 @@ public class Perf_StringUtil_Join {
    * very poor performance
    */
   @Benchmark
-  public void test_join2() {
+  public void test_stream() {
     @SuppressWarnings("unused")
     String value = Stream.of(initValues).map(String::valueOf).collect(Collectors.joining(STRING_COMMA));
   }
 
   @Benchmark
-  public void test_join3() {
+  public void test_native() {
     @SuppressWarnings("unused")
     String value = String.join(STRING_COMMA, (CharSequence[]) initValues);
+  }
+
+  @Benchmark
+  public void test_util() {
+    @SuppressWarnings("unused")
+    String value = StringUtil.join(STRING_COMMA, initValues);
   }
 
   public static void main(String[] args) throws RunnerException {
     Options opt = new OptionsBuilder()
         .include(Perf_StringUtil_Join.class.getSimpleName())
         .forks(1)
+        .measurementIterations(3)
+        .warmupIterations(5)
         .build();
     new Runner(opt).run();
   }
 
 }
+
+/*
+Benchmark                          Mode  Cnt      Score       Error  Units
+Perf_StringUtil_Join.test_guava   thrpt    3  42099.345 ± 34022.347  ops/s
+Perf_StringUtil_Join.test_native  thrpt    3  40663.711 ±  6381.123  ops/s
+Perf_StringUtil_Join.test_stream  thrpt    3  37709.746 ±  3580.409  ops/s
+Perf_StringUtil_Join.test_util    thrpt    3  40234.401 ±  4172.017  ops/s
+ */

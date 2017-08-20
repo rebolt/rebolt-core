@@ -25,28 +25,36 @@ public class Perf_StringUtil_Split {
   }
 
   @Benchmark
-  public void perf_split1() {
+  public void perf_util() {
     List<String> split = StringUtil.split(',', string);
   }
 
   @Benchmark
-  public void perf_split2() {
+  public void perf_native() {
     String[] split = string.split(",");
   }
 
   @Benchmark
-  public void perf_split3() {
+  public void perf_guava() {
     List<String> split = Splitter.on(",").splitToList(string);
   }
 
   public static void main(String[] args) throws RunnerException {
     Options opt = new OptionsBuilder()
-        .include(Perf_StringUtil_Join.class.getSimpleName())
+        .include(Perf_StringUtil_Split.class.getSimpleName())
         .forks(1)
+        .measurementIterations(3)
+        .warmupIterations(3)
         .build();
     new Runner(opt).run();
   }
 }
 
+/*
+Benchmark                           Mode  Cnt      Score      Error  Units
+Perf_StringUtil_Split.perf_guava   thrpt    3  17438.920 ± 7556.117  ops/s
+Perf_StringUtil_Split.perf_native  thrpt    3  17051.244 ± 1386.465  ops/s
+Perf_StringUtil_Split.perf_util    thrpt    3  18149.706 ± 7152.384  ops/s
+ */
 
 
