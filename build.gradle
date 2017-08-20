@@ -5,12 +5,13 @@ buildscript {
 }
 
 apply plugin: "java"
+apply plugin: "maven"
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
 [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-options"]
 
-group = "rebolt"
-version = "0.2.9"
+group = "io.rebolt"
+version = "$version"
 
 project.ext {
   name = "rebolt-core"
@@ -36,6 +37,7 @@ sourceSets {
 
 dependencies {
   runtime "com.fasterxml.jackson.core:jackson-core:$ver_jackson"
+
   compile "com.fasterxml.jackson.core:jackson-annotations:$ver_jackson"
   compile "com.fasterxml.jackson.core:jackson-databind:$ver_jackson"
   compile "com.google.guava:guava:$ver_guava"
