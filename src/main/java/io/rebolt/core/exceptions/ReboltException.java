@@ -4,7 +4,7 @@ import io.rebolt.core.options.DefaultOption;
 import io.rebolt.core.utils.LogUtil;
 import io.rebolt.core.utils.StringUtil;
 import lombok.Setter;
-import org.apache.logging.log4j.Level;
+import org.slf4j.event.Level;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class ReboltException extends RuntimeException {
   private static final long serialVersionUID = -985635644581389914L;
-  private static final String prefix = "-Exception: ";
+  private static final String prefix = "ReboltException: ";
   private static volatile AtomicBoolean exceptionLog;
   private @Setter String message;
   private Level level;
@@ -53,14 +53,14 @@ public abstract class ReboltException extends RuntimeException {
 
   @Override
   public String getMessage() {
-    if (isExceptionLog()) {
-      LogUtil.logger().catching(level, this);
-    }
+    StringBuilder message = new StringBuilder();
     if (StringUtil.isNullOrEmpty(message)) {
-      return prefix + super.getMessage();
+      message.append(prefix).append(super.getMessage());
     } else {
-      return prefix + message + "\n" + super.getMessage();
+      message.append(prefix).append(message).append("\n").append(super.getMessage());
     }
+    LogUtil.log(level, message.toString());
+    return message.toString();
   }
 
 }

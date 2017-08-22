@@ -42,8 +42,8 @@ dependencies {
   compile "com.fasterxml.jackson.core:jackson-databind:$ver_jackson"
   compile "com.google.guava:guava:$ver_guava"
   compile "net.bytebuddy:byte-buddy:$ver_byte_buddy"
-  compile "org.apache.logging.log4j:log4j-api:$ver_log4j"
   compile "org.projectlombok:lombok:$ver_lombok"
+  compile "org.slf4j:slf4j-api:$ver_slf4j"
 
   perfCompile project
   perfCompile "org.openjdk.jmh:jmh-core:$ver_jmh"

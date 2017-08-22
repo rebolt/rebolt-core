@@ -1,6 +1,6 @@
 package io.rebolt.core.exceptions;
 
-import org.apache.logging.log4j.Level;
+import org.slf4j.event.Level;
 
 /**
  * 잘못된 파라미터가 부여된 경우에 발생하는 {@link ReboltException}
