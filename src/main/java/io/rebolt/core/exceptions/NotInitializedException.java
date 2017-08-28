@@ -1,6 +1,6 @@
 package io.rebolt.core.exceptions;
 
-import org.apache.logging.log4j.Level;
+import org.slf4j.event.Level;
 
 /**
  * 클래스, 모듈등이 초기화되지 않았을 때 발생하는 {@link ReboltException}
@@ -18,6 +18,6 @@ public final class NotInitializedException extends ReboltException {
 
   @Override
   protected Level setLogLevel() {
-    return Level.FATAL;
+    return Level.ERROR;
   }
 }

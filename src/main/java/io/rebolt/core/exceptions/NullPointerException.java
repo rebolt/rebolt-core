@@ -1,6 +1,6 @@
 package io.rebolt.core.exceptions;
 
-import org.apache.logging.log4j.Level;
+import org.slf4j.event.Level;
 
 public final class NullPointerException extends ReboltException {
   private static final long serialVersionUID = -7742802316820796684L;

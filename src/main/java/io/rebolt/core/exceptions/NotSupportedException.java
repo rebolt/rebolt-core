@@ -1,6 +1,6 @@
 package io.rebolt.core.exceptions;
 
-import org.apache.logging.log4j.Level;
+import org.slf4j.event.Level;
 
 /**
  * 지원하지 않는 기능을 호출할 때 발생

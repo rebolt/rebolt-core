@@ -1,6 +1,6 @@
 package io.rebolt.core.exceptions;
 
-import org.apache.logging.log4j.Level;
+import org.slf4j.event.Level;
 
 public final class NotImplementedException extends ReboltException {
   private static final long serialVersionUID = -4788397409651612329L;
