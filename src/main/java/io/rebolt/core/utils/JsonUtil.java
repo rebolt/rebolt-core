@@ -61,6 +61,25 @@ public final class JsonUtil {
   }
 
   /**
+   * Json 문자열을 사용자 객체로 전환 (exception 포함)
+   *
+   * @param jsonString json 문자열
+   * @param type 사용자 객체
+   * @param exception exception 포함 여부
+   * @param <T> 사용자 객체 타입
+   * @return 전환된 사용자 객체
+   * @throws IOException
+   * @since 0.2.17
+   */
+  public static <T> T read(String jsonString, Class<T> type, boolean exception) throws IOException {
+    if (exception) {
+      return _objectMapper.readValue(jsonString, type);
+    } else {
+      return read(jsonString, type);
+    }
+  }
+
+  /**
    * Json 문자열로부터 {@link JsonNode}로 전환
    *
    * @param jsonString json 문자열
@@ -89,6 +108,25 @@ public final class JsonUtil {
     } catch (JsonProcessingException e) {
       LogUtil.debug(e);
       return null;
+    }
+  }
+
+  /**
+   * {@link JsonNode}로부터 사용자 객체로 전환 (exception 포함)
+   *
+   * @param jsonNode {@link JsonNode}
+   * @param type 사용자 객체
+   * @param exception exception 포함 여부
+   * @param <T> 사용자 객체 타입
+   * @return 전환된 사용자 객체
+   * @throws JsonProcessingException
+   * @since 0.2.17
+   */
+  public static <T> T read(JsonNode jsonNode, Class<T> type, boolean exception) throws JsonProcessingException {
+    if (exception) {
+      return _objectMapper.treeToValue(jsonNode, type);
+    } else {
+      return read(jsonNode, type);
     }
   }
 
@@ -163,6 +201,7 @@ public final class JsonUtil {
   public static Map<String, Object> readStringMap(String json) {
     return readMap(json, String.class, Object.class);
   }
+
   // endregion
 
   // region write
