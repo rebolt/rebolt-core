@@ -17,15 +17,11 @@
 
 package io.rebolt.core.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.net.InetAddress;
 
 /**
  * @since 1.0.0
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NetworkUtil {
   private static String host;
 

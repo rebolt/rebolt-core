@@ -20,8 +20,6 @@ package io.rebolt.core.utils;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import io.rebolt.core.exceptions.IllegalParameterException;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import javax.crypto.Cipher;
 import java.io.UnsupportedEncodingException;
@@ -34,7 +32,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
@@ -43,11 +40,9 @@ import java.util.Objects;
 import java.util.SplittableRandom;
 import java.util.StringJoiner;
 
-import static io.rebolt.core.constants.Constants.CHARACTER_SLASH;
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
 import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtil {
   private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
   private static final byte[] hexFilters = {0, 10, 11, 12, 13, 14, 15};

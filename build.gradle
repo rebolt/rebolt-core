@@ -23,8 +23,6 @@ jar {
 }
 
 allprojects {
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
   repositories {
     mavenCentral()
     jcenter()
@@ -42,7 +40,6 @@ dependencies {
   compile "com.fasterxml.jackson.core:jackson-databind:$ver_jackson"
   compile "com.google.guava:guava:$ver_guava"
   compile "net.bytebuddy:byte-buddy:$ver_byte_buddy"
-  compile "org.projectlombok:lombok:$ver_lombok"
   compile "org.slf4j:slf4j-api:$ver_slf4j"
 
   perfCompile project

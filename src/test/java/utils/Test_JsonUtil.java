@@ -5,24 +5,54 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import io.rebolt.core.utils.JsonUtil;
 import io.rebolt.core.utils.ObjectUtil;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public final class Test_JsonUtil {
 
-  @Data
-  @AllArgsConstructor
   public static class Json {
     @JsonProperty("id")
     private String id;
     @JsonProperty("value")
     private String value;
+
+    public Json() {}
+
+    public Json(String id, String value) {
+      this.id = id;
+      this.value = value;
+    }
+
+    public String getId() {
+      return id;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+
+      Json json = (Json) o;
+
+      if (id != null ? !id.equals(json.id) : json.id != null) {
+        return false;
+      }
+      return value != null ? value.equals(json.value) : json.value == null;
+    }
   }
 
   @Test

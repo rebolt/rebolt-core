@@ -1,15 +1,10 @@
 package io.rebolt.core.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import static io.rebolt.core.constants.Constants.CHARACTER_SLASH;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UriUtil {
 
   /**

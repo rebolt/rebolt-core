@@ -18,8 +18,6 @@
 package io.rebolt.core.utils;
 
 import io.rebolt.core.models.IModel;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Objects;
@@ -29,7 +27,6 @@ import java.util.Objects;
  *
  * @since 1.0.0
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HashUtil {
   private static final long NO_PARAM_KEY = Long.MIN_VALUE;
   private static final long NULL_PARAM_KEY = 53L;

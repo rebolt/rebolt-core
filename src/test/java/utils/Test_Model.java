@@ -3,8 +3,6 @@ package utils;
 import io.rebolt.core.models.Model;
 import io.rebolt.core.utils.HashUtil;
 import io.rebolt.core.utils.StringUtil;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -12,9 +10,16 @@ import static org.junit.Assert.assertTrue;
 
 public final class Test_Model {
 
-  @AllArgsConstructor
   public static class ModelImpl extends Model<ModelImpl> {
-    final @Getter String value;
+    final String value;
+
+    public ModelImpl(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
 
     @Override
     public boolean isEmpty() {

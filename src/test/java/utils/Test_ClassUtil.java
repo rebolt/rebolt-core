@@ -1,8 +1,5 @@
 package utils;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.junit.Test;
 
 import static io.rebolt.core.utils.ClassUtil.getSingleton;
@@ -40,10 +37,9 @@ public final class Test_ClassUtil {
     assertFalse(clazz0 == clazz6);
   }
 
-  @EqualsAndHashCode
   private static class InnerClass {
-    private @Getter @Setter String inner1;
-    private @Getter @Setter int inner2;
+    String inner1;
+    int inner2;
 
     InnerClass() {}
 

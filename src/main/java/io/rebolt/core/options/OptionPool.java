@@ -3,15 +3,12 @@ package io.rebolt.core.options;
 import com.google.common.collect.Maps;
 import io.rebolt.core.exceptions.NotInitializedException;
 import io.rebolt.core.utils.ClassUtil;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 /**
  * 프로젝트내에서 사용되는 모든 옵션들을 관리한다
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OptionPool {
 
   /**

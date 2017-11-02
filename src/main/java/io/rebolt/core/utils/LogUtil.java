@@ -18,8 +18,6 @@
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -34,7 +32,6 @@ import java.util.Map;
  *
  * @since 1.0.0
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class LogUtil {
   private final static Logger _logger = LoggerFactory.getLogger("io.rebolt");
   private final static Map<String, Logger> _loggerMap = Maps.newHashMap();

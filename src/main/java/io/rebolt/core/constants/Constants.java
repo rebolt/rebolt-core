@@ -17,21 +17,18 @@
 
 package io.rebolt.core.constants;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.nio.charset.Charset;
 
 /**
  * 전역에서 사용되는 Constants 모음
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constants {
   public static final String STRING_AND = "&";
   public static final String STRING_BLANK = " ";
   public static final String STRING_COLON = ":";
   public static final String STRING_COMMA = ",";
   public static final String STRING_DASH = "-";
+  public static final String STRING_UNDER_SCORE = "_";
   public static final String STRING_DOUBLE_COLON = "::";
   public static final String STRING_EMPTY = "";
   public static final String STRING_EQUAL = "=";
@@ -45,6 +42,7 @@ public final class Constants {
   public static final Character CHARACTER_COLON = STRING_COLON.charAt(0);
   public static final Character CHARACTER_COMMA = STRING_COMMA.charAt(0);
   public static final Character CHARACTER_DASH = STRING_DASH.charAt(0);
+  public static final Character CHARACTER_UNDER_SCORE = STRING_UNDER_SCORE.charAt(0);
   public static final Character CHARACTER_EQUAL = STRING_EQUAL.charAt(0);
   public static final Character CHARACTER_QUESTION = STRING_QUESTION.charAt(0);
   public static final Character CHARACTER_SHARP = STRING_SHARP.charAt(0);

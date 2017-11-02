@@ -22,8 +22,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,7 +34,6 @@ import static io.rebolt.core.constants.Constants.STRING_JSON_INITIALIZE;
  *
  * @since 0.1.3
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JsonUtil {
   private final static JsonFactory _jsonFactory = new MappingJsonFactory();
   private final static ObjectMapper _objectMapper = new ObjectMapper(_jsonFactory);

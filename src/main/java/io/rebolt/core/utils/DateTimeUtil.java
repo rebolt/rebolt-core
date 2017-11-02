@@ -17,9 +17,6 @@
 
 package io.rebolt.core.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -34,7 +31,6 @@ import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 /**
  * @since 0.1.2
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DateTimeUtil {
   private static final SimpleDateFormat _simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
   public final static ZoneId TIME_ZONE_UTC = ZoneId.of("UTC");

@@ -18,8 +18,6 @@
 package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
@@ -29,7 +27,6 @@ import static io.rebolt.core.constants.Constants.STRING_SHARP;
 /**
  * @since 1.0.0
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ClassUtil {
   /**
    * 싱글턴 맵

@@ -19,8 +19,6 @@ package io.rebolt.core.utils;
 
 import com.google.common.collect.Maps;
 import io.rebolt.core.exceptions.NotInitializedException;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -33,12 +31,11 @@ import java.util.Map;
 /**
  * @since 1.0.0
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ReflectionUtil {
 
   /**
    * 런타임시 조회된 {@link MethodHandle}들을 반영구적으로 보관한다.
-   *
+   * <p>
    * Table 형태로 구성된 이중맵.
    * Class : 클래스 타입
    * String : 메소드명

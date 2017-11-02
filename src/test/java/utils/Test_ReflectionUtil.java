@@ -2,9 +2,6 @@ package utils;
 
 import io.rebolt.core.exceptions.NotInitializedException;
 import io.rebolt.core.utils.ReflectionUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.junit.Test;
 
 import java.lang.invoke.MethodHandle;
@@ -13,15 +10,35 @@ import static org.junit.Assert.assertTrue;
 
 public final class Test_ReflectionUtil {
 
-  @ToString
   public static class NewType<A, B> {
-    @Getter @Setter Class<A> a;
-    @Getter @Setter Class<B> b;
-    final @Getter int c = 0;
+    Class<A> a;
+    Class<B> b;
+    final int c = 0;
+
+    public Class<A> getA() {
+      return a;
+    }
+
+    public void setA(Class<A> a) {
+      this.a = a;
+    }
+
+    public Class<B> getB() {
+      return b;
+    }
+
+    public void setB(Class<B> b) {
+      this.b = b;
+    }
+
+    public int getC() {
+      return c;
+    }
   }
 
   public static class AType extends NewType<Integer, Long> {
     int d = 0;
+
     public int get(int a) {
       return d += a;
     }
@@ -29,6 +46,7 @@ public final class Test_ReflectionUtil {
 
   public static class BType extends NewType<Double, String> {
     int d = 0;
+
     public int get(int a) {
       return d += a;
     }
@@ -36,6 +54,7 @@ public final class Test_ReflectionUtil {
 
   public static class CType {
     int d = 14;
+
     public void get() {
       d++;
     }
