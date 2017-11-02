@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Arrays;
 
 import static io.rebolt.core.constants.Constants.CHARACTER_SLASH;
+import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 
 public final class UriUtil {
 
@@ -21,9 +22,26 @@ public final class UriUtil {
     try {
       String originHost = new URI(origin).getHost().toLowerCase();
       String diffHost = new URI(diff).getHost().toLowerCase();
-      return originHost.replace("www.", "").equals(diffHost.replace("www.", ""));
+      return originHost.replace("www.", STRING_EMPTY).equals(diffHost.replace("www.", STRING_EMPTY));
     } catch (Exception ignored) {
       return false;
+    }
+  }
+
+  /**
+   * Uri로부터 host 추출
+   *
+   * @param uri 웹주소
+   * @return 웹주소로부터 추출된 도메인
+   */
+  public static String getHost(String uri) {
+    if (StringUtil.isNullOrEmpty(uri)) {
+      return null;
+    }
+    try {
+      return new URI(uri).getHost().toLowerCase().replace("www.", STRING_EMPTY);
+    } catch (Exception ignored) {
+      return null;
     }
   }
 
@@ -59,7 +77,7 @@ public final class UriUtil {
   }
 
   /**
-   * Uri 병합 \
+   * Uri 병합
    *
    * @param first first uri (with domain)
    * @param uris 이어 붙일 uri 목록

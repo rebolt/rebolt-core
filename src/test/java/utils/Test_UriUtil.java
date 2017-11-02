@@ -3,6 +3,7 @@ package utils;
 import io.rebolt.core.utils.UriUtil;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -23,4 +24,15 @@ public class Test_UriUtil {
 
     assertFalse(UriUtil.containsHost(host3, host4));
   }
+
+  @Test
+  public void test_getHost() {
+    final String host1 = "https://www.nexon.com";
+    final String host2 = "nexon.com";
+
+    assertEquals(UriUtil.getHost(host1), host2);
+    assertEquals(UriUtil.getHost(null), null);
+    assertEquals(UriUtil.getHost(""), null);
+  }
 }
+
