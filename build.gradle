@@ -38,7 +38,6 @@ dependencies {
 
   compile "com.fasterxml.jackson.core:jackson-annotations:$ver_jackson"
   compile "com.fasterxml.jackson.core:jackson-databind:$ver_jackson"
-  compile "com.google.guava:guava:$ver_guava"
   compile "net.bytebuddy:byte-buddy:$ver_byte_buddy"
   compile "org.slf4j:slf4j-api:$ver_slf4j"
 
@@ -48,4 +47,5 @@ dependencies {
   perfCompile "org.openjdk.jmh:jmh-generator-annprocess:$ver_jmh"
 
   testCompile "junit:junit:$ver_junit"
+  testCompile "com.google.guava:guava:$ver_guava"
 }
