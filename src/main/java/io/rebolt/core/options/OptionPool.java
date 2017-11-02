@@ -1,9 +1,9 @@
 package io.rebolt.core.options;
 
-import com.google.common.collect.Maps;
 import io.rebolt.core.exceptions.NotInitializedException;
 import io.rebolt.core.utils.ClassUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +14,7 @@ public final class OptionPool {
   /**
    * 이 컨테이너에는 프로젝트에서 사용하는 모든 옵션명, 옵션키, 옵션값이 저장되어 있다.
    */
-  private final static Map<String, Map<String, String>> optionMap = Maps.newHashMap();
+  private final static Map<String, Map<String, String>> optionMap = new HashMap<>();
 
   public static OptionPool getInstance() {
     return ClassUtil.getSingleton(OptionPool.class);
@@ -30,7 +30,7 @@ public final class OptionPool {
   public synchronized void addOption(String group, String key, String value) {
     Map<String, String> optionGroup = optionMap.get(group);
     if (optionGroup == null) {
-      optionMap.put(group, Maps.newHashMap());
+      optionMap.put(group, new HashMap<>());
       optionGroup = optionMap.get(group);
     }
     optionGroup.put(key, value);

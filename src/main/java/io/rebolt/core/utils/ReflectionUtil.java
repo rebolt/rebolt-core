@@ -17,7 +17,6 @@
 
 package io.rebolt.core.utils;
 
-import com.google.common.collect.Maps;
 import io.rebolt.core.exceptions.NotInitializedException;
 
 import java.lang.invoke.MethodHandle;
@@ -26,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,7 +41,7 @@ public final class ReflectionUtil {
    * String : 메소드명
    * MethodHandle : {@link MethodHandle}
    */
-  private static final Map<Class, Map<String, MethodHandle>> methodFactory = Maps.newHashMap();
+  private static final Map<Class, Map<String, MethodHandle>> methodFactory = new HashMap<>();
 
   /**
    * Generic Class의 Generic Type 조회
@@ -111,7 +111,7 @@ public final class ReflectionUtil {
     if (methodMap == null) {
       synchronized (methodFactory) {
         if (methodMap == null) {
-          methodMap = Maps.newHashMap();
+          methodMap = new HashMap<>();
           methodFactory.put(clazz, methodMap);
         }
       }

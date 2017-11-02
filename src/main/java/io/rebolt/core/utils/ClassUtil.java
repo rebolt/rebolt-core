@@ -17,9 +17,8 @@
 
 package io.rebolt.core.utils;
 
-import com.google.common.collect.Maps;
-
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.Map;
 
 import static io.rebolt.core.constants.Constants.STRING_SHARP;
@@ -37,7 +36,7 @@ public final class ClassUtil {
    * 키: 클래스명 (Class.getName())
    * 값: 클래스 인스턴스
    */
-  private static final Map<String, Object> singletonMap = Maps.newHashMap();
+  private static final Map<String, Object> singletonMap = new HashMap<>();
 
   // region singleton
 

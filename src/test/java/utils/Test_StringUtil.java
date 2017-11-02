@@ -2,7 +2,6 @@ package utils;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -288,7 +288,7 @@ public final class Test_StringUtil {
   @Test
   public void test_random() {
     int min = 999, max = 1000;
-    for (int i=0; i<10000; i++) {
+    for (int i = 0; i < 10000; i++) {
       long randLong = StringUtil.randomLong(min, max);
       int randInt = StringUtil.randomInt(min, max);
       assertTrue(randLong >= 100);
@@ -300,7 +300,7 @@ public final class Test_StringUtil {
 
   @Test
   public void test_toString() {
-    Map<String, String> map = Maps.newHashMap();
+    Map<String, String> map = new HashMap<>();
     map.put("a", "b");
 
     final String mapString = StringUtil.toString(map);

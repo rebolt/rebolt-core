@@ -17,8 +17,6 @@
 
 package io.rebolt.core.utils;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import io.rebolt.core.exceptions.IllegalParameterException;
 
 import javax.crypto.Cipher;
@@ -33,7 +31,9 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -303,7 +303,7 @@ public final class StringUtil {
   public static String toString(Map<?, ?> map) {
     StringBuilder builder = new StringBuilder();
     ObjectUtil.nullGuard(map).forEach((key, value) ->
-        builder.append(key).append("=").append(value.getClass().isArray() ? Joiner.on(',').join((Object[]) value) : value).append(";"));
+        builder.append(key).append("=").append(value.getClass().isArray() ? join(",", (Object[]) value) : value).append(";"));
     return builder.toString();
   }
   // endregion
@@ -485,7 +485,7 @@ public final class StringUtil {
     int off = 0;
     int next;
     boolean limited = limit > 0;
-    List<String> list = Lists.newLinkedList();
+    List<String> list = new LinkedList<>();
     String buffer;
     while ((next = string.indexOf(separator, off)) != -1) {
       if (!limited || list.size() < limit - 1) {
@@ -504,7 +504,7 @@ public final class StringUtil {
       }
     }
     if (off == 0) {
-      return Lists.newArrayList(string);
+      return Collections.singletonList(string);
     }
     if (!limited || list.size() < limit) {
       list.add(string.substring(off, length));

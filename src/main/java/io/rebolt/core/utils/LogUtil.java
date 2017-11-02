@@ -17,11 +17,11 @@
 
 package io.rebolt.core.utils;
 
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class LogUtil {
   private final static Logger _logger = LoggerFactory.getLogger("io.rebolt");
-  private final static Map<String, Logger> _loggerMap = Maps.newHashMap();
+  private final static Map<String, Logger> _loggerMap = new HashMap<>();
 
   /**
    * 프레임워크 내부 로거

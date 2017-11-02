@@ -17,7 +17,6 @@
 
 package io.rebolt.core.utils;
 
-import com.google.common.collect.Maps;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.ClassFileVersion;
 import net.bytebuddy.dynamic.DynamicType;
@@ -29,6 +28,7 @@ import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.SuperCall;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -39,7 +39,7 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
  */
 public final class ProxyUtil {
   private static final ByteBuddy _buddy = new ByteBuddy(ClassFileVersion.JAVA_V8);
-  private static final Map<Class, Class> _proxyMap = Maps.newHashMap();
+  private static final Map<Class, Class> _proxyMap = new HashMap<>();
   private static final Object _lock = new Object();
 
   /**

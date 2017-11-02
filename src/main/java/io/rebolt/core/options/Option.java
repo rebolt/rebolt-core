@@ -1,9 +1,9 @@
 package io.rebolt.core.options;
 
-import com.google.common.collect.Maps;
 import io.rebolt.core.utils.StringUtil;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +21,7 @@ public abstract class Option implements Serializable {
   protected Option() {
     this.optionPool = OptionPool.getInstance();
     this.group = setGroup();
-    Map<String, String> options = Maps.newHashMap();
+    Map<String, String> options = new HashMap<>();
     setOptions(options);
     options.forEach((key, value) -> optionPool.addOption(group, key, value));
   }
