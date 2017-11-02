@@ -19,18 +19,19 @@ package io.rebolt.core.utils;
 
 import io.rebolt.core.exceptions.NullPointerException;
 import io.rebolt.core.models.IModel;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ObjectUtil {
 
   // region isNull
@@ -360,7 +361,7 @@ public final class ObjectUtil {
 
   /**
    * thenConatiains
-   *
+   * <p>
    * 전달받은 Map내에 Key를 포함하고 있다면 조회된 Value를 이용해 Consumer를 실행한다
    *
    * @param map 전달 받은 Map 인스턴스
@@ -434,6 +435,35 @@ public final class ObjectUtil {
    */
   public static <T> Set<T> nullGuard(Set<T> set) {
     return set == null ? Collections.emptySet() : set;
+  }
+
+  // endregion
+
+  // region converter
+
+  /**
+   * 리스트 컨버터
+   *
+   * @param from 원본 리스트
+   * @param func 변경식
+   * @return 변경식에 의해 변경된 리스트
+   * @since 0.2.20
+   */
+  public static <T, U> List<U> convertList(List<T> from, Function<T, U> func) {
+    return from.stream().map(func).collect(Collectors.toList());
+  }
+
+  /**
+   * 배열 컨버터
+   *
+   * @param from 원본 배열
+   * @param func 변경식
+   * @param generator 배열 생성식 (테스트코드 참조)
+   * @return 변경식에 의해 변경된 배열
+   * @since 0.2.20
+   */
+  public static <T, U> U[] convertArray(T[] from, Function<T, U> func, IntFunction<U[]> generator) {
+    return Arrays.stream(from).map(func).toArray(generator);
   }
 
   // endregion

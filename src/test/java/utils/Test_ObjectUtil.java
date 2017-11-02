@@ -6,11 +6,9 @@ import com.google.common.collect.Maps;
 import io.rebolt.core.models.IModel;
 import io.rebolt.core.utils.ObjectUtil;
 import io.rebolt.core.utils.StringUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.junit.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -129,17 +127,56 @@ public final class Test_ObjectUtil {
     assertTrue(model1 == null);
   }
 
-  @ToString
+  @Test
+  public void test_convertList() {
+    List<Model> modelList = new LinkedList<>();
+    modelList.add(new Model(10));
+    modelList.add(new Model(11));
+    modelList.add(new Model(12));
+    List<Integer> modelIntList = ObjectUtil.convertList(modelList, Model::getModel);
+
+    for (int i = 0; i < modelList.size(); i++) {
+      assertTrue(modelIntList.get(i) == modelList.get(i).getModel());
+    }
+  }
+
+  @Test
+  public void test_arrayList() {
+    Model[] models = {new Model(10), new Model(11), new Model(12)};
+    Integer[] modelInts = ObjectUtil.convertArray(models, Model::getModel, Integer[]::new);
+
+    for (int i = 0; i < models.length; i++) {
+      assertTrue(models[i].getModel() == modelInts[i]);
+    }
+  }
+
   public class Model implements IModel<Model> {
-    private @Getter @Setter int model;
+    private int model;
+
+    public Model() {}
+
+    public Model(int model) {
+      this.model = model;
+    }
+
+    public int getModel() {
+      return model;
+    }
+
+    public void setModel(int model) {
+      this.model = model;
+    }
+
     @Override
     public boolean isEmpty() {
       return model == 0;
     }
+
     @Override
     public long deepHash() {
       return model;
     }
+
     @Override
     public boolean equals(Model model) {
       return model != null && this.model == model.model;
