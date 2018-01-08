@@ -20,6 +20,7 @@ package io.rebolt.core.utils;
 import io.rebolt.core.exceptions.IllegalParameterException;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -41,6 +42,7 @@ import java.util.SplittableRandom;
 import java.util.StringJoiner;
 
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
+import static io.rebolt.core.constants.Constants.STRING_EMPTY;
 import static javafx.fxml.FXMLLoader.DEFAULT_CHARSET_NAME;
 
 public final class StringUtil {
@@ -158,7 +160,7 @@ public final class StringUtil {
    */
   public static String byteArrayToHex(byte[] bytes) {
     if (bytes == null || bytes.length == 0) {
-      return "";
+      return STRING_EMPTY;
     }
     int length = bytes.length;
     char[] charBuffer = new char[length * 2];
@@ -170,7 +172,6 @@ public final class StringUtil {
     }
     return new String(charBuffer);
   }
-
   // endregion
 
   // region randomString
@@ -626,7 +627,7 @@ public final class StringUtil {
   }
   // endregion
 
-  // region rsa encrypt/decrypt
+  // region rsa2048
   private static final Object _rsaLock = new Object();
   private static Cipher rsaCipher;
   private static KeyFactory rsaKeyFactory;
@@ -708,6 +709,45 @@ public final class StringUtil {
       }
     }
     return rsaDefaultKeyPair;
+  }
+  // endregion
+
+  // region aes128
+  private static final Object _aesLock = new Object();
+  private static Cipher aesCipher;
+
+  public static String encryptAes128(final byte[] key, final String plainText) {
+    try {
+      if (aesCipher == null) {
+        synchronized (_aesLock) {
+          if (aesCipher == null) {
+            aesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+          }
+        }
+      }
+      aesCipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"));
+      byte[] cipherText = aesCipher.doFinal(plainText.getBytes());
+      return encodeBase64String(cipherText);
+    } catch (Exception ex) {
+      return plainText;
+    }
+  }
+
+  public static String decryptAes128(final byte[] key, final String cipherText) {
+    try {
+      if (aesCipher == null) {
+        synchronized (_aesLock) {
+          if (aesCipher == null) {
+            aesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+          }
+        }
+      }
+      aesCipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"));
+      byte[] plainText = aesCipher.doFinal(decodeBase64Bytes(cipherText));
+      return new String(plainText);
+    } catch (Exception ex) {
+      return cipherText;
+    }
   }
   // endregion
 

@@ -6,18 +6,15 @@ import com.google.common.collect.Sets;
 import io.rebolt.core.utils.StringUtil;
 import org.junit.Test;
 
-import javax.crypto.NoSuchPaddingException;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import static io.rebolt.core.constants.Constants.CHARSET_UTF8;
 import static io.rebolt.core.constants.Constants.STRING_COMMA;
@@ -25,6 +22,7 @@ import static io.rebolt.core.utils.StringUtil.isNullOrEmpty;
 import static io.rebolt.core.utils.StringUtil.isNullOrEmptyWithTrim;
 import static io.rebolt.core.utils.StringUtil.isNumeric;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -191,7 +189,7 @@ public final class Test_StringUtil {
   }
 
   @Test
-  public void test_encryptRsa() throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+  public void test_encryptRsa() {
     final String value = "http://\\!@#$43%^^...21!!!#@$%$^%--__=+_++_+_~!@~good.co          m/good-job/key=value&key1=value%&;닭꺼져ⓐ";
 
     KeyPair keyPair = StringUtil.createRandomKeyPairRsa();
@@ -233,6 +231,17 @@ public final class Test_StringUtil {
     final String encryptedValue = StringUtil.encryptRsa(defaultKeyPair.getPublic(), value);
     final String decryptedValue = StringUtil.decryptRsa(defaultKeyPair.getPrivate(), encryptedValue);
     assertTrue(value.equals(decryptedValue));
+  }
+
+  @Test
+  public void test_encryptAes128() {
+    final byte[] key = StringUtil.hexToByteArray("dd4763541be100910b568ca6d48268e3");
+
+    final String uuid = UUID.randomUUID().toString();
+    final String cipherText = StringUtil.encryptAes128(key, uuid);
+    final String plainText = StringUtil.decryptAes128(key, cipherText);
+
+    assertEquals(plainText, uuid);
   }
 
   @Test
