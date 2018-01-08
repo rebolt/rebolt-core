@@ -627,7 +627,7 @@ public final class StringUtil {
   }
   // endregion
 
-  // region rsa2048
+  // region rsa1024
   private static final Object _rsaLock = new Object();
   private static Cipher rsaCipher;
   private static KeyFactory rsaKeyFactory;
