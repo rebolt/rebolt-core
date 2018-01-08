@@ -235,7 +235,7 @@ public final class Test_StringUtil {
 
   @Test
   public void test_encryptAes128() {
-    final byte[] key = StringUtil.hexToByteArray("dd4763541be100910b568ca6d48268e3");
+    final byte[] key = StringUtil.decodeBase64Bytes("3UdjVBvhAJELVoym1IJo4w==");
 
     final String uuid = UUID.randomUUID().toString();
     final String cipherText = StringUtil.encryptAes128(key, uuid);
