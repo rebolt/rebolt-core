@@ -20,6 +20,7 @@ package io.rebolt.core.utils;
 import io.rebolt.core.exceptions.IllegalParameterException;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -615,11 +616,11 @@ public final class StringUtil {
   }
 
   public static String encodeBase64String(final byte[] message) {
-    return new String(Base64.getEncoder().encode(message), CHARSET_UTF8);
+    return Base64.getEncoder().encodeToString(message);
   }
 
   public static String decodeBase64(final String base64) {
-    return new String(decodeBase64Bytes(base64));
+    return new String(decodeBase64Bytes(base64), CHARSET_UTF8);
   }
 
   public static byte[] decodeBase64Bytes(final String base64) {
@@ -721,11 +722,13 @@ public final class StringUtil {
       if (aesCipher == null) {
         synchronized (_aesLock) {
           if (aesCipher == null) {
-            aesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
           }
         }
       }
-      aesCipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"));
+      SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+      IvParameterSpec ivParameterSpec = new IvParameterSpec(secretKey.getEncoded());
+      aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
       byte[] cipherText = aesCipher.doFinal(plainText.getBytes());
       return encodeBase64String(cipherText);
     } catch (Exception ex) {
@@ -738,11 +741,13 @@ public final class StringUtil {
       if (aesCipher == null) {
         synchronized (_aesLock) {
           if (aesCipher == null) {
-            aesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
           }
         }
       }
-      aesCipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"));
+      SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+      IvParameterSpec ivParameterSpec = new IvParameterSpec(secretKey.getEncoded());
+      aesCipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
       byte[] plainText = aesCipher.doFinal(decodeBase64Bytes(cipherText));
       return new String(plainText);
     } catch (Exception ex) {
