@@ -310,6 +310,25 @@ public final class StringUtil {
   }
   // endregion
 
+  // region number
+  public static byte[] intToBytes(int number, int size) {
+    byte[] bytes = new byte[size];
+    for (int i = size - 1; i > 0; i--, number >>>= 8) {
+      bytes[i] = (byte) (number & 0xFF);
+    }
+    return bytes;
+  }
+
+  public static int bytesToInt(byte[] bytes) {
+    int value = 0;
+    int size = bytes.length;
+    for (int i = 0; i < size; i++) {
+      value += ((long) bytes[size - i - 1] & 0xFFL) << (8 * i);
+    }
+    return value;
+  }
+  // endregion
+
   // region cast
 
   /**
@@ -715,40 +734,77 @@ public final class StringUtil {
 
   // region aes128
   private static final Object _aesLock = new Object();
-  private static Cipher aesCipher;
+  private static Cipher aesCbcCipher;
+  private static Cipher aesCtrCipher;
 
-  public static String encryptAes128(final byte[] key, final String plainText) {
+  public static String encryptAesCbc(final byte[] key, final String plainText) {
     try {
-      if (aesCipher == null) {
+      if (aesCbcCipher == null) {
         synchronized (_aesLock) {
-          if (aesCipher == null) {
-            aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+          if (aesCbcCipher == null) {
+            aesCbcCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
           }
         }
       }
       SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
       IvParameterSpec ivParameterSpec = new IvParameterSpec(secretKey.getEncoded());
-      aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
-      byte[] cipherText = aesCipher.doFinal(plainText.getBytes());
+      aesCbcCipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
+      byte[] cipherText = aesCbcCipher.doFinal(plainText.getBytes());
       return encodeBase64String(cipherText);
     } catch (Exception ex) {
       return plainText;
     }
   }
 
-  public static String decryptAes128(final byte[] key, final String cipherText) {
+  public static String decryptAesCbc(final byte[] key, final String cipherText) {
     try {
-      if (aesCipher == null) {
+      if (aesCbcCipher == null) {
         synchronized (_aesLock) {
-          if (aesCipher == null) {
-            aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+          if (aesCbcCipher == null) {
+            aesCbcCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
           }
         }
       }
       SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
       IvParameterSpec ivParameterSpec = new IvParameterSpec(secretKey.getEncoded());
-      aesCipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
-      byte[] plainText = aesCipher.doFinal(decodeBase64Bytes(cipherText));
+      aesCbcCipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
+      byte[] plainText = aesCbcCipher.doFinal(decodeBase64Bytes(cipherText));
+      return new String(plainText);
+    } catch (Exception ex) {
+      return cipherText;
+    }
+  }
+
+  public static String encryptAesCtr(final byte[] key, final String plainText, final int counter) {
+    try {
+      if (aesCtrCipher == null) {
+        synchronized (_aesLock) {
+          if (aesCtrCipher == null) {
+            aesCtrCipher = Cipher.getInstance("AES/CTR/PKCS5Padding");
+          }
+        }
+      }
+      SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+      aesCtrCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(intToBytes(counter, 16)));
+      byte[] cipherText = aesCtrCipher.doFinal(plainText.getBytes());
+      return encodeBase64String(cipherText);
+    } catch (Exception ex) {
+      return plainText;
+    }
+  }
+
+  public static String decryptAesCtr(final byte[] key, final String cipherText, final int counter) {
+    try {
+      if (aesCtrCipher == null) {
+        synchronized (_aesLock) {
+          if (aesCtrCipher == null) {
+            aesCtrCipher = Cipher.getInstance("AES/CTR/PKCS5Padding");
+          }
+        }
+      }
+      SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+      aesCtrCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(intToBytes(counter, 16)));
+      byte[] plainText = aesCtrCipher.doFinal(decodeBase64Bytes(cipherText));
       return new String(plainText);
     } catch (Exception ex) {
       return cipherText;

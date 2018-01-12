@@ -234,14 +234,25 @@ public final class Test_StringUtil {
   }
 
   @Test
-  public void test_encryptAes128() {
+  public void test_encryptAesCbc() {
     final byte[] key = StringUtil.decodeBase64Bytes("3UdjVBvhAJELVoym1IJo4w==");
 
     final String uuid = UUID.randomUUID().toString();
-    final String cipherText = StringUtil.encryptAes128(key, uuid);
-    final String plainText = StringUtil.decryptAes128(key, cipherText);
+    final String cipherText = StringUtil.encryptAesCbc(key, uuid);
+    final String plainText = StringUtil.decryptAesCbc(key, cipherText);
 
     assertEquals(plainText, uuid);
+  }
+
+  @Test
+  public void test_encryptAesCtr() {
+    final byte[] key = "1k2ncyrkjh!@#$%^".getBytes();
+
+    final String text = StringUtil.randomAlpha(6);
+    final String cipherText = StringUtil.encryptAesCtr(key, text, 1);
+    final String plainText = StringUtil.decryptAesCtr(key, cipherText, 1);
+
+    assertEquals(plainText, text);
   }
 
   @Test
