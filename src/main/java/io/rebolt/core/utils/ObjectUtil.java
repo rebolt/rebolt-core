@@ -182,6 +182,17 @@ public final class ObjectUtil {
   /**
    * isEmpty
    *
+   * @param set {@link Set}
+   * @return true 또는 false
+   * @since 0.2.25
+   */
+  public static boolean isEmpty(Set set) {
+    return set == null || set.isEmpty();
+  }
+
+  /**
+   * isEmpty
+   *
    * @param objects {@link Object} 배열
    * @return true 또는 false
    * @since 0.1.0
@@ -323,6 +334,19 @@ public final class ObjectUtil {
   /**
    * thenNonEmpty
    *
+   * @param set {@link Set}
+   * @param consumer {@link Consumer}
+   * @since 0.2.25
+   */
+  public static void thenNonEmpty(Set set, Consumer<? super Set> consumer) {
+    if (!isEmpty(set)) {
+      consumer.accept(set);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
    * @param dateTime {@link ZonedDateTime}
    * @param consumer {@link Consumer}
    * @since 0.1.14
@@ -356,6 +380,32 @@ public final class ObjectUtil {
   public static void thenNonEmpty(Boolean bool, Consumer<? super Boolean> consumer) {
     if (!isNull(bool)) {
       consumer.accept(bool);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param number {@link Long}
+   * @param consumer {@link Consumer}
+   * @since 0.2.25
+   */
+  public static void thenNonEmpty(Long number, Consumer<? super Long> consumer) {
+    if (!isNull(number)) {
+      consumer.accept(number);
+    }
+  }
+
+  /**
+   * thenNonEmpty
+   *
+   * @param integer {@link Integer}
+   * @param consumer {@link Consumer}
+   * @since 0.2.25
+   */
+  public static void thenNonEmpty(Integer integer, Consumer<? super Integer> consumer) {
+    if (!isNull(integer)) {
+      consumer.accept(integer);
     }
   }
 
