@@ -1,6 +1,7 @@
 package io.rebolt.core.utils;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import static io.rebolt.core.constants.Constants.CHARACTER_SLASH;
@@ -41,6 +42,29 @@ public final class UriUtil {
     try {
       return new URI(uri).getHost().toLowerCase().replace("www.", STRING_EMPTY);
     } catch (Exception ignored) {
+      return null;
+    }
+  }
+
+  /**
+   * Uri로부터 origin 추출
+   *
+   * @param uri 웹주소
+   * @return 웹주소로부터 추출된 Origin
+   */
+  public static String getOrigin(String uri) {
+    if (StringUtil.isNullOrEmpty(uri)) {
+      return null;
+    }
+    try {
+      URI _uri = new URI(uri);
+      int port = _uri.getPort();
+      if (port == 80 || port == 443) {
+        return _uri.getScheme() + "://" + _uri.getHost();
+      } else {
+        return _uri.getScheme() + "://" + _uri.getAuthority();
+      }
+    } catch (URISyntaxException ignored) {
       return null;
     }
   }

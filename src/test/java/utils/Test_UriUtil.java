@@ -34,5 +34,16 @@ public class Test_UriUtil {
     assertEquals(UriUtil.getHost(null), null);
     assertEquals(UriUtil.getHost(""), null);
   }
+
+  @Test
+  public void test_getOrigin() {
+    final String host1 = "https://www.nexon.com/";
+    final String host2 = "https://nexon.com/forum/123";
+    final String host3 = "http://nexon.com:8444/forum";
+
+    assertEquals(UriUtil.getOrigin(host1), "https://www.nexon.com");
+    assertEquals(UriUtil.getOrigin(host2), "https://nexon.com");
+    assertEquals(UriUtil.getOrigin(host3), "http://nexon.com:8444");
+  }
 }
 
